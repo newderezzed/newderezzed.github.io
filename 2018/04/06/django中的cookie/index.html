@@ -9,7 +9,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
-    <title>test page · Derezzed&#39;s Studio</title>
+    <title>django中的cookie · Derezzed&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -191,7 +191,7 @@
                 <a href="/" >Derezzed&#39;s Studio.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">test page</a>
+                <a href="#" class="post-name">django中的cookie</a>
             </div>
     </div>
     
@@ -223,7 +223,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            test page
+            django中的cookie
             <!-- 404 -->
             
         </h1>
@@ -239,9 +239,19 @@ height:50vh;
         
             <!-- 文章页标签  -->
             
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "django">django</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "cookie">cookie</a>
+    
+</div>
+            
             <div class="post-intro-meta">
                 <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                <span class="post-intro-time">2018/04/03</span>
+                <span class="post-intro-time">2018/04/06</span>
                 
                 <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                     <span class="iconfont-archer">&#xe602;</span>
@@ -347,24 +357,46 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>欢迎来到我的博客</p>
+        <h1 id="Django中的Cookie"><a href="#Django中的Cookie" class="headerlink" title="Django中的Cookie"></a>Django中的Cookie</h1><h2 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h2><h3 id="cookie的由来"><a href="#cookie的由来" class="headerlink" title="cookie的由来"></a>cookie的由来</h3><p>大家都知道HTTP协议是无状态的。</p>
+<p>无状态的意思是每次请求都是独立的，它的执行情况和结果与前面的请求和之后的请求都无直接关系，它不会受前面的请求响应情况直接影响，也不会直接影响后面的请求响应情况。</p>
+<p>一句有意思的话来描述就是人生只如初见，对服务器来说，每次的请求都是全新的。</p>
+<p>状态可以理解为客户端和服务器在某次会话中产生的数据，那无状态的就以为这些数据不会被保留。会话中产生的数据又是我们需要保存的，也就是说要“保持状态”。因此cookie就是在这样一个场景下诞生。</p>
+<h3 id="什么是cookie"><a href="#什么是cookie" class="headerlink" title="什么是cookie"></a>什么是cookie</h3><p>cookie翻译成中文意思是曲奇饼、饼干。然而，在因特网内cookie就和饼干没关系了。<strong><em>cookie具体指的是一段小信息，它是服务器发送出来存储在浏览器上的一组组键值对，下次访问服务器时浏览器会自动携带这些键值对，以便服务器提取有用信息。</em></strong></p>
+<h3 id="查看cookie"><a href="#查看cookie" class="headerlink" title="查看cookie"></a>查看cookie</h3><p>我们使用Chrome浏览器，打开开发者工具。</p>
+<p><img src="/2018/04/06/django中的cookie/cookie1.png" alt=""></p>
+<h2 id="Django中操作Cookie"><a href="#Django中操作Cookie" class="headerlink" title="Django中操作Cookie"></a>Django中操作Cookie</h2><h3 id="获取cookie"><a href="#获取cookie" class="headerlink" title="获取cookie"></a>获取cookie</h3><figure class="highlight django"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">request.COOKIES['key']</span><br><span class="line">request.get_signed_cookie(key, default=RAISE_ERROR, salt='', max_age=None)</span><br></pre></td></tr></table></figure>
+<p>参数</p>
+<ul>
+<li>default：默认值</li>
+<li>salt：加密盐</li>
+<li>max_age：后台控制过期时间</li>
+</ul>
+<h3 id="设置cookie"><a href="#设置cookie" class="headerlink" title="设置cookie"></a>设置cookie</h3><figure class="highlight django"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">rep = HttpResponse(...)</span><br><span class="line">rep ＝ render(request, ...)</span><br><span class="line"></span><br><span class="line">#普通设置</span><br><span class="line">rep.set_cookie(key,value,...)</span><br><span class="line">#加盐设置</span><br><span class="line">rep.set_signed_cookie(key,value,salt='加密盐',...)</span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>key, 键</li>
+<li>value=’’, 值</li>
+<li>max_age=None, 超时时间</li>
+<li>expires=None, 超时时间(IE requires expires, so set it if hasn’t been already.)</li>
+<li>path=’/‘, Cookie生效的路径，/ 表示根路径，特殊的：根路径的cookie可以被任何url的页面访问</li>
+<li>domain=None, Cookie生效的域名</li>
+<li>secure=False, https传输</li>
+<li>httponly=False 只能http协议传输，无法被JavaScript获取（不是绝对，底层抓包可以获取到也可以被覆盖）</li>
+</ul>
+<h3 id="删除cookie"><a href="#删除cookie" class="headerlink" title="删除cookie"></a>删除cookie</h3><figure class="highlight django"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def logout(request):</span><br><span class="line">    rep = redirect("/login/")</span><br><span class="line">    rep.delete_cookie("user")  # 删除用户浏览器上之前设置的usercookie值</span><br><span class="line">    return rep</span><br></pre></td></tr></table></figure>
+<h3 id="cookie班登陆校验"><a href="#cookie班登陆校验" class="headerlink" title="cookie班登陆校验"></a>cookie班登陆校验</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_login</span><span class="params">(func)</span>:</span></span><br><span class="line"><span class="meta">    @wraps(func)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(request, *args, **kwargs)</span>:</span></span><br><span class="line">        next_url = request.get_full_path()</span><br><span class="line">        <span class="keyword">if</span> request.get_signed_cookie(<span class="string">"login"</span>, salt=<span class="string">"SSS"</span>, default=<span class="keyword">None</span>) == <span class="string">"yes"</span>:</span><br><span class="line">            <span class="comment"># 已经登录的用户...</span></span><br><span class="line">            <span class="keyword">return</span> func(request, *args, **kwargs)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 没有登录的用户，跳转刚到登录页面</span></span><br><span class="line">            <span class="keyword">return</span> redirect(<span class="string">"/login/?next=&#123;&#125;"</span>.format(next_url))</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">login</span><span class="params">(request)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">"POST"</span>:</span><br><span class="line">        username = request.POST.get(<span class="string">"username"</span>)</span><br><span class="line">        passwd = request.POST.get(<span class="string">"password"</span>)</span><br><span class="line">        <span class="keyword">if</span> username == <span class="string">"xxx"</span> <span class="keyword">and</span> passwd == <span class="string">"dashabi"</span>:</span><br><span class="line">            next_url = request.GET.get(<span class="string">"next"</span>)</span><br><span class="line">            <span class="keyword">if</span> next_url <span class="keyword">and</span> next_url != <span class="string">"/logout/"</span>:</span><br><span class="line">                response = redirect(next_url)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                response = redirect(<span class="string">"/class_list/"</span>)</span><br><span class="line">            response.set_signed_cookie(<span class="string">"login"</span>, <span class="string">"yes"</span>, salt=<span class="string">"SSS"</span>)</span><br><span class="line">            <span class="keyword">return</span> response</span><br><span class="line">    <span class="keyword">return</span> render(request, <span class="string">"login.html"</span>)</span><br></pre></td></tr></table></figure>
 
     </article>
     <!-- 前后页  -->
     <ul class="post-paginator">
         <li class="next">
             
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/2018/04/05/django框架介绍/" title= django框架介绍 >
-                    <div class="nextTitle">django框架介绍</div>
-                </a>
-            
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2018/04/03/hello-world/" title= Hello World >
-                    <div class="prevTitle">Hello World</div>
+                <a href= "/2018/04/05/django框架介绍/" title= django框架介绍 >
+                    <div class="prevTitle">django框架介绍</div>
                 </a>
             
         </li>
@@ -470,7 +502,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Django中的Cookie"><span class="toc-number">1.</span> <span class="toc-text">Django中的Cookie</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#cookie"><span class="toc-number">1.1.</span> <span class="toc-text">cookie</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cookie的由来"><span class="toc-number">1.1.1.</span> <span class="toc-text">cookie的由来</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是cookie"><span class="toc-number">1.1.2.</span> <span class="toc-text">什么是cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看cookie"><span class="toc-number">1.1.3.</span> <span class="toc-text">查看cookie</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Django中操作Cookie"><span class="toc-number">1.2.</span> <span class="toc-text">Django中操作Cookie</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#获取cookie"><span class="toc-number">1.2.1.</span> <span class="toc-text">获取cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#设置cookie"><span class="toc-number">1.2.2.</span> <span class="toc-text">设置cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除cookie"><span class="toc-number">1.2.3.</span> <span class="toc-text">删除cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cookie班登陆校验"><span class="toc-number">1.2.4.</span> <span class="toc-text">cookie班登陆校验</span></a></li></ol></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
