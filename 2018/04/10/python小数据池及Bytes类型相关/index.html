@@ -9,7 +9,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
-    <title>test page · Derezzed&#39;s Studio</title>
+    <title>python小数据池及Bytes类型相关 · Derezzed&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -191,7 +191,7 @@
                 <a href="/" >Derezzed&#39;s Studio.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">test page</a>
+                <a href="#" class="post-name">python小数据池及Bytes类型相关</a>
             </div>
     </div>
     
@@ -223,7 +223,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            test page
+            python小数据池及Bytes类型相关
             <!-- 404 -->
             
         </h1>
@@ -239,9 +239,17 @@ height:50vh;
         
             <!-- 文章页标签  -->
             
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "小数据池">小数据池</a>
+    
+</div>
+            
             <div class="post-intro-meta">
                 <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                <span class="post-intro-time">2018/04/03</span>
+                <span class="post-intro-time">2018/04/10</span>
                 
                 <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                     <span class="iconfont-archer">&#xe602;</span>
@@ -347,24 +355,95 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>欢迎来到我的博客</p>
+        <h2 id="字符与字节"><a href="#字符与字节" class="headerlink" title="字符与字节"></a>字符与字节</h2><p>一个字符不等价于一个字节，字符是人类能够识别的符号，而这些符号要保存到计算机的存储中，就需要用计算机能够识别的字节来表示。</p>
+<p>一个字符往往有多种表示方法（字符编码），不同的表示方法会使用不同的字节数。比如字母A-Z都可以用ASCII码表示（占一个字节），也可以用Unicode表示（占两个字节），还可以用UTF-8表示（占一个字节）。</p>
+<p>字符编码的作用就是将人类可识别的字符转换为机器可识别的字节码，解码就是将机器可识别的字节码转换成人类可识别的字符。</p>
+<p>Unicode才是真正的字符串，而用ASCII、UTF-8、GBK等字符编码表示的是字节串。从上面对各种编码方式的介绍中，我们也可以了解到，像ASCII、UTF-8、GBK这些都是编码方式，是将字符编码为字节码。Unicode只是一个符号集，它只规定了符号的二进制代码，也就是说它给每一个字符一个独一无二的数字来表示。</p>
+<h2 id="编码与解码"><a href="#编码与解码" class="headerlink" title="编码与解码"></a>编码与解码</h2><p>编码(encode)：在Unicode中，每一个字符都有一个唯一的数字表示，那么将Unicode字符串转换为特定字符编码（ASCII、UTF-8、GBK）对应的字节串的过程和规则就是编码。</p>
+<p>解码(decode)：将特定字符编码（ASCII、UTF-8、GBK）的字节串转换为对应的Unicode字符串的过程和规则就是解码。</p>
+<p><strong>简单理解：编码是给计算机底层用的，解码是显示给人看的。</strong></p>
+<h2 id="python源代码文件的执行过程"><a href="#python源代码文件的执行过程" class="headerlink" title="python源代码文件的执行过程"></a>python源代码文件的执行过程</h2><p>我们都知道，磁盘上的文件都是以二进制格式存放的，其中文本文件都是以某种特定编码的字节形式存放的。对于程序源代码文件的字符编码是由编辑器指定的，比如我们使用Pycharm来编写Python程序时会指定工程编码和文件编码为UTF-8，那么Python代码被保存到磁盘时就会被转换为UTF-8编码对应的字节（encode过程）后写入磁盘。</p>
+<p>当执行Python代码文件中的代码时，Python解释器在读取Python代码文件中的字节串之后，需要将其转换为Unicode字符串（decode过程）之后才执行后续操作。</p>
+<p><img src="/2018/04/10/python小数据池及Bytes类型相关/001.png" alt=""></p>
+<h2 id="默认编码"><a href="#默认编码" class="headerlink" title="默认编码"></a>默认编码</h2><p>如果我们没有在代码文件指定字符编码，Python解释器会使用哪种字符编码把从代码文件中读取到的字节转换为Unicode字符串呢？就像我们配置某些软件时，有很多默认选项一样，需要在Python解释器内部设置默认的字符编码来解决这个问题，这就是“默认编码”。</p>
+<p>Python2和Python3的解释器使用的默认编码是不一样的，我们可以通过sys.getdefaultencoding()来获取默认编码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1 &gt;&gt;&gt; # Python2</span><br><span class="line">2 &gt;&gt;&gt; import sys</span><br><span class="line">3 &gt;&gt;&gt; sys.getdefaultencoding()</span><br><span class="line">4 &apos;ascii&apos;</span><br><span class="line">5 </span><br><span class="line">6  &gt;&gt;&gt; # Python3</span><br><span class="line">7 &gt;&gt;&gt; import sys</span><br><span class="line">8 &gt;&gt;&gt; sys.getdefaultencoding()</span><br><span class="line">9 &apos;utf-8&apos;</span><br></pre></td></tr></table></figure>
+<p>对于Python2来讲，Python解释器在读取到中文字符的字节码时，会先查看当前代码文件头部是否指明字符编码是什么。如果没有指定，则使用默认字符编码”ASCII”进行解码，导致中文字符解码失败，出现如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SyntaxError:Non-ASCII character &apos;\xc4&apos; in file xxx.py on line 11, but no encoding declared;</span><br><span class="line">see http://python.org/dev/peps/pep-0263/ for details</span><br></pre></td></tr></table></figure>
+<p>对于Python3来讲，执行过程是一样的，只是Python3的解释器以”UTF-8”作为默认编码，但是这并不表示可以完全兼容中文问题。比如我们在Windows上进行开发时，Python工程及代码文件都使用的是默认的GBK编码，也就是说Python代码文件是被转换成GBK格式的字节码保存到磁盘中的。Python3的解释器执行该代码文件时，试图用UTF-8进行解码操作时，同样会解码失败，出现如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SyntaxError:Non-UTF-8 code starting with &apos;\xc4&apos; in file xx.py on line 11, but no encodingdeclared; </span><br><span class="line">see http://python.org/dev/peps/pep-0263/ for details</span><br></pre></td></tr></table></figure>
+<h2 id="小数据池（注意只有数值和字符串有这个概念）"><a href="#小数据池（注意只有数值和字符串有这个概念）" class="headerlink" title="小数据池（注意只有数值和字符串有这个概念）"></a>小数据池（注意只有数值和字符串有这个概念）</h2><p>在一定范围之内的，共用同一个内存地址。</p>
+<p>数字 -5~256 节省空间（内存），共用的都是一个小数据池（指向的是同一个内存地址）</p>
+<p>小整数对象[-5, 257]在python中是共享的</p>
+<p>（注，用列表表示是因为python中含首不含尾，所以［-5，257］表示的范围也就是数字 -5~256。）</p>
+<p>整数对象都是从缓冲池中获取的。</p>
+<p>整数对象回收时，内存并不会归还给系统，而是将其对象的ob_type指向free_list，供新创建的整数对象使用</p>
+<h3 id="小整数对象-—-小整型对象池"><a href="#小整数对象-—-小整型对象池" class="headerlink" title="小整数对象 —- 小整型对象池"></a>小整数对象 —- 小整型对象池</h3><p>[small_ints的链表]</p>
+<p>在实际编程中，数值比较小的整数，比如1,2,33等，会非常频繁的出现。</p>
+<p>python中，所有的对象都存在于系统堆上。</p>
+<p>如果某个小整数出现的次数非常多，那么python将会出现大量的malloc/free操作，这样大大降低了运行效率，而且会造成大量的内存碎片，严重影响Python的整体性能。</p>
+<p>所以在python2.5乃至3.6中，将小整数位于[-5,257)之间的数，缓存在小整型对象池中。</p>
+<h3 id="大整数对象-—-通用整数对象池"><a href="#大整数对象-—-通用整数对象池" class="headerlink" title="大整数对象 —- 通用整数对象池"></a>大整数对象 —- 通用整数对象池</h3><p>python将小整型数完全的缓存在了小对象缓存池中了。</p>
+<p>而那些大整数对象呢？</p>
+<p>python运行环境也有提供一块内存空间供大整数轮流使用。</p>
+<p>这块内存空间就是PyIntBlock。</p>
+<p>通常称为通用整数对象池。</p>
+<p>所以大整数其实也是有缓存的。</p>
+<p>该对象池使用链表组织，哪怕两个大整数变量有着相同的值，但是在链表中确是不同的节点。不再是一个对象了。</p>
+<h2 id="字符串intern"><a href="#字符串intern" class="headerlink" title="字符串intern"></a>字符串intern</h2><p>关于字符串的intern内存驻留机制：</p>
+<blockquote>
+<p>Incomputer science, string interning is a method of storing only onecopy<br> of each distinct string value, which must be immutable. Interning<br>strings makes some stringprocessing tasks more time- or space-efficient<br>at the cost of requiring moretime when the string is created or<br>interned. The distinct values are stored ina string intern pool.<br>–引自维基百科</p>
+</blockquote>
+<p>译：</p>
+<p>在计算机科学中，string interning是一种只存储每个不同字符串值的onecopy的方法，它必须是不可变的。连接字符串使得一些stringprocessing任务更费时——或者更节省空间，因为在创建或插入字符串时需要moretime。不同的值存储在字符串驻留池中。</p>
+<p>也就是说值相同的字符串对象只会保存一份，是共用的，所以字符串必须是不可变对象。</p>
+<p>就跟小整数对象一样，相同的数值只要保存一份就行了，没必要用不同对象来区分。</p>
+<p>同时以上也说到了这样做的优缺点：</p>
+<p>优点：能够提高一些字符串处理任务在时间和空间上的性能；需要值相同的字符串的时候（比如标识符），直接从池里拿来用，避免频繁的创建和销毁，提升效率，节约内存。</p>
+<p>缺点：在创建或插入字符串时会花费更多的时间。</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p><strong>1.拼接字符串</strong></p>
+<p>由于字符串的改动不是inplace的操作，需要新建对象，因此不推荐使用+来拼接字符串，推荐使用join函数，因为join函数在拼接字符串之前会计算所有字符串的长度，然后逐一拷贝，仅新建一次对象</p>
+<p><strong>2.字符串驻留机制</strong></p>
+<p>仅包含下划线（_）、字母和数字的字符串会启用字符串驻留机制驻留机制。因为解释器仅对看起来像python标识符的字符串使用intern()方法，而python标识符正是由下划线、字母和数字组成。</p>
+<p>python默认只会对由字符</p>
+<p>“0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz”构成字符串进行intern。</p>
+<p>这部分的逻辑在codeobject.c中的函数PyCode_New中：在该函数中，会调用all_name_chars，检查字符串是否全是由简单的字符组成，判断通过的字符串才会进行intern处理。</p>
+<p>这里的分析是对常量而言，对于计算得出的字符串，也是不做intern的。</p>
+<p>python2中可以用intern()来对除此外的字符串进行处理使其共用一个内存空间，python3中不知为何对intern取消了支持。可能怕引起混乱吧，反正就默认了对那些看起来像是python标识符的进行intern。</p>
+<p>例：python27中支持intern()</p>
+<p><img src="/2018/04/10/python小数据池及Bytes类型相关/002.jpg" alt=""></p>
+<p>python3中使用intern()会直接报错。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; s3 = intern(&apos;hello!&apos;)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;&lt;pyshell#5&gt;&quot;, line 1, in &lt;module&gt;</span><br><span class="line">    s3 = intern(&apos;hello!&apos;)</span><br><span class="line">NameError: name &apos;intern&apos; is not defined</span><br></pre></td></tr></table></figure>
+<p><strong>3.字符串驻留时机</strong></p>
+<p>字符串只会在编译时进行驻留，而不是在运行时。</p>
+<p>例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; s5 = &apos;tiele&apos;</span><br><span class="line">&gt;&gt;&gt; s6 = &apos;mao&apos;</span><br><span class="line">&gt;&gt;&gt; &apos;tiele&apos; + &apos;mao&apos; is &apos;tielemao&apos;</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; s5 + s6 is &apos;tielemao&apos;</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+<p>实现 Intern<br>机制的就好比是通过维护一个字符串储蓄池，这个池子是一个字典结构，如果字符串已经存在于池子中了就不再去创建新的字符串，直接返回之前创建好的字符串对象，如果之前还没有加入到该池子中，则先构造一个字符串对象，并把这个对象加入到池子中去，方便下一次获取。</p>
+<h3 id="短字符串缓冲池character"><a href="#短字符串缓冲池character" class="headerlink" title="短字符串缓冲池character"></a>短字符串缓冲池character</h3><p>另外，字符串除了有intern机制缓存字符串之外，还有一种专门的短字符串缓冲池characters。用于缓存字符串长度为1的PyStringObject对象。</p>
+<h3 id="变长对象"><a href="#变长对象" class="headerlink" title="变长对象"></a>变长对象</h3><p>在Python世界中将对象分为两种：</p>
+<p>一种是定长对象，比如整数，整数对象定义的时候就能确定它所占用的内存空间大小，另一种是变长对象，在对象定义时并不知道是多少，比如：str，list, set, dict等。</p>
+<p>同样都是字符串对象，不同字符串对象所占用的内存是不一样的，这就是变长对象，对于变长对象，在对象定义时是不知道对象所占用的内存空间是多少的。</p>
+<p>字符串对象在Python内部用PyStringObject表示，PyStringObject和PyIntObject一样都属于不可变对象，对象一旦创建就不能改变其值。</p>
+<p>（注意：变长对象和不可变对象是两个不同的概念）。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
+<li>字符串用PyStringObject表示</li>
+<li>字符串属于变长对象</li>
+<li>字符串属于不可变对象</li>
+<li>字符串用intern机制提高python的效率</li>
+<li>字符串有专门的缓冲池存储长度为1的字符串对象</li>
+</ol>
 
     </article>
     <!-- 前后页  -->
     <ul class="post-paginator">
         <li class="next">
             
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/2018/04/05/django框架介绍/" title= django框架介绍 >
-                    <div class="nextTitle">django框架介绍</div>
-                </a>
-            
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2018/04/03/hello-world/" title= Hello World >
-                    <div class="prevTitle">Hello World</div>
+                <a href= "/2018/04/10/django-form表单/" title= django form表单 >
+                    <div class="prevTitle">django form表单</div>
                 </a>
             
         </li>
@@ -470,7 +549,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#字符与字节"><span class="toc-number">1.</span> <span class="toc-text">字符与字节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编码与解码"><span class="toc-number">2.</span> <span class="toc-text">编码与解码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python源代码文件的执行过程"><span class="toc-number">3.</span> <span class="toc-text">python源代码文件的执行过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#默认编码"><span class="toc-number">4.</span> <span class="toc-text">默认编码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小数据池（注意只有数值和字符串有这个概念）"><span class="toc-number">5.</span> <span class="toc-text">小数据池（注意只有数值和字符串有这个概念）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#小整数对象-—-小整型对象池"><span class="toc-number">5.1.</span> <span class="toc-text">小整数对象 —- 小整型对象池</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#大整数对象-—-通用整数对象池"><span class="toc-number">5.2.</span> <span class="toc-text">大整数对象 —- 通用整数对象池</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串intern"><span class="toc-number">6.</span> <span class="toc-text">字符串intern</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#注意事项"><span class="toc-number">6.1.</span> <span class="toc-text">注意事项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#短字符串缓冲池character"><span class="toc-number">6.2.</span> <span class="toc-text">短字符串缓冲池character</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#变长对象"><span class="toc-number">6.3.</span> <span class="toc-text">变长对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">6.4.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
