@@ -9,7 +9,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
-    <title>test page · Derezzed&#39;s Studio</title>
+    <title>python命名空间 · Derezzed&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -191,7 +191,7 @@
                 <a href="/" >Derezzed&#39;s Studio.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">test page</a>
+                <a href="#" class="post-name">python命名空间</a>
             </div>
     </div>
     
@@ -223,7 +223,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            test page
+            python命名空间
             <!-- 404 -->
             
         </h1>
@@ -239,9 +239,17 @@ height:50vh;
         
             <!-- 文章页标签  -->
             
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "命名空间">命名空间</a>
+    
+</div>
+            
             <div class="post-intro-meta">
                 <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                <span class="post-intro-time">2018/04/03</span>
+                <span class="post-intro-time">2018/04/11</span>
                 
                 <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                     <span class="iconfont-archer">&#xe602;</span>
@@ -347,7 +355,18 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>欢迎来到我的博客</p>
+        <h2 id="python命名空间"><a href="#python命名空间" class="headerlink" title="python命名空间"></a>python命名空间</h2><p><strong>一共有三种命名空间从大范围到小范围的顺序：内置命名空间、全局命名空间、局部命名空间</strong></p>
+<p><strong>作用域（包括函数的作用域链）：</strong></p>
+<p>小范围的可以用大范围的<br>但是大范围的不能用小范围的<br>范围从大到小</p>
+<p><img src="/2018/04/11/python命名空间/001.png" alt=""></p>
+<p>在小范围内，如果要用一个变量，是当前这个小范围有的，就用自己的<br>如果在小范围内没有，就用上一级的，上一级没有就用上上一级的，以此类推。<br>如果都没有，报错</p>
+<p><strong>函数的嵌套：</strong></p>
+<p>嵌套调用</p>
+<p>嵌套定义：定义在内部的函数无法直接在全局被调用</p>
+<p><strong>函数名的本质：</strong></p>
+<p>就是一个变量，保存了函数所在的内存地址</p>
+<p><strong>闭包：</strong></p>
+<p>内部函数包含对外部作用域而非全剧作用域名字的引用，该内部函数称为闭包函数</p>
 
     </article>
     <!-- 前后页  -->
@@ -355,16 +374,16 @@ height:50vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2018/04/05/django框架介绍/" title= django框架介绍 >
-                    <div class="nextTitle">django框架介绍</div>
+                <a href= "/2018/04/11/python函数之匿名函数/" title= python函数之匿名函数 >
+                    <div class="nextTitle">python函数之匿名函数</div>
                 </a>
             
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2018/04/03/hello-world/" title= Hello World >
-                    <div class="prevTitle">Hello World</div>
+                <a href= "/2018/04/11/python函数之闭包/" title= python函数之闭包 >
+                    <div class="prevTitle">python函数之闭包</div>
                 </a>
             
         </li>
@@ -470,7 +489,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#python命名空间"><span class="toc-number">1.</span> <span class="toc-text">python命名空间</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -595,7 +614,42 @@ top:50vh;
     
     
     
-    <div class="total-archive"> Total : 10 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 13 </div>
     
     <div class="post-archive">
     
@@ -604,6 +658,26 @@ top:50vh;
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python面向对象三大特性之继承/" >python面向对象三大特性之继承</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之匿名函数/" >python函数之匿名函数</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -647,11 +721,6 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/03</span><a class="archive-post-title" href= "/2018/04/03/test-page/" >test page</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">04/03</span><a class="archive-post-title" href= "/2018/04/03/hello-world/" >Hello World</a>
         </li>
     
@@ -675,6 +744,12 @@ top:50vh;
         <span class="sidebar-tag-name" data-tags="迭代器"><span class="iconfont-archer">&#xe606;</span>迭代器</span>
     
         <span class="sidebar-tag-name" data-tags="生成器"><span class="iconfont-archer">&#xe606;</span>生成器</span>
+    
+        <span class="sidebar-tag-name" data-tags="匿名函数"><span class="iconfont-archer">&#xe606;</span>匿名函数</span>
+    
+        <span class="sidebar-tag-name" data-tags="闭包"><span class="iconfont-archer">&#xe606;</span>闭包</span>
+    
+        <span class="sidebar-tag-name" data-tags="命名空间"><span class="iconfont-archer">&#xe606;</span>命名空间</span>
     
         <span class="sidebar-tag-name" data-tags="小数据池"><span class="iconfont-archer">&#xe606;</span>小数据池</span>
     

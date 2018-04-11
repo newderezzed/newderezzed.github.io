@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html>
+    <!-- title -->
+
+
+
+
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>python面向对象三大特性之继承 · Derezzed&#39;s Studio</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+        box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.7);
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s 1;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= /css/style.css?v=20180317 as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" type="text/css" href= /css/mobile.css?v=20180317 media="(max-width: 980px)"/>
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        
+    <link rel="icon" href= /assets/emoji.png>
+    <script>
+        (function (w) {
+            "use strict";
+            // rel=preload support test
+            if (!w.loadCSS) {
+                w.loadCSS = function () { };
+            }
+            // define on the loadCSS obj
+            var rp = loadCSS.relpreload = {};
+            // rel=preload feature support test
+            // runs once and returns a function for compat purposes
+            rp.support = (function () {
+                var ret;
+                try {
+                    ret = w.document.createElement("link").relList.supports("preload");
+                } catch (e) {
+                    ret = false;
+                }
+                return function () {
+                    return ret;
+                };
+            })();
+
+            // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+            // then change that media back to its intended value on load
+            rp.bindMediaToggle = function (link) {
+                // remember existing media attr for ultimate state, or default to 'all'
+                var finalMedia = link.media || "all";
+
+                function enableStylesheet() {
+                    link.media = finalMedia;
+                }
+
+                // bind load handlers to enable media
+                if (link.addEventListener) {
+                    link.addEventListener("load", enableStylesheet);
+                } else if (link.attachEvent) {
+                    link.attachEvent("onload", enableStylesheet);
+                }
+
+                // Set rel and non-applicable media type to start an async request
+                // note: timeout allows this to happen async to let rendering continue in IE
+                setTimeout(function () {
+                    link.rel = "stylesheet";
+                    link.media = "only x";
+                });
+                // also enable media after 3 seconds,
+                // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+                setTimeout(enableStylesheet, 3000);
+            };
+
+            // loop through link elements in DOM
+            rp.poly = function () {
+                // double check this to prevent external calls from running
+                if (rp.support()) {
+                    return;
+                }
+                var links = w.document.getElementsByTagName("link");
+                for (var i = 0; i < links.length; i++) {
+                    var link = links[i];
+                    // qualify links to those with rel=preload and as=style attrs
+                    if (link.rel === "preload" && link.getAttribute("as") === "style" && !link.getAttribute("data-loadcss")) {
+                        // prevent rerunning on link
+                        link.setAttribute("data-loadcss", true);
+                        // bind listeners to toggle media back
+                        rp.bindMediaToggle(link);
+                    }
+                }
+            };
+
+            // if unsupported, run the polyfill
+            if (!rp.support()) {
+                // run once at least
+                rp.poly();
+
+                // rerun poly on an interval until onload
+                var run = w.setInterval(rp.poly, 500);
+                if (w.addEventListener) {
+                    w.addEventListener("load", function () {
+                        rp.poly();
+                        w.clearInterval(run);
+                    });
+                } else if (w.attachEvent) {
+                    w.attachEvent("onload", function () {
+                        rp.poly();
+                        w.clearInterval(run);
+                    });
+                }
+            }
+            // commonjs
+            if (typeof exports !== "undefined") {
+                exports.loadCSS = loadCSS;
+            }
+            else {
+                w.loadCSS = loadCSS;
+            }
+        }(typeof global !== "undefined" ? global : this));
+    </script>
+    <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+    <script src="/scripts/main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Derezzed&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">python面向对象三大特性之继承</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>Derezzed's Studio.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style=
+
+
+
+
+
+
+
+
+height:50vh;
+
+>
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            python面向对象三大特性之继承
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2018/04/11</span>
+                
+                <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                    <span class="iconfont-archer">&#xe602;</span>
+                    <span id="busuanzi_value_page_pv"></span>
+                </span>
+                
+                <span class="shareWrapper">
+                    <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                    <span class="shareText">Share</span>
+                    <ul class="shareList">
+                        <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                            <div class="share-qrcode"></div>
+                        </li>
+                        <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                        <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                        <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                        <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                    </ul>
+                </span>
+            </div>
+        
+    </div>
+</div>
+        <script>
+  // load webfont-loader async, and add callback function
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+  
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntroTags = document.getElementsByClassName('post-intro-tags')[0],
+        postIntroMeat = document.getElementsByClassName('post-intro-meta')[0];
+      if (postIntroTags) {
+        postIntroTags.classList.add('post-fade-in');
+      }
+      if (postIntroMeat) {
+        postIntroMeat.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  async("https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", asyncCb)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><blockquote>
+<p>什么是继承</p>
+<p>继承是一种创建新类的方式，在python中，新建的类可以继承一个或多个父类，父类又可称为基类或超类，新建的类称为派生类或子类</p>
+<p>python中类的继承分为：单继承和多继承</p>
+</blockquote>
+<h3 id="python中类的继承分为：单继承和多继承"><a href="#python中类的继承分为：单继承和多继承" class="headerlink" title="python中类的继承分为：单继承和多继承"></a>python中类的继承分为：单继承和多继承</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ParentClass1</span>:</span> <span class="comment">#定义父类</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ParentClass2</span>:</span> <span class="comment">#定义父类</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SubClass1</span><span class="params">(ParentClass1)</span>:</span> <span class="comment">#单继承，基类是ParentClass1，派生类是SubClass</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SubClass2</span><span class="params">(ParentClass1,ParentClass2)</span>:</span> <span class="comment">#python支持多继承，用逗号分隔开多个继承的类</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<h3 id="查看继承"><a href="#查看继承" class="headerlink" title="查看继承"></a>查看继承</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; SubClass1.__bases__ <span class="comment">#__base__只查看从左到右继承的第一个子类，__bases__则是查看所有继承的父类</span></span></span><br><span class="line">(&lt;class '__main__.ParentClass1'&gt;,)</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; SubClass2.__bases__</span></span><br><span class="line">(&lt;class '__main__.ParentClass1'&gt;, &lt;class '__main__.ParentClass2'&gt;)</span><br></pre></td></tr></table></figure>
+<p><strong>提示：</strong></p>
+<p>如果没有指定基类，python的类会默认继承object类，object是所有python类的基类，它提供了一些常见方法（如<strong>str</strong>）的实现。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; ParentClass1.__bases__</span></span><br><span class="line">(&lt;class 'object'&gt;,)</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; ParentClass2.__bases__</span></span><br><span class="line">(&lt;class 'object'&gt;,)</span><br></pre></td></tr></table></figure>
+<h3 id="继承与抽象（先抽象再继承）"><a href="#继承与抽象（先抽象再继承）" class="headerlink" title="继承与抽象（先抽象再继承）"></a>继承与抽象（先抽象再继承）</h3><p>抽象即抽取类似或者说比较像的部分。</p>
+<p>抽象分成两个层次： </p>
+<ul>
+<li>将奥巴马和梅西这俩对象比较像的部分抽取成类； </li>
+<li>将人，猪，狗这三个类比较像的部分抽取成父类。</li>
+</ul>
+<p>抽象最主要的作用是划分类别（可以隔离关注点，降低复杂度）</p>
+<p><img src="/2018/04/11/python面向对象三大特性之继承/001.png" alt=""></p>
+<p><strong>继承：是基于抽象的结果，通过编程语言去实现它，肯定是先经历抽象这个过程，才能通过继承的方式去表达出抽象的结构。</strong></p>
+<p>抽象只是分析和设计的过程中，一个动作或者说一种技巧，通过抽象可以得到类</p>
+<p><img src="/2018/04/11/python面向对象三大特性之继承/002.png" alt=""></p>
+<h3 id="继承与重用性"><a href="#继承与重用性" class="headerlink" title="继承与重用性"></a>继承与重用性</h3><h4 id="first-part"><a href="#first-part" class="headerlink" title="first part"></a>first part</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">例如</span><br><span class="line"></span><br><span class="line">猫可以：喵喵叫、吃、喝、拉、撒</span><br><span class="line"></span><br><span class="line">狗可以：汪汪叫、吃、喝、拉、撒</span><br><span class="line"></span><br><span class="line">如果我们要分别为猫和狗创建一个类，那么就需要为</span><br><span class="line"></span><br><span class="line">猫和狗</span><br><span class="line"></span><br><span class="line">实现他们所有的功能，伪代码如下：</span><br><span class="line"></span><br><span class="line"><span class="comment"># 猫和狗有大量相同的内容</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> 猫：</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">    <span class="title">def</span> 喵喵叫<span class="params">(self)</span>:</span></span><br><span class="line">       print(<span class="string">'喵喵叫'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> 吃<span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># do something</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> 喝<span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># do something</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> 拉<span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># do something</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> 撒<span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># do something</span></span><br><span class="line"></span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> 狗：</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">    <span class="title">def</span> 旺旺叫<span class="params">(self)</span>:</span></span><br><span class="line">       print(<span class="string">'旺旺叫'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> 吃<span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># do something</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> 喝<span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># do something</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> 拉<span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># do something</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> 撒<span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># do something</span></span><br></pre></td></tr></table></figure>
+<h4 id="second-part"><a href="#second-part" class="headerlink" title="second part"></a>second part</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">上述代码不难看出，吃、喝、拉、撒是猫和狗都具有的功能，而我们却分别的猫和狗的类中编写了两次。如果使用</span><br><span class="line">继承的思想，如下实现：</span><br><span class="line">动物：吃、喝、拉、撒</span><br><span class="line"></span><br><span class="line">　　   猫：喵喵叫（猫继承动物的功能）</span><br><span class="line"></span><br><span class="line">　　   狗：汪汪叫（狗继承动物的功能）</span><br><span class="line">　　   </span><br><span class="line">伪代码如下：</span><br><span class="line"></span><br><span class="line">class 动物:</span><br><span class="line"></span><br><span class="line">   def 吃(self):</span><br><span class="line">   		# do something</span><br><span class="line"></span><br><span class="line">   def 喝(self):</span><br><span class="line">   		# do something</span><br><span class="line"></span><br><span class="line">   def 拉(self):</span><br><span class="line">   		# do something</span><br><span class="line"></span><br><span class="line">   def 撒(self):</span><br><span class="line">		# do something</span><br><span class="line">		</span><br><span class="line"># 在类后面括号中写入另外一个类名，表示当前类继承另外一个类</span><br><span class="line">class 猫(动物)：</span><br><span class="line"></span><br><span class="line">    def 喵喵叫(self):</span><br><span class="line">       print(&apos;喵喵叫&apos;)</span><br><span class="line"></span><br><span class="line"># 在类后面括号中写入另外一个类名，表示当前类继承另外一个类</span><br><span class="line">class 狗(动物)：</span><br><span class="line"></span><br><span class="line">    def 旺旺叫(self):</span><br><span class="line">       print(&apos;旺旺叫&apos;)</span><br></pre></td></tr></table></figure>
+<h4 id="third-part"><a href="#third-part" class="headerlink" title="third part"></a>third part</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 继承的代码实现</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span>:</span></span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></span><br><span class="line">       print(<span class="string">"%s 吃 "</span> % self.name)</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">drink</span><span class="params">(self)</span>:</span></span><br><span class="line">       print(<span class="string">"%s 喝 "</span> % self.name)</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">shit</span><span class="params">(self)</span>:</span></span><br><span class="line">       print(<span class="string">"%s 拉 "</span> % self.name)</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">pee</span><span class="params">(self)</span>:</span></span><br><span class="line">       print(<span class="string">"%s 撒 "</span> % self.name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span><span class="params">(Animal)</span>:</span></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">       self.name = name</span><br><span class="line">       self.breed = <span class="string">'猫'</span></span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">cry</span><span class="params">(self)</span>:</span></span><br><span class="line">       print(<span class="string">'喵喵叫'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span><span class="params">(Animal)</span>:</span></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">       self.name = name</span><br><span class="line">       self.breed = <span class="string">'狗'</span></span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">cry</span><span class="params">(self)</span>:</span></span><br><span class="line">       print(<span class="string">'汪汪叫'</span>)</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line"><span class="comment">######### 执行 #########</span></span><br><span class="line"></span><br><span class="line">c1 = Cat(<span class="string">'小白家的小黑猫'</span>)</span><br><span class="line">c1.eat()</span><br><span class="line"></span><br><span class="line">c2 = Cat(<span class="string">'小黑的小白猫'</span>)</span><br><span class="line">c2.drink()</span><br><span class="line"></span><br><span class="line">d1 = Dog(<span class="string">'胖子家的小瘦狗'</span>)</span><br><span class="line">d1.eat()</span><br><span class="line"></span><br><span class="line">使用继承来重用代码比较好的例子</span><br><span class="line"></span><br><span class="line">使用继承来解决代码重用的例子</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在开发程序的过程中，如果我们定义了一个类A，然后又想新建立另外一个类B，但是类B的大部分内容与类A的相同时</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 我们不可能从头开始写一个类B，这就用到了类的继承的概念。</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 通过继承的方式新建类B，让B继承A，B会‘遗传’A的所有属性(数据属性和函数属性)，实现代码重用</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 人和狗都是动物，所以创造一个Animal基类 </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, aggressivity, life_value)</span>:</span></span><br><span class="line">        self.name = name  <span class="comment"># 人和狗都有自己的昵称;</span></span><br><span class="line">        self.aggressivity = aggressivity  <span class="comment"># 人和狗都有自己的攻击力;</span></span><br><span class="line">        self.life_value = life_value  <span class="comment"># 人和狗都有自己的生命值;</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'%s is eating'</span>%self.name)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">egg = Person(<span class="string">'egon'</span>,<span class="number">10</span>,<span class="number">1000</span>)</span><br><span class="line">ha2 = Dog(<span class="string">'二愣子'</span>,<span class="number">50</span>,<span class="number">1000</span>)</span><br><span class="line">egg.eat()</span><br><span class="line">ha2.eat()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提示：用已经有的类建立一个新的类，这样就重用了已经有的软件中的一部分设置大部分，</span></span><br><span class="line"><span class="comment"># 大大生了编程工作量，这就是常说的软件重用，不仅可以重用自己的类，</span></span><br><span class="line"><span class="comment"># 也可以继承别人的，比如标准库，来定制新的数据类型，这样就是大大缩短了软件开发周期，对大型软件开发来说，意义重大.</span></span><br></pre></td></tr></table></figure>
+<h2 id="派生"><a href="#派生" class="headerlink" title="派生"></a>派生</h2><blockquote>
+<p>当然子类也可以添加自己新的属性或者在自己这里重新定义这些属性（不会影响到父类），<br>需要注意的是，一旦重新定义了自己的属性且与父类重名，那么调用新增的属性时，就以自己为准了。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># class Animal:</span></span><br><span class="line"><span class="comment">#     '''</span></span><br><span class="line"><span class="comment">#     人和狗都是动物，所以创造一个Animal基类</span></span><br><span class="line"><span class="comment">#     '''</span></span><br><span class="line"><span class="comment">#     def __init__(self, name, aggressivity, life_value):</span></span><br><span class="line"><span class="comment">#         self.name = name  # 人和狗都有自己的昵称;</span></span><br><span class="line"><span class="comment">#         self.aggressivity = aggressivity  # 人和狗都有自己的攻击力;</span></span><br><span class="line"><span class="comment">#         self.life_value = life_value  # 人和狗都有自己的生命值;</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     def eat(self):</span></span><br><span class="line"><span class="comment">#         print('%s is eating'%self.name)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># class Dog(Animal):</span></span><br><span class="line"><span class="comment">#     '''</span></span><br><span class="line"><span class="comment">#     狗类，继承Animal类</span></span><br><span class="line"><span class="comment">#     '''</span></span><br><span class="line"><span class="comment">#     def bite(self, people):</span></span><br><span class="line"><span class="comment">#         '''</span></span><br><span class="line"><span class="comment">#         派生：狗有咬人的技能</span></span><br><span class="line"><span class="comment">#         :param people:</span></span><br><span class="line"><span class="comment">#         '''</span></span><br><span class="line"><span class="comment">#         people.life_value -= self.aggressivity</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># class Person(Animal):</span></span><br><span class="line"><span class="comment">#     '''</span></span><br><span class="line"><span class="comment">#     人类，继承Animal</span></span><br><span class="line"><span class="comment">#     '''</span></span><br><span class="line"><span class="comment">#     def attack(self, dog):</span></span><br><span class="line"><span class="comment">#         '''</span></span><br><span class="line"><span class="comment">#         派生：人有攻击的技能</span></span><br><span class="line"><span class="comment">#         :param dog:</span></span><br><span class="line"><span class="comment">#         '''</span></span><br><span class="line"><span class="comment">#         dog.life_value -= self.aggressivity</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># egg = Person('egon',10,1000)</span></span><br><span class="line"><span class="comment"># ha2 = Dog('二愣子',50,1000)</span></span><br><span class="line"><span class="comment"># print(ha2.life_value)</span></span><br><span class="line"><span class="comment"># print(egg.attack(ha2))</span></span><br><span class="line"><span class="comment"># print(ha2.life_value)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 注意：像ha2.life_value之类的属性引用，会先从实例中找life_value然后去类中找，然后再去父类中找...直到最顶级的父类。</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 在子类中，新建的重名的函数属性，在编辑函数内功能的时候，有可能需要重用父类中重名的那个函数功能，应该是用调用普通函数的方式，</span></span><br><span class="line"><span class="comment"># 即：类名.func()，此时就与调用普通函数无异了，因此即便是self参数也要为其传值.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 在python3中，子类执行父类的方法也可以直接用super方法.</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hahaha</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'A'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span><span class="params">(A)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hahaha</span><span class="params">(self)</span>:</span></span><br><span class="line">        super().hahaha()</span><br><span class="line">        <span class="comment">#super(B,self).hahaha()</span></span><br><span class="line">        <span class="comment">#A.hahaha(self)</span></span><br><span class="line">        print(<span class="string">'B'</span>)</span><br><span class="line"></span><br><span class="line">a = A()</span><br><span class="line">b = B()</span><br><span class="line">b.hahaha()</span><br><span class="line">super(B,b).hahaha()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># class Animal:</span></span><br><span class="line"><span class="comment">#     '''</span></span><br><span class="line"><span class="comment">#     人和狗都是动物，所以创造一个Animal基类</span></span><br><span class="line"><span class="comment">#     '''</span></span><br><span class="line"><span class="comment">#     def __init__(self, name, aggressivity, life_value):</span></span><br><span class="line"><span class="comment">#         self.name = name  # 人和狗都有自己的昵称;</span></span><br><span class="line"><span class="comment">#         self.aggressivity = aggressivity  # 人和狗都有自己的攻击力;</span></span><br><span class="line"><span class="comment">#         self.life_value = life_value  # 人和狗都有自己的生命值;</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     def eat(self):</span></span><br><span class="line"><span class="comment">#         print('%s is eating'%self.name)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># class Dog(Animal):</span></span><br><span class="line"><span class="comment">#     '''</span></span><br><span class="line"><span class="comment">#     狗类，继承Animal类</span></span><br><span class="line"><span class="comment">#     '''</span></span><br><span class="line"><span class="comment">#     def __init__(self,name,breed,aggressivity,life_value):</span></span><br><span class="line"><span class="comment">#         super().__init__(name, aggressivity, life_value) #执行父类Animal的init方法</span></span><br><span class="line"><span class="comment">#         self.breed = breed  #派生出了新的属性</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     def bite(self, people):</span></span><br><span class="line"><span class="comment">#         '''</span></span><br><span class="line"><span class="comment">#         派生出了新的技能：狗有咬人的技能</span></span><br><span class="line"><span class="comment">#         :param people:</span></span><br><span class="line"><span class="comment">#         '''</span></span><br><span class="line"><span class="comment">#         people.life_value -= self.aggressivity</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     def eat(self):</span></span><br><span class="line"><span class="comment">#         # Animal.eat(self)</span></span><br><span class="line"><span class="comment">#         #super().eat()</span></span><br><span class="line"><span class="comment">#         print('from Dog')</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># class Person(Animal):</span></span><br><span class="line"><span class="comment">#     '''</span></span><br><span class="line"><span class="comment">#     人类，继承Animal</span></span><br><span class="line"><span class="comment">#     '''</span></span><br><span class="line"><span class="comment">#     def __init__(self,name,aggressivity, life_value,money):</span></span><br><span class="line"><span class="comment">#         #Animal.__init__(self, name, aggressivity, life_value)</span></span><br><span class="line"><span class="comment">#         #super(Person, self).__init__(name, aggressivity, life_value)</span></span><br><span class="line"><span class="comment">#         super().__init__(name,aggressivity, life_value)  #执行父类的init方法</span></span><br><span class="line"><span class="comment">#         self.money = money   #派生出了新的属性</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     def attack(self, dog):</span></span><br><span class="line"><span class="comment">#         '''</span></span><br><span class="line"><span class="comment">#         派生出了新的技能：人有攻击的技能</span></span><br><span class="line"><span class="comment">#         :param dog:</span></span><br><span class="line"><span class="comment">#         '''</span></span><br><span class="line"><span class="comment">#         dog.life_value -= self.aggressivity</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     def eat(self):</span></span><br><span class="line"><span class="comment">#         #super().eat()</span></span><br><span class="line"><span class="comment">#         Animal.eat(self)</span></span><br><span class="line"><span class="comment">#         print('from Person')</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># egg = Person('egon',10,1000,600)</span></span><br><span class="line"><span class="comment"># ha2 = Dog('二愣子','哈士奇',10,1000)</span></span><br><span class="line"><span class="comment"># print(egg.name)</span></span><br><span class="line"><span class="comment"># print(ha2.name)</span></span><br><span class="line"><span class="comment"># egg.eat()</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过继承建立了派生类与基类之间的关系，它是一种'是'的关系，比如白马是马，人是动物。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 当类之间有很多相同的功能，提取这些共同的功能做成基类，用继承比较好，比如教授是老师</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">Teacher</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,name,gender)</span>:</span></span><br><span class="line"><span class="meta">... </span>        self.name=name</span><br><span class="line"><span class="meta">... </span>        self.gender=gender</span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">teach</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="meta">... </span>        print(<span class="string">'teaching'</span>)</span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">Professor</span><span class="params">(Teacher)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">pass</span></span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>p1=Professor(<span class="string">'egon'</span>,<span class="string">'male'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>p1.teach()</span><br><span class="line"></span><br><span class="line">打印结果：</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>teaching</span><br></pre></td></tr></table></figure>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2018/04/11/python函数之匿名函数/" title= python函数之匿名函数 >
+                    <div class="prevTitle">python函数之匿名函数</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!--PC版-->
+
+    <!--PC版-->
+
+
+    
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:747256153@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/newderezzed" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/wechat.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+        <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#继承"><span class="toc-number">1.</span> <span class="toc-text">继承</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#python中类的继承分为：单继承和多继承"><span class="toc-number">1.1.</span> <span class="toc-text">python中类的继承分为：单继承和多继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看继承"><span class="toc-number">1.2.</span> <span class="toc-text">查看继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#继承与抽象（先抽象再继承）"><span class="toc-number">1.3.</span> <span class="toc-text">继承与抽象（先抽象再继承）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#继承与重用性"><span class="toc-number">1.4.</span> <span class="toc-text">继承与重用性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#first-part"><span class="toc-number">1.4.1.</span> <span class="toc-text">first part</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#second-part"><span class="toc-number">1.4.2.</span> <span class="toc-text">second part</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#third-part"><span class="toc-number">1.4.3.</span> <span class="toc-text">third part</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#派生"><span class="toc-number">2.</span> <span class="toc-text">派生</span></a></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 13 </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python面向对象三大特性之继承/" >python面向对象三大特性之继承</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之匿名函数/" >python函数之匿名函数</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python之def函数进阶之迭代器-ITERATOR-和生成器-GENERATOR/" >python之def函数进阶之迭代器(ITERATOR)和生成器(GENERATOR)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/10</span><a class="archive-post-title" href= "/2018/04/10/python小数据池及Bytes类型相关/" >python小数据池及Bytes类型相关</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/10</span><a class="archive-post-title" href= "/2018/04/10/django-form表单/" >django form表单</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/09</span><a class="archive-post-title" href= "/2018/04/09/第一章-数据结构绪论/" >第一章 数据结构绪论</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/09</span><a class="archive-post-title" href= "/2018/04/09/Django中ORM介绍和字段及字段参数/" >Django中ORM介绍和字段及字段参数</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/06</span><a class="archive-post-title" href= "/2018/04/06/django中的session/" >django中的session</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/06</span><a class="archive-post-title" href= "/2018/04/06/django中的cookie/" >django中的cookie</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/05</span><a class="archive-post-title" href= "/2018/04/05/django框架介绍/" >django框架介绍</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/03</span><a class="archive-post-title" href= "/2018/04/03/hello-world/" >Hello World</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="django"><span class="iconfont-archer">&#xe606;</span>django</span>
+    
+        <span class="sidebar-tag-name" data-tags="框架"><span class="iconfont-archer">&#xe606;</span>框架</span>
+    
+        <span class="sidebar-tag-name" data-tags="ORM"><span class="iconfont-archer">&#xe606;</span>ORM</span>
+    
+        <span class="sidebar-tag-name" data-tags="cookie"><span class="iconfont-archer">&#xe606;</span>cookie</span>
+    
+        <span class="sidebar-tag-name" data-tags="session"><span class="iconfont-archer">&#xe606;</span>session</span>
+    
+        <span class="sidebar-tag-name" data-tags="python"><span class="iconfont-archer">&#xe606;</span>python</span>
+    
+        <span class="sidebar-tag-name" data-tags="迭代器"><span class="iconfont-archer">&#xe606;</span>迭代器</span>
+    
+        <span class="sidebar-tag-name" data-tags="生成器"><span class="iconfont-archer">&#xe606;</span>生成器</span>
+    
+        <span class="sidebar-tag-name" data-tags="匿名函数"><span class="iconfont-archer">&#xe606;</span>匿名函数</span>
+    
+        <span class="sidebar-tag-name" data-tags="闭包"><span class="iconfont-archer">&#xe606;</span>闭包</span>
+    
+        <span class="sidebar-tag-name" data-tags="命名空间"><span class="iconfont-archer">&#xe606;</span>命名空间</span>
+    
+        <span class="sidebar-tag-name" data-tags="小数据池"><span class="iconfont-archer">&#xe606;</span>小数据池</span>
+    
+        <span class="sidebar-tag-name" data-tags="数据结构"><span class="iconfont-archer">&#xe606;</span>数据结构</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="Django"><span class="iconfont-archer">&#xe60a;</span>Django</span>
+    
+        <span class="sidebar-category-name" data-categories="python"><span class="iconfont-archer">&#xe60a;</span>python</span>
+    
+        <span class="sidebar-category-name" data-categories="数据结构"><span class="iconfont-archer">&#xe60a;</span>数据结构</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: '/',
+        author: '陈乾煜'
+    }
+</script>
+    <!-- busuanzi  -->
+    
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+    
+    </body>
+</html>
+
+

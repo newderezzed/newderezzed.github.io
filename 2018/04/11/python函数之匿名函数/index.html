@@ -9,7 +9,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
-    <title>Hello World · Derezzed&#39;s Studio</title>
+    <title>python函数之匿名函数 · Derezzed&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -191,7 +191,7 @@
                 <a href="/" >Derezzed&#39;s Studio.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">Hello World</a>
+                <a href="#" class="post-name">python函数之匿名函数</a>
             </div>
     </div>
     
@@ -223,7 +223,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            Hello World
+            python函数之匿名函数
             <!-- 404 -->
             
         </h1>
@@ -239,9 +239,17 @@ height:50vh;
         
             <!-- 文章页标签  -->
             
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "匿名函数">匿名函数</a>
+    
+</div>
+            
             <div class="post-intro-meta">
                 <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                <span class="post-intro-time">2018/04/03</span>
+                <span class="post-intro-time">2018/04/11</span>
                 
                 <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                     <span class="iconfont-archer">&#xe602;</span>
@@ -347,15 +355,32 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+        <blockquote>
+<p>匿名函数：为了解决那些功能很简单的需求而设计的一句话函数</p>
+</blockquote>
+<p>比如这段代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> n**n</span><br><span class="line">print(calc(<span class="number">10</span>))</span><br></pre></td></tr></table></figure>
+<p>换成匿名函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">calc = <span class="keyword">lambda</span> n:n**n</span><br><span class="line">print(calc(<span class="number">10</span>))</span><br></pre></td></tr></table></figure>
+<p>上面是我们对calc这个匿名函数的分析，下面给出了一个关于匿名函数格式的说明</p>
+<p><code>函数名 = lambda 参数 ：返回值</code></p>
+<ul>
+<li>参数可以有多个，用逗号隔开</li>
+<li>匿名函数不管逻辑多复杂，只能写一行，且逻辑执行结束后的内容就是返回值</li>
+<li>返回值和正常的函数一样可以是任意数据类型</li>
+</ul>
+<p>我们可以看出，匿名函数并不是真的不能有名字。</p>
+<p>匿名函数的调用和正常的调用也没有什么分别。 就是 函数名(参数) 就可以了</p>
+<p>上面是匿名函数的函数用法。除此之外，匿名函数也不是浪得虚名，<br>它真的可以匿名。在和其他功能函数合作的时候</p>
+<p><strong>max</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dic=&#123;<span class="string">'k1'</span>:<span class="number">10</span>,<span class="string">'k2'</span>:<span class="number">100</span>,<span class="string">'k3'</span>:<span class="number">30</span>&#125;</span><br><span class="line"></span><br><span class="line">print(max(dic))</span><br><span class="line">print(dic[max(dic,key=<span class="keyword">lambda</span> k:dic[k])])</span><br></pre></td></tr></table></figure>
+<p><strong>map</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">res = map(<span class="keyword">lambda</span> x:x**<span class="number">2</span>,[<span class="number">1</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">4</span>,<span class="number">8</span>])</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> res:</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
+<p><strong>filter</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">res = filter(<span class="keyword">lambda</span> x:x&gt;<span class="number">10</span>,[<span class="number">5</span>,<span class="number">8</span>,<span class="number">11</span>,<span class="number">9</span>,<span class="number">15</span>])</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> res:</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
+<p><strong>面试题小练习</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 现有两个元组(('a'),('b')),(('c'),('d'))，请使用python中匿名函数生成列表[&#123;'a':'c'&#125;,&#123;'b':'d'&#125;]</span></span><br><span class="line">t1 = ((<span class="string">'a'</span>),(<span class="string">'b'</span>))</span><br><span class="line">t2 = ((<span class="string">'c'</span>),(<span class="string">'d'</span>))</span><br><span class="line"><span class="comment">#答案一</span></span><br><span class="line">test = <span class="keyword">lambda</span> t1,t2 :[&#123;i:j&#125; <span class="keyword">for</span> i,j <span class="keyword">in</span> zip(t1,t2)]</span><br><span class="line">print(test(t1,t2))</span><br><span class="line"><span class="comment">#答案二</span></span><br><span class="line">print(list(map(<span class="keyword">lambda</span> t:&#123;t[<span class="number">0</span>]:t[<span class="number">1</span>]&#125;,zip(t1,t2))))</span><br><span class="line"><span class="comment">#还可以这样写</span></span><br><span class="line">print([&#123;i:j&#125; <span class="keyword">for</span> i,j <span class="keyword">in</span> zip(t1,t2)])</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/04/11/python函数之匿名函数/001.png" alt=""></p>
 
     </article>
     <!-- 前后页  -->
@@ -363,12 +388,17 @@ height:50vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/2018/04/05/django框架介绍/" title= django框架介绍 >
-                    <div class="nextTitle">django框架介绍</div>
+                <a href= "/2018/04/11/python面向对象三大特性之继承/" title= python面向对象三大特性之继承 >
+                    <div class="nextTitle">python面向对象三大特性之继承</div>
                 </a>
             
         </li>
         <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2018/04/11/python命名空间/" title= python命名空间 >
+                    <div class="prevTitle">python命名空间</div>
+                </a>
             
         </li>
     </ul>
@@ -473,7 +503,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+        
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
