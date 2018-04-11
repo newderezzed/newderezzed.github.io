@@ -371,14 +371,14 @@ height:50vh;
 </ul>
 <h3 id="查看cookie"><a href="#查看cookie" class="headerlink" title="查看cookie"></a>查看cookie</h3><p>我们使用Chrome浏览器，打开开发者工具。</p>
 <p><img src="/2018/04/06/django中的cookie/cookie1.png" alt=""></p>
-<h2 id="Django中操作Cookie"><a href="#Django中操作Cookie" class="headerlink" title="Django中操作Cookie"></a>Django中操作Cookie</h2><h3 id="获取cookie"><a href="#获取cookie" class="headerlink" title="获取cookie"></a>获取cookie</h3><figure class="highlight django"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml">request.COOKIES['key']</span></span><br><span class="line"><span class="xml">request.get_signed_cookie(key, default=RAISE_ERROR, salt='', max_age=None)</span></span><br></pre></td></tr></table></figure>
+<h2 id="Django中操作Cookie"><a href="#Django中操作Cookie" class="headerlink" title="Django中操作Cookie"></a>Django中操作Cookie</h2><h3 id="获取cookie"><a href="#获取cookie" class="headerlink" title="获取cookie"></a>获取cookie</h3><figure class="highlight django"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">request.COOKIES['key']</span><br><span class="line">request.get_signed_cookie(key, default=RAISE_ERROR, salt='', max_age=None)</span><br></pre></td></tr></table></figure>
 <p>参数</p>
 <ul>
 <li>default：默认值</li>
 <li>salt：加密盐</li>
 <li>max_age：后台控制过期时间</li>
 </ul>
-<h3 id="设置cookie"><a href="#设置cookie" class="headerlink" title="设置cookie"></a>设置cookie</h3><figure class="highlight django"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml">rep = HttpResponse(...)</span></span><br><span class="line"><span class="xml">rep ＝ render(request, ...)</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">#普通设置</span></span><br><span class="line"><span class="xml">rep.set_cookie(key,value,...)</span></span><br><span class="line"><span class="xml">#加盐设置</span></span><br><span class="line"><span class="xml">rep.set_signed_cookie(key,value,salt='加密盐',...)</span></span><br></pre></td></tr></table></figure>
+<h3 id="设置cookie"><a href="#设置cookie" class="headerlink" title="设置cookie"></a>设置cookie</h3><figure class="highlight django"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">rep = HttpResponse(...)</span><br><span class="line">rep ＝ render(request, ...)</span><br><span class="line"></span><br><span class="line">#普通设置</span><br><span class="line">rep.set_cookie(key,value,...)</span><br><span class="line">#加盐设置</span><br><span class="line">rep.set_signed_cookie(key,value,salt='加密盐',...)</span><br></pre></td></tr></table></figure>
 <p>参数：</p>
 <ul>
 <li>key, 键</li>
@@ -390,7 +390,7 @@ height:50vh;
 <li>secure=False, https传输</li>
 <li>httponly=False 只能http协议传输，无法被JavaScript获取（不是绝对，底层抓包可以获取到也可以被覆盖）</li>
 </ul>
-<h3 id="删除cookie"><a href="#删除cookie" class="headerlink" title="删除cookie"></a>删除cookie</h3><figure class="highlight django"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml">def logout(request):</span></span><br><span class="line"><span class="xml">    rep = redirect("/login/")</span></span><br><span class="line"><span class="xml">    rep.delete_cookie("user")  # 删除用户浏览器上之前设置的usercookie值</span></span><br><span class="line"><span class="xml">    return rep</span></span><br></pre></td></tr></table></figure>
+<h3 id="删除cookie"><a href="#删除cookie" class="headerlink" title="删除cookie"></a>删除cookie</h3><figure class="highlight django"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def logout(request):</span><br><span class="line">    rep = redirect("/login/")</span><br><span class="line">    rep.delete_cookie("user")  # 删除用户浏览器上之前设置的usercookie值</span><br><span class="line">    return rep</span><br></pre></td></tr></table></figure>
 <h3 id="cookie班登陆校验"><a href="#cookie班登陆校验" class="headerlink" title="cookie班登陆校验"></a>cookie班登陆校验</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_login</span><span class="params">(func)</span>:</span></span><br><span class="line"><span class="meta">    @wraps(func)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(request, *args, **kwargs)</span>:</span></span><br><span class="line">        next_url = request.get_full_path()</span><br><span class="line">        <span class="keyword">if</span> request.get_signed_cookie(<span class="string">"login"</span>, salt=<span class="string">"SSS"</span>, default=<span class="keyword">None</span>) == <span class="string">"yes"</span>:</span><br><span class="line">            <span class="comment"># 已经登录的用户...</span></span><br><span class="line">            <span class="keyword">return</span> func(request, *args, **kwargs)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 没有登录的用户，跳转刚到登录页面</span></span><br><span class="line">            <span class="keyword">return</span> redirect(<span class="string">"/login/?next=&#123;&#125;"</span>.format(next_url))</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">login</span><span class="params">(request)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">"POST"</span>:</span><br><span class="line">        username = request.POST.get(<span class="string">"username"</span>)</span><br><span class="line">        passwd = request.POST.get(<span class="string">"password"</span>)</span><br><span class="line">        <span class="keyword">if</span> username == <span class="string">"xxx"</span> <span class="keyword">and</span> passwd == <span class="string">"dashabi"</span>:</span><br><span class="line">            next_url = request.GET.get(<span class="string">"next"</span>)</span><br><span class="line">            <span class="keyword">if</span> next_url <span class="keyword">and</span> next_url != <span class="string">"/logout/"</span>:</span><br><span class="line">                response = redirect(next_url)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                response = redirect(<span class="string">"/class_list/"</span>)</span><br><span class="line">            response.set_signed_cookie(<span class="string">"login"</span>, <span class="string">"yes"</span>, salt=<span class="string">"SSS"</span>)</span><br><span class="line">            <span class="keyword">return</span> response</span><br><span class="line">    <span class="keyword">return</span> render(request, <span class="string">"login.html"</span>)</span><br></pre></td></tr></table></figure>
 
     </article>
@@ -674,6 +674,16 @@ top:50vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-archive"> Total : 13 </div>
     
     <div class="post-archive">
@@ -691,17 +701,17 @@ top:50vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之匿名函数/" >python函数之匿名函数</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
         </li>
     
     
@@ -770,11 +780,11 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="生成器"><span class="iconfont-archer">&#xe606;</span>生成器</span>
     
+        <span class="sidebar-tag-name" data-tags="命名空间"><span class="iconfont-archer">&#xe606;</span>命名空间</span>
+    
         <span class="sidebar-tag-name" data-tags="匿名函数"><span class="iconfont-archer">&#xe606;</span>匿名函数</span>
     
         <span class="sidebar-tag-name" data-tags="闭包"><span class="iconfont-archer">&#xe606;</span>闭包</span>
-    
-        <span class="sidebar-tag-name" data-tags="命名空间"><span class="iconfont-archer">&#xe606;</span>命名空间</span>
     
         <span class="sidebar-tag-name" data-tags="小数据池"><span class="iconfont-archer">&#xe606;</span>小数据池</span>
     
