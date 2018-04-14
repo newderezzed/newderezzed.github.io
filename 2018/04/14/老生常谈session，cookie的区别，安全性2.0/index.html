@@ -9,7 +9,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
-    <title>Derezzed&#39;s Studio</title>
+    <title>老生常谈session，cookie的区别，安全性2.0 · Derezzed&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -65,6 +65,8 @@
 
     <link rel="preload" href= /css/style.css?v=20180317 as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="stylesheet" type="text/css" href= /css/mobile.css?v=20180317 media="(max-width: 980px)"/>
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         
     <link rel="icon" href= /assets/emoji.png>
     <script>
@@ -175,12 +177,23 @@
 </head>
 
     
+        <body class="post-body">
+    
     
 <header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Derezzed&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">老生常谈session，cookie的区别，安全性2.0</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>Derezzed's Studio.</a>
 </header>
@@ -194,24 +207,69 @@
 
 
 
+height:50vh;
+
 >
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
     <div class="site-intro-placeholder"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
+            老生常谈session，cookie的区别，安全性2.0
+            <!-- 404 -->
+            
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "cookie">cookie</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "session">session</a>
+    
+</div>
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2018/04/14</span>
+                
+                <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                    <span class="iconfont-archer">&#xe602;</span>
+                    <span id="busuanzi_value_page_pv"></span>
+                </span>
+                
+                <span class="shareWrapper">
+                    <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                    <span class="shareText">Share</span>
+                    <ul class="shareList">
+                        <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                            <div class="share-qrcode"></div>
+                        </li>
+                        <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                        <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                        <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                        <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                    </ul>
+                </span>
+            </div>
         
     </div>
 </div>
@@ -295,45 +353,110 @@
 </script>        
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
-            <main class="main index-page">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p><strong><em>Cookie和Session是为了在无状态的HTTP协议之上维护会话状态，使得服务器可以知道当前是和哪个客户在打交道。本文来详细讨论Cookie和Session的实现机制，以及其中涉及的安全问题。</em></strong></p>
+<p><strong><em>因为HTTP协议是无状态的，即每次用户请求到达服务器时，HTTP服务器并不知道这个用户是谁、是否登录过等。现在的服务器之所以知道我们是否已经登录，是因为服务器在登录时设置了浏览器的Cookie！Session则是借由Cookie而实现的更高层的服务器与浏览器之间的会话。</em></strong></p>
+<blockquote>
+<p>Cookie是由网景公司的前雇员Lou Montulli在1993年发明的，现今Cookie已经广泛使用了。</p>
+</blockquote>
+<p><img src="/2018/04/14/老生常谈session，cookie的区别，安全性2.0/001.png" alt=""></p>
+<h2 id="cookie的实现机制"><a href="#cookie的实现机制" class="headerlink" title="cookie的实现机制"></a>cookie的实现机制</h2><p><a href="http://harttle.land/assets/img/blog/cookie.png" target="_blank" rel="noopener">Cookie</a>是由客户端保存的小型文本文件，其内容为一系列的键值对。 <strong>Cookie是由HTTP服务器设置的，保存在浏览器中</strong>， 在用户访问其他页面时，会在HTTP请求中附上该服务器之前设置的Cookie。 Cookie的实现标准定义在<a href="https://www.ietf.org/rfc/rfc2109.txt" target="_blank" rel="noopener">RFC2109: HTTP State Management Mechanism</a>中。 那么Cookie是怎样工作的呢？下面给出整个Cookie的传递流程：</p>
+<ol>
+<li><p>浏览器向某个URL发起HTTP请求（可以是任何请求，比如GET一个页面、POST一个登录表单等）</p>
+</li>
+<li><p>对应的服务器收到该HTTP请求，并计算应当返回给浏览器的HTTP响应。 </p>
+<blockquote>
+<p>HTTP响应包括请求头和请求体两部分，可以参见：<a href="http://harttle.land/2014/10/01/http.html" target="_blank" rel="noopener">读 HTTP 协议</a>。</p>
+</blockquote>
+</li>
+<li><p>在响应头加入<code>Set-Cookie</code>字段，它的值是要设置的Cookie。</p>
+<blockquote>
+<p>在<a href="https://www.ietf.org/rfc/rfc2109.txt" target="_blank" rel="noopener">RFC2109 6.3 Implementation Limits</a>中提到： UserAgent（浏览器就是一种用户代理）至少应支持300项Cookie， 每项至少应支持到4096字节，每个域名至少支持20项Cookie</p>
+</blockquote>
+</li>
+<li><p>浏览器收到来自服务器的HTTP响应。</p>
+</li>
+<li><p>浏览器在响应头中发现<code>Set-Cookie</code>字段，就会将该字段的值保存在内存或者硬盘中。<br><code>Set-Cookie</code>字段的值可以是很多项Cookie，每一项都可以指定过期时间<code>Expires</code>。 默认的过期时间是用户关闭浏览器时。</p>
+</li>
+<li><p>浏览器下次给该服务器发送HTTP请求时， 会将服务器设置的Cookie附加在HTTP请求的头字段<code>Cookie</code>中。</p>
+<p>浏览器可以存储多个域名下的Cookie，但只发送当前请求的域名曾经指定的Cookie， 这个域名也可以在<code>Set-Cookie</code>字段中指定）。</p>
+</li>
+<li><p>服务器收到这个HTTP请求，发现请求头中有<code>Cookie</code>字段， 便知道之前就和这个用户打过交道了。</p>
+</li>
+<li><p>过期的Cookie会被浏览器删除。<br><strong>总之，服务器通过<code>Set-Cookie</code>响应头字段来指示浏览器保存Cookie， 浏览器通过<code>Cookie</code>请求头字段来告诉服务器之前的状态。 Cookie中包含若干个键值对，每个键值对可以设置过期时间。</strong></p>
+</li>
+</ol>
+<h2 id="cookie的安全隐患"><a href="#cookie的安全隐患" class="headerlink" title="cookie的安全隐患"></a>cookie的安全隐患</h2><p>Cookie提供了一种手段使得HTTP请求可以附加当前状态， 现今的网站也是靠Cookie来标识用户的登录状态的：</p>
+<ol>
+<li>用户提交用户名和密码的表单，这通常是一个POST HTTP请求。</li>
+<li>服务器验证用户名与密码，如果合法则返回200（OK）并设置<code>Set-Cookie</code>为<code>authed=true</code>。</li>
+<li>浏览器存储该Cookie。</li>
+<li>浏览器发送请求时，设置<code>Cookie</code>字段为<code>authed=true</code>。</li>
+<li>服务器收到第二次请求，从<code>Cookie</code>字段得知该用户已经登录。 按照已登录用户的权限来处理此次请求。</li>
+</ol>
+<p>这里面的问题在哪里？</p>
+<p>我们知道可以发送HTTP请求的不只是浏览器，很多HTTP客户端软件（包括curl、Node.js）都可以发送任意的HTTP请求，可以设置任何头字段。 假如我们直接设置<code>Cookie</code>字段为<code>authed=true</code>并发送该HTTP请求， 服务器岂不是被欺骗了？<strong>这种攻击非常容易，Cookie是可以被篡改的！</strong></p>
+<h2 id="cookie放篡改机制"><a href="#cookie放篡改机制" class="headerlink" title="cookie放篡改机制"></a>cookie放篡改机制</h2><p>服务器可以为每个Cookie项生成签名，由于用户篡改Cookie后无法生成对应的签名， 服务器便可以得知用户对Cookie进行了篡改。一个简单的校验过程可能是这样的：</p>
+<ol>
+<li>在服务器中配置一个不为人知的字符串（我们叫它Secret），比如：<code>x$sfz32</code>。</li>
+<li>当服务器需要设置Cookie时（比如<code>authed=false</code>），不仅设置<code>authed</code>的值为<code>false</code>， 在值的后面进一步设置一个签名，最终设置的Cookie是<code>authed=false|6hTiBl7lVpd1P</code>。</li>
+<li>签名<code>6hTiBl7lVpd1P</code>是这样生成的：<code>Hash(&#39;x$sfz32&#39;+&#39;false&#39;)</code>。 要设置的值与Secret相加再取哈希。</li>
+<li>用户收到HTTP响应并发现头字段<code>Set-Cookie: authed=false|6hTiBl7lVpd1P</code>。</li>
+<li>用户在发送HTTP请求时，篡改了<code>authed</code>值，设置头字段<code>Cookie: authed=true|???</code>。 因为用户不知道Secret，无法生成签名，只能随便填一个。</li>
+<li>服务器收到HTTP请求，发现<code>Cookie: authed=true|???</code>。服务器开始进行校验： <code>Hash(&#39;true&#39;+&#39;x$sfz32&#39;)</code>，便会发现用户提供的签名不正确。</li>
+</ol>
+<p>通过给Cookie添加签名，使得服务器得以知道Cookie被篡改。然而故事并未结束。</p>
+<p>因为<strong>Cookie是明文传输的</strong>， 只要服务器设置过一次<code>authed=true|xxxx</code>我不就知道<code>true</code>的签名是<code>xxxx</code>了么， 以后就可以用这个签名来欺骗服务器了。因此Cookie中最好不要放敏感数据。 一般来讲Cookie中只会放一个Session Id，而Session存储在服务器端。</p>
+<h2 id="session的实现机制"><a href="#session的实现机制" class="headerlink" title="session的实现机制"></a>session的实现机制</h2><p>Session 是存储在服务器端的，避免了在客户端Cookie中存储敏感数据。 Session 可以存储在HTTP服务器的内存中，也可以存在内存数据库（如redis）中， 对于重量级的应用甚至可以存储在数据库中。</p>
+<p>我们以存储在redis中的Session为例，还是考察如何验证用户登录状态的问题。</p>
+<ol>
+<li><p>用户提交包含用户名和密码的表单，发送HTTP请求。</p>
+</li>
+<li><p>服务器验证用户发来的用户名密码。</p>
+</li>
+<li><p>如果正确则把当前用户名（通常是用户对象）存储到redis中，并生成它在redis中的ID。</p>
+<p>这个ID称为Session ID，通过Session ID可以从Redis中取出对应的用户对象， 敏感数据（比如<code>authed=true</code>）都存储在这个用户对象中。</p>
+</li>
+<li><p>设置Cookie为<code>sessionId=xxxxxx|checksum</code>并发送HTTP响应， 仍然为每一项Cookie都设置签名。</p>
+</li>
+<li><p>用户收到HTTP响应后，便看不到任何敏感数据了。在此后的请求中发送该Cookie给服务器。</p>
+</li>
+<li><p>服务器收到此后的HTTP请求后，发现Cookie中有SessionID，进行放篡改验证。</p>
+</li>
+<li><p>如果通过了验证，根据该ID从Redis中取出对应的用户对象， 查看该对象的状态并继续执行业务逻辑。</p>
+</li>
+</ol>
+<p>Web应用框架都会实现上述过程，在Web应用中可以直接获得当前用户。 相当于<strong>在HTTP协议之上，通过Cookie实现了持久的会话。这个会话便称为Session。</strong></p>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2018/04/14/老生常谈session，cookie的区别，安全性1.0/" title= 老生常谈session，cookie的区别，安全性1.0 >
+                    <div class="prevTitle">老生常谈session，cookie的区别，安全性1.0</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
     
     
+    <!--PC版-->
+
+    <!--PC版-->
+
+
     
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/11/python函数之闭包/" >
-                
-                    <span>python函数之闭包</span>
-            </a>
-            <div class="abstract-content">
-                python函数之闭包1234def function():    name = 'eva'    def inner():        print(name)
-闭包函数：
-内部函数包含对外部作用域而非全局作用域名字的引用，该内部函数称为闭包函数函数内部定义的函数称为内部函数
-由于有了作用域的关系，我们就不能拿到函数内部的变量和函数了。如果我们就是想拿怎么办呢？返回呀！
-我们都知道函数内的变量我们要想在函数外部用，可以直接返回这个变量，那么如果我们想在函数外部调用函数内部的函数呢？
-是不是直接就把这个函数的名字返回就好了？
-这才是闭包函数最常用的用法
-1234567def func()...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/11</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "闭包">闭包</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
-    <!-- paginator  -->
-    
+    <!-- 评论 -->
 </main>
             <!-- profile -->
             
@@ -406,6 +529,24 @@
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#cookie的实现机制"><span class="toc-number">1.</span> <span class="toc-text">cookie的实现机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cookie的安全隐患"><span class="toc-number">2.</span> <span class="toc-text">cookie的安全隐患</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cookie放篡改机制"><span class="toc-number">3.</span> <span class="toc-text">cookie放篡改机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#session的实现机制"><span class="toc-number">4.</span> <span class="toc-text">session的实现机制</span></a></li></ol>
+    </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
     <div class="sidebar sidebar-hide">
@@ -799,6 +940,8 @@ jsonContent:
     
     </div>
     <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
     
     </body>
 </html>

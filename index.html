@@ -315,6 +315,74 @@ height:50vh;
     
     
         <article class="index-post">
+            <a class="abstract-title" href = "/2018/04/14/老生常谈session，cookie的区别，安全性2.0/" >
+                
+                    <span>老生常谈session，cookie的区别，安全性2.0</span>
+            </a>
+            <div class="abstract-content">
+                Cookie和Session是为了在无状态的HTTP协议之上维护会话状态，使得服务器可以知道当前是和哪个客户在打交道。本文来详细讨论Cookie和Session的实现机制，以及其中涉及的安全问题。
+因为HTTP协议是无状态的，即每次用户请求到达服务器时，HTTP服务器并不知道这个用户是谁、是否登录过等。现在的服务器之所以知道我们是否已经登录，是因为服务器在登录时设置了浏览器的Cookie！Session则是借由Cookie而实现的更高层的服务器与浏览器之间的会话。
+
+Cookie是由网景公司的前雇员Lou Montulli在1993年发明的，现今Cookie已经广泛使用了。
+
+
+cook...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/14</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "cookie">cookie</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "session">session</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2018/04/14/老生常谈session，cookie的区别，安全性1.0/" >
+                
+                    <span>老生常谈session，cookie的区别，安全性1.0</span>
+            </a>
+            <div class="abstract-content">
+                为什么session，cookie经常会有人提到做web开发的人基本上都会用session和cookie，但是仅仅只是会用，并不知道session和cookie的真正的工作原理，都只是凭着感觉来猜测。web开发者只要利用它们来完成工作就行了，所以每个人的理解基本都会有大同小异，我想这就是session，cookie经常会被讨论的原因。本文也是根据个人经验，以及个人所学，对session,cookie的一些看法，纯属个人见解，希望得到大家的更正和建议。
+什么时cookiecookie分为二种
+
+以文件方式存在硬盘空间上的长期性的cookie
+停留在浏览器所占内存中的临时性的cookie
+
+...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/14</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "cookie">cookie</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "session">session</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
             <a class="abstract-title" href = "/2018/04/13/Cookie与Session-v2-0/" >
                 
                     <span>Cookie与Session v2.0</span>
@@ -412,85 +480,10 @@ python中类的继承分为：单继承和多继承1234567891011class ParentClas
             </div>
         </article>
     
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/11/python命名空间/" >
-                
-                    <span>python命名空间</span>
-            </a>
-            <div class="abstract-content">
-                python命名空间一共有三种命名空间从大范围到小范围的顺序：内置命名空间、全局命名空间、局部命名空间
-作用域（包括函数的作用域链）：
-小范围的可以用大范围的但是大范围的不能用小范围的范围从大到小
-
-在小范围内，如果要用一个变量，是当前这个小范围有的，就用自己的如果在小范围内没有，就用上一级的，上一级没有就用上上一级的，以此类推。如果都没有，报错
-函数的嵌套：
-嵌套调用
-嵌套定义：定义在内部的函数无法直接在全局被调用
-函数名的本质：
-就是一个变量，保存了函数所在的内存地址
-闭包：
-内部函数包含对外部作用域而非全剧作用域名字的引用，该内部函数称为闭包函数
-
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/11</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "命名空间">命名空间</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/11/python函数之闭包/" >
-                
-                    <span>python函数之闭包</span>
-            </a>
-            <div class="abstract-content">
-                python函数之闭包1234def function():    name = 'eva'    def inner():        print(name)
-闭包函数：
-内部函数包含对外部作用域而非全局作用域名字的引用，该内部函数称为闭包函数函数内部定义的函数称为内部函数
-由于有了作用域的关系，我们就不能拿到函数内部的变量和函数了。如果我们就是想拿怎么办呢？返回呀！
-我们都知道函数内的变量我们要想在函数外部用，可以直接返回这个变量，那么如果我们想在函数外部调用函数内部的函数呢？
-是不是直接就把这个函数的名字返回就好了？
-这才是闭包函数最常用的用法
-1234567def func()...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/11</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "闭包">闭包</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">NEXT &#62;</a>
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">NEXT &#62;</a>
     </nav>
     
 </main>
@@ -831,7 +824,41 @@ python中类的继承分为：单继承和多继承1234567891011class ParentClas
     
     
     
-    <div class="total-archive"> Total : 14 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 16 </div>
     
     <div class="post-archive">
     
@@ -840,6 +867,16 @@ python中类的继承分为：单继承和多继承1234567891011class ParentClas
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/老生常谈session，cookie的区别，安全性1.0/" >老生常谈session，cookie的区别，安全性1.0</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/老生常谈session，cookie的区别，安全性2.0/" >老生常谈session，cookie的区别，安全性2.0</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -853,12 +890,12 @@ python中类的继承分为：单继承和多继承1234567891011class ParentClas
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之匿名函数/" >python函数之匿名函数</a>
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之匿名函数/" >python函数之匿名函数</a>
         </li>
     
     
