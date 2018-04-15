@@ -300,6 +300,116 @@
     
     
         <article class="index-post">
+            <a class="abstract-title" href = "/2018/04/10/django-form表单/" >
+                
+                    <span>django form表单</span>
+            </a>
+            <div class="abstract-content">
+                Form介绍我们之前在HTML页面中利用form表单向后端提交数据时，都会写一些获取用户输入的标签并且用form标签把它们包起来。
+与此同时我们在好多场景下都需要对用户的输入做校验，比如校验用户是否输入，输入的长度和格式等正不正确。如果用户输入的内容有错误就需要在页面上相应的位置显示显示对应的错误信息.。
+Django form组件就实现了上面所述的功能。
+总结一下，其实form组件的主要功能如下:
+
+生成页面可用的HTML标签
+对用户提交的数据进行校验
+保留上次输入内容
+
+普通的登陆views.py
+12345678910def login(request):    error_msg...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/10</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "django">django</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2018/04/09/第一章-数据结构绪论/" >
+                
+                    <span>第一章 数据结构绪论</span>
+            </a>
+            <div class="abstract-content">
+                第一章 数据结构绪论
+数据结构：
+是相互之间存在一种或多种对应关系的数据元素的集合
+
+数据结构起源数据结构是一门研究非数值计算的程序设计问题中的操作对象，以及他们之间的关系和操作等相关问题的学科
+人们认为程序设计的实质就是对确定的问题选择一种好的结构加上一种好的算法
+基本概念和术语数据：是描述客观事物的符号，是计算机可以操作的对象，是被计算机识别，并输入给计算机处理的符号集合。数据不仅仅包括整形，实型等数值类型，还包括字符及生于，图像，视频等非数值类型
+数据元素：是组成数据的，有一定意义的基本单位，在计算机中通常作为整体处理，也被称为记录
+比如在人类中，什么是数据元素呢？当然是人了
+数据...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/09</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "数据结构">数据结构</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2018/04/09/Django中ORM介绍和字段及字段参数/" >
+                
+                    <span>Django中ORM介绍和字段及字段参数</span>
+            </a>
+            <div class="abstract-content">
+                Django中ORM介绍和字段及字段参数
+Object Relational Mapping(ORM)
+
+ORM介绍ORM概念对象关系映射（Object Relational Mapping，简称ORM）模式是一种为了解决面向对象与关系数据库存在的互不匹配的现象的技术。
+简单的说，ORM是通过使用描述对象和数据库之间映射的元数据，将程序中的对象自动持久化到关系数据库中。
+ORM在业务逻辑层和数据库层之间充当了桥梁的作用。
+ORM由来让我们从O/R开始。字母O起源于”对象”(Object),而R则来自于”关系”(Relational)。
+几乎所有的软件开发过程中都会涉及到对象和关系数据库。...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/09</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "django">django</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "ORM">ORM</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
             <a class="abstract-title" href = "/2018/04/06/django中的session/" >
                 
                     <span>django中的session</span>
@@ -365,72 +475,10 @@ session的由来cookie虽然在一定程度上解决了“保持状态”的需�
             </div>
         </article>
     
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/05/django框架介绍/" >
-                
-                    <span>django框架介绍</span>
-            </a>
-            <div class="abstract-content">
-                Django框架介绍MVC框架和MTV框架（了解即可）
-MVC，全名是Model View Controller，是软件工程中的一种软件架构模式，把软件系统分为三个基本部分：模型
-(Model)、视图(View)和控制器(Controller)，具有耦合性低、重用性高、生命周期成本低等优点。
-
-
-
-Django框架的设计模式借鉴了MVC框架的思想，也是分成三部分，来降低各个部分之间的耦合性。
-Django框架的不同之处在于它拆分的三部分为：Model（模型）、Template（模板）和View（视图），也就是MTV框架。
-
-Django的MTV模式
-Model(模型)：负责业务对象与数据...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/05</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "django">django</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/03/hello-world/" >
-                
-                    <span>Hello World</span>
-            </a>
-            <div class="abstract-content">
-                Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick StartCreate a new post1$ hexo new "My New Post"
-More info: Writing
-Run server1$ hexo server
-More...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/03</span>
-                </div>
-                <!-- tags  -->
-                
-            </div>
-        </article>
-    
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/archives/2018/04/page/3/">&#60; PREV</a><a class="page-number" href="/archives/2018/04/">1</a><a class="page-number" href="/archives/2018/04/page/2/">2</a><a class="page-number" href="/archives/2018/04/page/3/">3</a><span class="page-number current">4</span>
+        <a class="extend prev" rel="prev" href="/archives/2018/04/page/3/">&#60; PREV</a><a class="page-number" href="/archives/2018/04/">1</a><a class="page-number" href="/archives/2018/04/page/2/">2</a><a class="page-number" href="/archives/2018/04/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/archives/2018/04/page/5/">5</a><a class="extend next" rel="next" href="/archives/2018/04/page/5/">NEXT &#62;</a>
     </nav>
     
 </main>
@@ -757,7 +805,56 @@ More...
     
     
     
-    <div class="total-archive"> Total : 19 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 22 </div>
     
     <div class="post-archive">
     
@@ -766,6 +863,21 @@ More...
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/python中-init-方法和-new-方法的区别/" >python中__init__()方法和__new__()方法的区别</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中的-new-、-init-、-call-三个特殊方法/" >Python中的__new__、__init__、__call__三个特殊方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中-new-方法的使用和实例化/" >Python中__new__()方法的使用和实例化</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -804,17 +916,17 @@ More...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之匿名函数/" >python函数之匿名函数</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之匿名函数/" >python函数之匿名函数</a>
         </li>
     
     
@@ -877,7 +989,19 @@ More...
     
         <span class="sidebar-tag-name" data-tags="ORM"><span class="iconfont-archer">&#xe606;</span>ORM</span>
     
+        <span class="sidebar-tag-name" data-tags="python，面向对象"><span class="iconfont-archer">&#xe606;</span>python，面向对象</span>
+    
+        <span class="sidebar-tag-name" data-tags="__new__"><span class="iconfont-archer">&#xe606;</span>__new__</span>
+    
+        <span class="sidebar-tag-name" data-tags="__init__"><span class="iconfont-archer">&#xe606;</span>__init__</span>
+    
         <span class="sidebar-tag-name" data-tags="python"><span class="iconfont-archer">&#xe606;</span>python</span>
+    
+        <span class="sidebar-tag-name" data-tags="面向对象"><span class="iconfont-archer">&#xe606;</span>面向对象</span>
+    
+        <span class="sidebar-tag-name" data-tags="__init__，__new__"><span class="iconfont-archer">&#xe606;</span>__init__，__new__</span>
+    
+        <span class="sidebar-tag-name" data-tags="__call__"><span class="iconfont-archer">&#xe606;</span>__call__</span>
     
         <span class="sidebar-tag-name" data-tags="迭代器"><span class="iconfont-archer">&#xe606;</span>迭代器</span>
     
@@ -890,8 +1014,6 @@ More...
         <span class="sidebar-tag-name" data-tags="命名空间"><span class="iconfont-archer">&#xe606;</span>命名空间</span>
     
         <span class="sidebar-tag-name" data-tags="小数据池"><span class="iconfont-archer">&#xe606;</span>小数据池</span>
-    
-        <span class="sidebar-tag-name" data-tags="面向对象"><span class="iconfont-archer">&#xe606;</span>面向对象</span>
     
         <span class="sidebar-tag-name" data-tags="接口类"><span class="iconfont-archer">&#xe606;</span>接口类</span>
     

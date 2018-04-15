@@ -300,6 +300,77 @@
     
     
         <article class="index-post">
+            <a class="abstract-title" href = "/2018/04/15/Python中的-new-、-init-、-call-三个特殊方法/" >
+                
+                    <span>Python中的__new__、__init__、__call__三个特殊方法</span>
+            </a>
+            <div class="abstract-content">
+                new： 对象的创建，是一个静态方法，第一个参数是cls。(想想也是，不可能是self，对象还没创建，哪来的self) 
+init ： 对象的初始化， 是一个实例方法，第一个参数是self。 
+call ： 对象可call，注意不是类，是对象。 
+先有创建，才有初始化。即先new，而后init。 
+直接看代码：
+12345678class Bar(object):  passclass Foo(object):  def __new__(cls, *args, **kwargs):    return Bar()print (Foo())
+通俗一点就是，当你实例化一个对象的时候，就会执行...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/15</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "面向对象">面向对象</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "__init__，__new__">__init__，__new__</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "__call__">__call__</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2018/04/15/python中-init-方法和-new-方法的区别/" >
+                
+                    <span>python中__init__()方法和__new__()方法的区别</span>
+            </a>
+            <div class="abstract-content">
+                下面先通过一段代码看看这两个方法的调用顺序：
+1234567891011121314class A(object):    def __init__(self,*args,**kwargs):        print ("init &amp;&amp;&amp;&amp;  %s" % self.__class__)    def __new__(cls,*args,**kwargs):        print ("new &amp;&amp;&amp;&amp;  %s" % cls)        return object.__new__(cls,*args,**kwargs)...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/15</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "__new__">__new__</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "__init__">__init__</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "面向对象">面向对象</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
             <a class="abstract-title" href = "/2018/04/15/python面向对象之-staticmethod-classmethod/" >
                 
                     <span>python面向对象之@staticmethod@classmethod</span>
@@ -389,89 +460,6 @@
         <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "面向对象">面向对象</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/11/python函数之匿名函数/" >
-                
-                    <span>python函数之匿名函数</span>
-            </a>
-            <div class="abstract-content">
-                
-匿名函数：为了解决那些功能很简单的需求而设计的一句话函数
-
-比如这段代码
-123def calc(n):    return n**nprint(calc(10))
-换成匿名函数
-12calc = lambda n:n**nprint(calc(10))
-上面是我们对calc这个匿名函数的分析，下面给出了一个关于匿名函数格式的说明
-函数名 = lambda 参数 ：返回值
-
-参数可以有多个，用逗号隔开
-匿名函数不管逻辑多复杂，只能写一行，且逻辑执行结束后的内容就是返回值
-返回值和正常的函数一样可以是任意数据类型
-
-我们可以看出，匿名函数并不是真的不能有名字。
-匿名函数的调用和正常的调用...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/11</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "匿名函数">匿名函数</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/11/python命名空间/" >
-                
-                    <span>python命名空间</span>
-            </a>
-            <div class="abstract-content">
-                python命名空间一共有三种命名空间从大范围到小范围的顺序：内置命名空间、全局命名空间、局部命名空间
-作用域（包括函数的作用域链）：
-小范围的可以用大范围的但是大范围的不能用小范围的范围从大到小
-
-在小范围内，如果要用一个变量，是当前这个小范围有的，就用自己的如果在小范围内没有，就用上一级的，上一级没有就用上上一级的，以此类推。如果都没有，报错
-函数的嵌套：
-嵌套调用
-嵌套定义：定义在内部的函数无法直接在全局被调用
-函数名的本质：
-就是一个变量，保存了函数所在的内存地址
-闭包：
-内部函数包含对外部作用域而非全剧作用域名字的引用，该内部函数称为闭包函数
-
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/11</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "命名空间">命名空间</a>
     
 </div>
                 
@@ -808,7 +796,56 @@
     
     
     
-    <div class="total-archive"> Total : 19 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 22 </div>
     
     <div class="post-archive">
     
@@ -817,6 +854,21 @@
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/python中-init-方法和-new-方法的区别/" >python中__init__()方法和__new__()方法的区别</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中的-new-、-init-、-call-三个特殊方法/" >Python中的__new__、__init__、__call__三个特殊方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中-new-方法的使用和实例化/" >Python中__new__()方法的使用和实例化</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -855,17 +907,17 @@
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之匿名函数/" >python函数之匿名函数</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之匿名函数/" >python函数之匿名函数</a>
         </li>
     
     
@@ -928,7 +980,19 @@
     
         <span class="sidebar-tag-name" data-tags="ORM"><span class="iconfont-archer">&#xe606;</span>ORM</span>
     
+        <span class="sidebar-tag-name" data-tags="python，面向对象"><span class="iconfont-archer">&#xe606;</span>python，面向对象</span>
+    
+        <span class="sidebar-tag-name" data-tags="__new__"><span class="iconfont-archer">&#xe606;</span>__new__</span>
+    
+        <span class="sidebar-tag-name" data-tags="__init__"><span class="iconfont-archer">&#xe606;</span>__init__</span>
+    
         <span class="sidebar-tag-name" data-tags="python"><span class="iconfont-archer">&#xe606;</span>python</span>
+    
+        <span class="sidebar-tag-name" data-tags="面向对象"><span class="iconfont-archer">&#xe606;</span>面向对象</span>
+    
+        <span class="sidebar-tag-name" data-tags="__init__，__new__"><span class="iconfont-archer">&#xe606;</span>__init__，__new__</span>
+    
+        <span class="sidebar-tag-name" data-tags="__call__"><span class="iconfont-archer">&#xe606;</span>__call__</span>
     
         <span class="sidebar-tag-name" data-tags="迭代器"><span class="iconfont-archer">&#xe606;</span>迭代器</span>
     
@@ -941,8 +1005,6 @@
         <span class="sidebar-tag-name" data-tags="命名空间"><span class="iconfont-archer">&#xe606;</span>命名空间</span>
     
         <span class="sidebar-tag-name" data-tags="小数据池"><span class="iconfont-archer">&#xe606;</span>小数据池</span>
-    
-        <span class="sidebar-tag-name" data-tags="面向对象"><span class="iconfont-archer">&#xe606;</span>面向对象</span>
     
         <span class="sidebar-tag-name" data-tags="接口类"><span class="iconfont-archer">&#xe606;</span>接口类</span>
     
