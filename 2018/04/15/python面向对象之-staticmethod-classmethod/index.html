@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html>
+    <!-- title -->
+
+
+
+
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>python面向对象之@staticmethod@classmethod · Derezzed&#39;s Studio</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+        box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.7);
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s 1;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= /css/style.css?v=20180317 as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" type="text/css" href= /css/mobile.css?v=20180317 media="(max-width: 980px)"/>
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        
+    <link rel="icon" href= /assets/emoji.png>
+    <script>
+        (function (w) {
+            "use strict";
+            // rel=preload support test
+            if (!w.loadCSS) {
+                w.loadCSS = function () { };
+            }
+            // define on the loadCSS obj
+            var rp = loadCSS.relpreload = {};
+            // rel=preload feature support test
+            // runs once and returns a function for compat purposes
+            rp.support = (function () {
+                var ret;
+                try {
+                    ret = w.document.createElement("link").relList.supports("preload");
+                } catch (e) {
+                    ret = false;
+                }
+                return function () {
+                    return ret;
+                };
+            })();
+
+            // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+            // then change that media back to its intended value on load
+            rp.bindMediaToggle = function (link) {
+                // remember existing media attr for ultimate state, or default to 'all'
+                var finalMedia = link.media || "all";
+
+                function enableStylesheet() {
+                    link.media = finalMedia;
+                }
+
+                // bind load handlers to enable media
+                if (link.addEventListener) {
+                    link.addEventListener("load", enableStylesheet);
+                } else if (link.attachEvent) {
+                    link.attachEvent("onload", enableStylesheet);
+                }
+
+                // Set rel and non-applicable media type to start an async request
+                // note: timeout allows this to happen async to let rendering continue in IE
+                setTimeout(function () {
+                    link.rel = "stylesheet";
+                    link.media = "only x";
+                });
+                // also enable media after 3 seconds,
+                // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+                setTimeout(enableStylesheet, 3000);
+            };
+
+            // loop through link elements in DOM
+            rp.poly = function () {
+                // double check this to prevent external calls from running
+                if (rp.support()) {
+                    return;
+                }
+                var links = w.document.getElementsByTagName("link");
+                for (var i = 0; i < links.length; i++) {
+                    var link = links[i];
+                    // qualify links to those with rel=preload and as=style attrs
+                    if (link.rel === "preload" && link.getAttribute("as") === "style" && !link.getAttribute("data-loadcss")) {
+                        // prevent rerunning on link
+                        link.setAttribute("data-loadcss", true);
+                        // bind listeners to toggle media back
+                        rp.bindMediaToggle(link);
+                    }
+                }
+            };
+
+            // if unsupported, run the polyfill
+            if (!rp.support()) {
+                // run once at least
+                rp.poly();
+
+                // rerun poly on an interval until onload
+                var run = w.setInterval(rp.poly, 500);
+                if (w.addEventListener) {
+                    w.addEventListener("load", function () {
+                        rp.poly();
+                        w.clearInterval(run);
+                    });
+                } else if (w.attachEvent) {
+                    w.attachEvent("onload", function () {
+                        rp.poly();
+                        w.clearInterval(run);
+                    });
+                }
+            }
+            // commonjs
+            if (typeof exports !== "undefined") {
+                exports.loadCSS = loadCSS;
+            }
+            else {
+                w.loadCSS = loadCSS;
+            }
+        }(typeof global !== "undefined" ? global : this));
+    </script>
+    <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+    <script src="/scripts/main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Derezzed&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">python面向对象之@staticmethod@classmethod</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>Derezzed's Studio.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style=
+
+
+
+
+
+
+
+
+height:50vh;
+
+>
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            python面向对象之@staticmethod@classmethod
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "面向对象">面向对象</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "classmethod">classmethod</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "staticmethod">staticmethod</a>
+    
+</div>
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2018/04/15</span>
+                
+                <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                    <span class="iconfont-archer">&#xe602;</span>
+                    <span id="busuanzi_value_page_pv"></span>
+                </span>
+                
+                <span class="shareWrapper">
+                    <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                    <span class="shareText">Share</span>
+                    <ul class="shareList">
+                        <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                            <div class="share-qrcode"></div>
+                        </li>
+                        <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                        <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                        <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                        <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                    </ul>
+                </span>
+            </div>
+        
+    </div>
+</div>
+        <script>
+  // load webfont-loader async, and add callback function
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+  
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntroTags = document.getElementsByClassName('post-intro-tags')[0],
+        postIntroMeat = document.getElementsByClassName('post-intro-meta')[0];
+      if (postIntroTags) {
+        postIntroTags.classList.add('post-fade-in');
+      }
+      if (postIntroMeat) {
+        postIntroMeat.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  async("https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", asyncCb)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h2 id="小栗子助理解"><a href="#小栗子助理解" class="headerlink" title="小栗子助理解"></a>小栗子助理解</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Num</span>:</span></span><br><span class="line">    <span class="comment">#普通方法：能用Num调用而不能用实例化对象调用</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">one</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">print</span> (<span class="string">'1'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#实例方法：能用实例化对象调用而不能用Num调用</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">two</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">print</span> (<span class="string">'2'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#静态方法：能用Num和实例化对象调用</span></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">three</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">print</span> (<span class="string">'3'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#类方法：第一个参数cls长什么样不重要，都是指Num类本身，调用时将Num类作为对象隐式地传入方法</span></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">go</span><span class="params">(cls)</span>:</span></span><br><span class="line">        cls.three()</span><br><span class="line"></span><br><span class="line">Num.one()       <span class="comment">#1</span></span><br><span class="line"><span class="comment">#Num.two()     #TypeError: two() missing 1 required positional argument: 'self'</span></span><br><span class="line">Num.three()    <span class="comment">#3</span></span><br><span class="line">Num.go()         <span class="comment">#3</span></span><br><span class="line"></span><br><span class="line">i=Num()</span><br><span class="line"><span class="comment">#i.one()           #TypeError: one() takes 0 positional arguments but 1 was given</span></span><br><span class="line">i.two()             <span class="comment">#2</span></span><br><span class="line">i.three()          <span class="comment">#3</span></span><br><span class="line">i.go()              <span class="comment">#3</span></span><br></pre></td></tr></table></figure>
+<h2 id="classmethod"><a href="#classmethod" class="headerlink" title="@classmethod"></a>@classmethod</h2><h3 id="classmethod的使用场合"><a href="#classmethod的使用场合" class="headerlink" title="@classmethod的使用场合"></a>@classmethod的使用场合</h3><blockquote>
+<p>官方的说法：<br>classmethod是用来指定一个类的方法为类方法，没有此参数指定的类的方法为实例方法，使用方法如下:</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># class C:</span></span><br><span class="line"><span class="comment">#     @classmethod</span></span><br><span class="line"><span class="comment">#     def f(cls, arg1, arg2, ...): ...</span></span><br></pre></td></tr></table></figure>
+<p>看后之后真是一头雾水。说的啥子东西呢？？？<br>自己到国外的论坛看其他的例子和解释，顿时就很明朗。 下面自己用例子来说明。<br>看下面的定义的一个时间类：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># class Data_test(object):</span></span><br><span class="line"><span class="comment">#     day=0</span></span><br><span class="line"><span class="comment">#     month=0</span></span><br><span class="line"><span class="comment">#     year=0</span></span><br><span class="line"><span class="comment">#     def __init__(self,year=0,month=0,day=0):</span></span><br><span class="line"><span class="comment">#         self.day=day</span></span><br><span class="line"><span class="comment">#         self.month=month</span></span><br><span class="line"><span class="comment">#         self.year=year</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     def out_date(self):</span></span><br><span class="line"><span class="comment">#         print "year :"</span></span><br><span class="line"><span class="comment">#         print self.year</span></span><br><span class="line"><span class="comment">#         print "month :"</span></span><br><span class="line"><span class="comment">#         print self.month</span></span><br><span class="line"><span class="comment">#         print "day :"</span></span><br><span class="line"><span class="comment">#         print self.day</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># t=Data_test(2016,8,1)</span></span><br><span class="line"><span class="comment"># t.out_date()</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出：</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># year :</span></span><br><span class="line"><span class="comment"># 2016</span></span><br><span class="line"><span class="comment"># month :</span></span><br><span class="line"><span class="comment"># 8</span></span><br><span class="line"><span class="comment"># day :</span></span><br><span class="line"><span class="comment"># 1</span></span><br></pre></td></tr></table></figure>
+<p>符合期望。</p>
+<p>如果用户输入的是<code>&quot;2016-8-1&quot;</code>这样的字符格式，那么就需要调用<code>Date_test</code>类前做一下处理：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># string_date='2016-8-1'</span></span><br><span class="line"><span class="comment"># year,month,day=map(int,string_date.split('-'))</span></span><br><span class="line"><span class="comment"># s=Data_test(year,month,day)</span></span><br></pre></td></tr></table></figure>
+<p>先把<code>&quot;2016-8-1&quot;</code> 分解成 <code>year，month，day</code> 三个变量，然后转成<code>int</code>，再调用<code>Date_test(year,month,day)</code>函数。 也很符合期望。<br>那我可不可以把这个字符串处理的函数放到 <code>Date_test</code> 类当中呢？<br>那么<code>@classmethod</code>就开始出场了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># class Data_test2(object):</span></span><br><span class="line"><span class="comment">#     day=0</span></span><br><span class="line"><span class="comment">#     month=0</span></span><br><span class="line"><span class="comment">#     year=0</span></span><br><span class="line"><span class="comment">#     def __init__(self,year=0,month=0,day=0):</span></span><br><span class="line"><span class="comment">#         self.day=day</span></span><br><span class="line"><span class="comment">#         self.month=month</span></span><br><span class="line"><span class="comment">#         self.year=year</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     @classmethod</span></span><br><span class="line"><span class="comment">#     def get_date(cls,string_date):</span></span><br><span class="line"><span class="comment">#         #这里第一个参数是cls， 表示调用当前的类名</span></span><br><span class="line"><span class="comment">#         year,month,day=map(int,string_date.split('-'))</span></span><br><span class="line"><span class="comment">#         date1=cls(year,month,day)</span></span><br><span class="line"><span class="comment">#         #返回的是一个初始化后的类</span></span><br><span class="line"><span class="comment">#         return date1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     def out_date(self):</span></span><br><span class="line"><span class="comment">#         print "year :"</span></span><br><span class="line"><span class="comment">#         print self.year</span></span><br><span class="line"><span class="comment">#         print "month :"</span></span><br><span class="line"><span class="comment">#         print self.month</span></span><br><span class="line"><span class="comment">#         print "day :"</span></span><br><span class="line"><span class="comment">#         print self.day</span></span><br></pre></td></tr></table></figure>
+<p>在<code>Date_test</code>类里面创建一个成员函数， 前面用了 <code>@classmethod</code>装饰。 它的作用就是有点像静态类，<br>比静态类不一样的就是它可以传进来一个当前类作为第一个参数。<br>那么如何调用呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># r=Data_test2.get_date("2016-8-6")</span></span><br><span class="line"><span class="comment"># r.out_date()</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出：</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># year :</span></span><br><span class="line"><span class="comment"># 2016</span></span><br><span class="line"><span class="comment"># month :</span></span><br><span class="line"><span class="comment"># 8</span></span><br><span class="line"><span class="comment"># day :</span></span><br><span class="line"><span class="comment"># 1</span></span><br></pre></td></tr></table></figure>
+<p>这样子等于先调用<code>get_date()</code>对字符串进行处理，然后才使用<code>Data_test</code>的构造函数初始化。<br>这样的好处就是你以后重构类的时候不必要修改构造函数，只需要额外添加你要处理的函数，然后使用装饰符 <code>@classmethod</code>就可以了。</p>
+<h2 id="classmethod和-staticmethod的区别"><a href="#classmethod和-staticmethod的区别" class="headerlink" title="@classmethod和@staticmethod的区别"></a>@classmethod和@staticmethod的区别</h2><p>Python面向对象编程中，类中定义的方法可以是 @classmethod 装饰的类方法，<br>也可以是 @staticmethod 装饰的静态方法，用的最多的还是不带装饰器的实例方法，<br>如果把这几个方法放一块，对初学者来说无疑是一头雾水，那我们该如何正确地使用它们呢？</p>
+<p>先来看一个简单示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">m1</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        print(<span class="string">"self:"</span>, self)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">m2</span><span class="params">(cls, n)</span>:</span></span><br><span class="line">        print(<span class="string">"cls:"</span>, cls)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">m3</span><span class="params">(n)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">a = A()</span><br><span class="line">a.m1(<span class="number">1</span>) <span class="comment"># self: &lt;__main__.A object at 0x000001E596E41A90&gt;</span></span><br><span class="line">A.m2(<span class="number">1</span>) <span class="comment"># cls: &lt;class '__main__.A'&gt;</span></span><br><span class="line">A.m3(<span class="number">1</span>)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 我在类中一共定义了3个方法，m1 是实例方法，第一个参数必须是 self（约定俗成的）。</span></span><br><span class="line"><span class="string"># m2 是类方法，第一个参数必须是cls（同样是约定俗成），m3 是静态方法，参数根据业务需求定，可有可无。</span></span><br><span class="line"><span class="string"># 当程序运行时，大概发生了这么几件事（结合下面的图来看）。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 第一步：代码从第一行开始执行class 命令，此时会创建一个类 A 对象（没错，类也是对象，一切皆对象嘛）</span></span><br><span class="line"><span class="string"># 同时初始化类里面的属性和方法，</span></span><br><span class="line"><span class="string"># 记住，此刻实例对象还没创建出来。</span></span><br><span class="line"><span class="string">#</span></span><br><span class="line"><span class="string">#</span></span><br><span class="line"><span class="string"># 第二、三步：接着执行</span></span><br><span class="line"><span class="string"># a = A()，系统自动调用类的构造器，构造出实例对象a</span></span><br><span class="line"><span class="string">#</span></span><br><span class="line"><span class="string"># 第四步：接着调用</span></span><br><span class="line"><span class="string"># a.m1(1) ，m1</span></span><br><span class="line"><span class="string"># 是实例方法，内部会自动把实例对象传递给self</span></span><br><span class="line"><span class="string"># 参数进行绑定，也就是说， self和a指向的都是同一个实例对象。</span></span><br><span class="line"><span class="string">#</span></span><br><span class="line"><span class="string"># 第五步：调用A.m2(1)</span></span><br><span class="line"><span class="string"># 时，python内部隐式地把类对象传递给cls参数，cls和A都指向类对象。</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2018/04/15/python面向对象之-staticmethod-classmethod/001.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 严格意义上来说，左边的都是变量名，是对象的引用，右边才是真正的对像，</span></span><br><span class="line"><span class="comment"># 为了描述方便，我直接把 a 称为对象，</span></span><br><span class="line"><span class="comment"># 你应该明白我说对象其实是它所引用右边的那个真正的对象。</span></span><br><span class="line"><span class="comment"># 再来看看每个方法各有什么特性</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ********************************************************************************</span></span><br><span class="line"><span class="comment"># 实例方法</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">print(A.m1)</span></span><br><span class="line"><span class="string"># A.m1在py2中显示为&lt;unbound method A.m1&gt;</span></span><br><span class="line"><span class="string">&lt;function A.m1 at 0x000002BF7FF9A488&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">print(a.m1)</span></span><br><span class="line"><span class="string">&lt;bound method A.m1 of &lt;__main__.A object at 0x000002BF7FFA2BE0&gt;&gt;</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># A.m1是一个还没有绑定实例对象的方法，对于未绑定方法，调用 A.m1 时必须显示地传入一个实例对象进去，</span></span><br><span class="line"><span class="comment"># 而 a.m1是已经绑定了实例的方法，</span></span><br><span class="line"><span class="comment"># python隐式地把对象传递给了self参数，所以不再手动传递参数，这是调用实例方法的过程。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">A.m1(a, 1)</span></span><br><span class="line"><span class="string"># 等价  </span></span><br><span class="line"><span class="string">a.m1(1)</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果未绑定的方法 A.m1 不传实例对象给 self 时，</span></span><br><span class="line"><span class="comment"># 就会报参数缺失错误，在 py3 与 py2 中，两者报的错误不一致，</span></span><br><span class="line"><span class="comment"># python2 要求第一个参数self是实例对象，而python3中可以是任意对象。</span></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">A.m1(1)</span></span><br><span class="line"><span class="string">TypeError: m1() missing 1 required positional argument: 'n'</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ********************************************************************************</span></span><br><span class="line"><span class="comment"># 类方法</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">print(A.m2)</span></span><br><span class="line"><span class="string">&lt;bound method A.m2 of &lt;class '__main__.A'&gt;&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">print(a.m2)</span></span><br><span class="line"><span class="string">&lt;bound method A.m2 of &lt;class '__main__.A'&gt;&gt;</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># m2是类方法，不管是 A.m2 还是 a.m2，都是已经自动绑定了类对象A的方法，</span></span><br><span class="line"><span class="comment"># 对于后者，因为python可以通过实例对象a找到它所属的类是A，找到A之后自动绑定到 cls。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">A.m2(1) </span></span><br><span class="line"><span class="string"> # 等价</span></span><br><span class="line"><span class="string"> a.m2(1)</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 这使得我们可以在实例方法中通过使用 self.m2()这种方式来调用类方法和静态方法。</span></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">def m1(self, n):</span></span><br><span class="line"><span class="string">    print("self:", self)</span></span><br><span class="line"><span class="string">    self.m2(n)</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ********************************************************************************</span></span><br><span class="line"><span class="comment"># 静态方法</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">print(A.m3)</span></span><br><span class="line"><span class="string">&lt;function A.m3 at 0x000002BF7FF9A840&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">print(a.m3)</span></span><br><span class="line"><span class="string">&lt;function A.m3 at 0x000002BF7FF9A840&gt;</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># m3是类里面的一个静态方法，跟普通函数没什么区别，与类和实例都没有所谓的绑定关系，</span></span><br><span class="line"><span class="comment"># 它只不过是碰巧存在类中的一个函数而已。不论是通过类还是实例都可以引用该方法。</span></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string"> A.m3(1) </span></span><br><span class="line"><span class="string"> # 等价</span></span><br><span class="line"><span class="string"> a.m3(1)</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 以上就是几个方法的基本介绍。</span></span><br><span class="line"><span class="comment"># 现在把几个基本的概念理清楚了，那么现在来说说几个方法之间的使用场景以及他们之间的优缺点。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ********************************************************************************</span></span><br><span class="line"><span class="comment"># 应用场景</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 静态方法的使用场景：</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果在方法中不需要访问任何实例方法和属性，纯粹地通过传入参数并返回数据的功能性方法，</span></span><br><span class="line"><span class="comment"># 那么它就适合用静态方法来定义，它节省了实例化对象的开销成本，</span></span><br><span class="line"><span class="comment"># 往往这种方法放在类外面的模块层作为一个函数存在也是没问题的，而放在类中，仅为这个类服务。</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 例如下面是微信公众号开发中验证微信签名的一个例子，它没有引用任何类或者实例相关的属性和方法。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">from hashlib import sha1</span></span><br><span class="line"><span class="string">import tornado.web</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">class SignatureHandler(tornado.web.RequestHandler):</span></span><br><span class="line"><span class="string">    def get(self):</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line"><span class="string">         根据签名判断请求是否来自微信</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line"><span class="string">        if self._check_sign(TOKEN, timestamp, nonce, signature):</span></span><br><span class="line"><span class="string">            self.write(echostr)</span></span><br><span class="line"><span class="string">        else:</span></span><br><span class="line"><span class="string">            self.write("你不是微信发过来的请求")</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    @staticmethod</span></span><br><span class="line"><span class="string">    def _check_sign(token, timestamp, nonce, signature):</span></span><br><span class="line"><span class="string">        sign = [token, timestamp, nonce]</span></span><br><span class="line"><span class="string">        sign.sort()</span></span><br><span class="line"><span class="string">        sign = "".join(sign)</span></span><br><span class="line"><span class="string">        sign = sha1(sign).hexdigest()</span></span><br><span class="line"><span class="string">        return sign == signature</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 类方法的使用场景有：</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 作为工厂方法创建实例对象，例如内置模块 datetime.date 类中就有大量使用类方法作为工厂方法，</span></span><br><span class="line"><span class="comment"># 以此来创建date对象。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">class date:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    def __new__(cls, year, month=None, day=None):</span></span><br><span class="line"><span class="string">        self = object.__new__(cls)</span></span><br><span class="line"><span class="string">        self._year = year</span></span><br><span class="line"><span class="string">        self._month = month</span></span><br><span class="line"><span class="string">        self._day = day</span></span><br><span class="line"><span class="string">        return self</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    @classmethod</span></span><br><span class="line"><span class="string">    def fromtimestamp(cls, t):</span></span><br><span class="line"><span class="string">        y, m, d, * = _time.localtime(t)</span></span><br><span class="line"><span class="string">        return cls(y, m, d)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    @classmethod</span></span><br><span class="line"><span class="string">    def today(cls):</span></span><br><span class="line"><span class="string">        t = _time.time()</span></span><br><span class="line"><span class="string">        return cls.fromtimestamp(t)</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果希望在方法裡面调用静态类，那么把方法定义成类方法是合适的，</span></span><br><span class="line"><span class="comment"># 因为要是定义成静态方法，那么你就要显示地引用类A，这对继承来说可不是一件好事情。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">class A:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    @staticmethod</span></span><br><span class="line"><span class="string">    def m1()</span></span><br><span class="line"><span class="string">        pass</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    @staticmethod</span></span><br><span class="line"><span class="string">    def m2():</span></span><br><span class="line"><span class="string">        A.m1() # bad</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    @classmethod</span></span><br><span class="line"><span class="string">    def m3(cls):</span></span><br><span class="line"><span class="string">        cls.m1() # good</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2018/04/15/python面向对象三大特性之继承-抽象类/" title= python面向对象三大特性之继承(抽象类) >
+                    <div class="prevTitle">python面向对象三大特性之继承(抽象类)</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!--PC版-->
+
+    <!--PC版-->
+
+
+    
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:747256153@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/newderezzed" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/wechat.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+        <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#小栗子助理解"><span class="toc-number">1.</span> <span class="toc-text">小栗子助理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#classmethod"><span class="toc-number">2.</span> <span class="toc-text">@classmethod</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#classmethod的使用场合"><span class="toc-number">2.1.</span> <span class="toc-text">@classmethod的使用场合</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#classmethod和-staticmethod的区别"><span class="toc-number">3.</span> <span class="toc-text">@classmethod和@staticmethod的区别</span></a></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 19 </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/python面向对象之-staticmethod-classmethod/" >python面向对象之@staticmethod@classmethod</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/python面向对象三大特性之继承-抽象类/" >python面向对象三大特性之继承(抽象类)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/python面向对象三大特性之继承-接口类/" >python面向对象三大特性之继承(接口类)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/老生常谈session，cookie的区别，安全性1.0/" >老生常谈session，cookie的区别，安全性1.0</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/老生常谈session，cookie的区别，安全性2.0/" >老生常谈session，cookie的区别，安全性2.0</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/13</span><a class="archive-post-title" href= "/2018/04/13/Cookie与Session-v2-0/" >Cookie与Session v2.0</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python面向对象三大特性之继承/" >python面向对象三大特性之继承</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之匿名函数/" >python函数之匿名函数</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python之def函数进阶之迭代器-ITERATOR-和生成器-GENERATOR/" >python之def函数进阶之迭代器(ITERATOR)和生成器(GENERATOR)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/10</span><a class="archive-post-title" href= "/2018/04/10/python小数据池及Bytes类型相关/" >python小数据池及Bytes类型相关</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/10</span><a class="archive-post-title" href= "/2018/04/10/django-form表单/" >django form表单</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/09</span><a class="archive-post-title" href= "/2018/04/09/第一章-数据结构绪论/" >第一章 数据结构绪论</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/09</span><a class="archive-post-title" href= "/2018/04/09/Django中ORM介绍和字段及字段参数/" >Django中ORM介绍和字段及字段参数</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/06</span><a class="archive-post-title" href= "/2018/04/06/django中的session/" >django中的session</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/06</span><a class="archive-post-title" href= "/2018/04/06/django中的cookie/" >django中的cookie</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/05</span><a class="archive-post-title" href= "/2018/04/05/django框架介绍/" >django框架介绍</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/03</span><a class="archive-post-title" href= "/2018/04/03/hello-world/" >Hello World</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="django"><span class="iconfont-archer">&#xe606;</span>django</span>
+    
+        <span class="sidebar-tag-name" data-tags="cookie"><span class="iconfont-archer">&#xe606;</span>cookie</span>
+    
+        <span class="sidebar-tag-name" data-tags="session"><span class="iconfont-archer">&#xe606;</span>session</span>
+    
+        <span class="sidebar-tag-name" data-tags="框架"><span class="iconfont-archer">&#xe606;</span>框架</span>
+    
+        <span class="sidebar-tag-name" data-tags="ORM"><span class="iconfont-archer">&#xe606;</span>ORM</span>
+    
+        <span class="sidebar-tag-name" data-tags="python"><span class="iconfont-archer">&#xe606;</span>python</span>
+    
+        <span class="sidebar-tag-name" data-tags="迭代器"><span class="iconfont-archer">&#xe606;</span>迭代器</span>
+    
+        <span class="sidebar-tag-name" data-tags="生成器"><span class="iconfont-archer">&#xe606;</span>生成器</span>
+    
+        <span class="sidebar-tag-name" data-tags="匿名函数"><span class="iconfont-archer">&#xe606;</span>匿名函数</span>
+    
+        <span class="sidebar-tag-name" data-tags="闭包"><span class="iconfont-archer">&#xe606;</span>闭包</span>
+    
+        <span class="sidebar-tag-name" data-tags="命名空间"><span class="iconfont-archer">&#xe606;</span>命名空间</span>
+    
+        <span class="sidebar-tag-name" data-tags="小数据池"><span class="iconfont-archer">&#xe606;</span>小数据池</span>
+    
+        <span class="sidebar-tag-name" data-tags="面向对象"><span class="iconfont-archer">&#xe606;</span>面向对象</span>
+    
+        <span class="sidebar-tag-name" data-tags="接口类"><span class="iconfont-archer">&#xe606;</span>接口类</span>
+    
+        <span class="sidebar-tag-name" data-tags="抽象类"><span class="iconfont-archer">&#xe606;</span>抽象类</span>
+    
+        <span class="sidebar-tag-name" data-tags="classmethod"><span class="iconfont-archer">&#xe606;</span>classmethod</span>
+    
+        <span class="sidebar-tag-name" data-tags="staticmethod"><span class="iconfont-archer">&#xe606;</span>staticmethod</span>
+    
+        <span class="sidebar-tag-name" data-tags="数据结构"><span class="iconfont-archer">&#xe606;</span>数据结构</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="Django"><span class="iconfont-archer">&#xe60a;</span>Django</span>
+    
+        <span class="sidebar-category-name" data-categories="python"><span class="iconfont-archer">&#xe60a;</span>python</span>
+    
+        <span class="sidebar-category-name" data-categories="数据结构"><span class="iconfont-archer">&#xe60a;</span>数据结构</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: '/',
+        author: '陈乾煜'
+    }
+</script>
+    <!-- busuanzi  -->
+    
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+    
+    </body>
+</html>
+
+
