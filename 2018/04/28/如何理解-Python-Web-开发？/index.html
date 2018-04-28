@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html>
+    <!-- title -->
+
+
+
+
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>如何理解 Python Web 开发？ · Derezzed&#39;s Studio</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+        box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.7);
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s 1;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= /css/style.css?v=20180317 as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" type="text/css" href= /css/mobile.css?v=20180317 media="(max-width: 980px)"/>
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        
+    <link rel="icon" href= /assets/emoji.png>
+    <script>
+        (function (w) {
+            "use strict";
+            // rel=preload support test
+            if (!w.loadCSS) {
+                w.loadCSS = function () { };
+            }
+            // define on the loadCSS obj
+            var rp = loadCSS.relpreload = {};
+            // rel=preload feature support test
+            // runs once and returns a function for compat purposes
+            rp.support = (function () {
+                var ret;
+                try {
+                    ret = w.document.createElement("link").relList.supports("preload");
+                } catch (e) {
+                    ret = false;
+                }
+                return function () {
+                    return ret;
+                };
+            })();
+
+            // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+            // then change that media back to its intended value on load
+            rp.bindMediaToggle = function (link) {
+                // remember existing media attr for ultimate state, or default to 'all'
+                var finalMedia = link.media || "all";
+
+                function enableStylesheet() {
+                    link.media = finalMedia;
+                }
+
+                // bind load handlers to enable media
+                if (link.addEventListener) {
+                    link.addEventListener("load", enableStylesheet);
+                } else if (link.attachEvent) {
+                    link.attachEvent("onload", enableStylesheet);
+                }
+
+                // Set rel and non-applicable media type to start an async request
+                // note: timeout allows this to happen async to let rendering continue in IE
+                setTimeout(function () {
+                    link.rel = "stylesheet";
+                    link.media = "only x";
+                });
+                // also enable media after 3 seconds,
+                // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+                setTimeout(enableStylesheet, 3000);
+            };
+
+            // loop through link elements in DOM
+            rp.poly = function () {
+                // double check this to prevent external calls from running
+                if (rp.support()) {
+                    return;
+                }
+                var links = w.document.getElementsByTagName("link");
+                for (var i = 0; i < links.length; i++) {
+                    var link = links[i];
+                    // qualify links to those with rel=preload and as=style attrs
+                    if (link.rel === "preload" && link.getAttribute("as") === "style" && !link.getAttribute("data-loadcss")) {
+                        // prevent rerunning on link
+                        link.setAttribute("data-loadcss", true);
+                        // bind listeners to toggle media back
+                        rp.bindMediaToggle(link);
+                    }
+                }
+            };
+
+            // if unsupported, run the polyfill
+            if (!rp.support()) {
+                // run once at least
+                rp.poly();
+
+                // rerun poly on an interval until onload
+                var run = w.setInterval(rp.poly, 500);
+                if (w.addEventListener) {
+                    w.addEventListener("load", function () {
+                        rp.poly();
+                        w.clearInterval(run);
+                    });
+                } else if (w.attachEvent) {
+                    w.attachEvent("onload", function () {
+                        rp.poly();
+                        w.clearInterval(run);
+                    });
+                }
+            }
+            // commonjs
+            if (typeof exports !== "undefined") {
+                exports.loadCSS = loadCSS;
+            }
+            else {
+                w.loadCSS = loadCSS;
+            }
+        }(typeof global !== "undefined" ? global : this));
+    </script>
+    <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+    <script src="/scripts/main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Derezzed&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">如何理解 Python Web 开发？</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>Derezzed's Studio.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style=
+
+
+
+
+
+
+
+
+height:50vh;
+
+>
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            如何理解 Python Web 开发？
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "wsgi">wsgi</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "client">client</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "server">server</a>
+    
+</div>
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2018/04/28</span>
+                
+                <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                    <span class="iconfont-archer">&#xe602;</span>
+                    <span id="busuanzi_value_page_pv"></span>
+                </span>
+                
+                <span class="shareWrapper">
+                    <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                    <span class="shareText">Share</span>
+                    <ul class="shareList">
+                        <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                            <div class="share-qrcode"></div>
+                        </li>
+                        <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                        <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                        <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                        <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                    </ul>
+                </span>
+            </div>
+        
+    </div>
+</div>
+        <script>
+  // load webfont-loader async, and add callback function
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+  
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntroTags = document.getElementsByClassName('post-intro-tags')[0],
+        postIntroMeat = document.getElementsByClassName('post-intro-meta')[0];
+      if (postIntroTags) {
+        postIntroTags.classList.add('post-fade-in');
+      }
+      if (postIntroMeat) {
+        postIntroMeat.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  async("https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", asyncCb)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>因为 <code>python</code>代码的优雅美观且易于维护这一特点，越来越多的人选择使用 <code>Python</code>做Web开发。而 <code>Python</code>的 <code>Web</code>框架百花齐放，目前比较流行的框架有大包大揽的 <code>Django</code>，小巧灵活的 <code>Flask</code>、 <code>Bottle</code>，还有性能高效的异步框架 <code>Tornado</code>、 <code>sanic</code>。这么多框架只要选择一个，阅读他的文档，就可以很轻松的搭建一个 <code>web app</code>，完全不需要去管他实现的原理。</p>
+<p>本篇文章意在对一个web开发做一个梳理。</p>
+<h2 id="前端网页三剑客"><a href="#前端网页三剑客" class="headerlink" title="前端网页三剑客"></a>前端网页三剑客</h2><p>我们打开浏览器输入一个网址 <code>yukunweb.com</code>，然后就看到了浏览器给我们显示的页面，这个时候打开浏览器开发者工具，点击 <code>Network</code>，刷新页面，会看到下方的请求的 <code>url</code>，点击 <code>Response</code>，就可以看到服务器返回给浏览器的 <code>html</code>文件信息了。如果复制 <code>Response</code>响应的内容，保存为 <code>index.html</code>并且在浏览器打开，依然可以看到首页的内容，但是似乎缺少了一些页面的样式和功能。</p>
+<p>这是因为当浏览器接收到首页的 <code>HTML</code>源码后，它会根据 <code>HTML</code>的规则去显示页面，然后再根据 <code>HTML</code>里的链接，自动发送HTTP请求给服务器，拿到相应的图片，和 <code>JavaScript</code>、 <code>CSS</code>等资源，最终显示出一个完整的页面。所以我们会在 <code>Network</code>下面能看到很多额外的以 <code>.js</code>， <code>.css</code>等后缀的请求了。</p>
+<p>其实我们看到的页面就是浏览器按照 <code>HTML</code>的规则，展示给我们的。 <code>HTML</code>告诉浏览器那里是导航，那里是主栏，那里是侧栏。而这些信息如何显示，或者是显示的样式，就是 <code>CSS</code>文件的功劳。至于比如导航的下拉隐藏上拉显示就是 <code>JavaScript</code>的作用。</p>
+<h2 id="客户端和服务端通信"><a href="#客户端和服务端通信" class="headerlink" title="客户端和服务端通信"></a>客户端和服务端通信</h2><p>理解了前段三剑客，就知道如何去写一个网页。那么从我们在浏览器的地址栏输入 <code>URL</code>，到 <code>Web</code>页面呈现出来到底经历了什么。</p>
+<p>如图，一般这种通过发送请求获取服务器资源的Web浏览器，都可以称为客户端(client)。首先发送一个请求(request)给服务器，大多是以GET请求方式访问，服务器接收到你的请求，然后取到请求的资源，返回给客户端。</p>
+<p>服务器和客户端之间交流是怎么进行的呢，服务器是怎么理解客户端的请求的呢。这里就需要一种协议规范，就是HTTP(HyperText Transfer Protocol，超文本传输协议)。可以说， <code>Web</code>是建立在 <code>HTTP</code>协议上通信的。</p>
+<p>如图，仍然是之前的例子，打开浏览器访问 <code>yukunweb.com</code>，打开浏览器开发者工具，点击图中标记的选项卡(记得点view parsed)，可以看到客户端发给服务器的请求头前两行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GET / HTTP/1.1</span><br><span class="line">Host: www.yukunweb.com</span><br></pre></td></tr></table></figure>
+<p>第一行开头的GET表示请求访问服务器的类型，称为方法(method)。随后的字符 <code>/</code>指明了请求访问的资源对象，即请求URI。最后的 <code>HTTP/1.1</code>，即HTTP的版本号，用来提示客户端使用的 <code>HTTP</code>协议功能。</p>
+<p>综上所述，第一行请求内容的意思是：请求访问某台 <code>HTTP</code>服务器上的 <code>/</code>(首页)页面资源。所以第二行的 <code>Host</code>表示请求的域名也就是服务器所在地址。</p>
+<p>如果是 <code>POST</code>请求的话，不仅会有请求头部信息，还有一个 <code>Form Data</code>的请求实体内容。</p>
+<p>接收到请求的服务器呢，他会将请求内容的处理结果以响应的形式返回，看图中的第一行：</p>
+<p>开头的部分仍然是服务器对应的 <code>HTTP</code>版本，紧接着的 <code>200 OK</code>表示请求的处理结果的状态码 (status code) 和原因短语。 <code>200</code>状态码就表示响应成功，常见的 <code>404</code>表示访问错误， <code>500</code>表示服务器响应错误。这里的 <code>OK</code>是没有固定的规则的，你也可以让他返回 <code>GOOD</code>啥的。</p>
+<h2 id="WSGI"><a href="#WSGI" class="headerlink" title="WSGI"></a>WSGI</h2><p>如果你浏览一个地址 <code>http://www.yukunweb.com/search-result/?keywords=音乐</code>，你会访问到本站的音乐关键词的搜索结果。我们知道客户端发送请求给服务器，那么服务器是怎么拿到资源的呢。其实这是交给后端运行的应用返回的，好比你抓取一个页面到获取到信息，这些逻辑的处理肯定是我们的程序再跑。</p>
+<p>但是，接收并且解析客户端的 <code>HTTP</code>请求在发送 <code>HTTP</code>响应这些底层操作，后端的程序肯定是不会去处理的。所以，要想只专注于Web业务逻辑，还需要一个服务器和 <code>web</code>应用之间的嫁接层————WSGI。</p>
+<h2 id="什么是WSGI-Web-Server-Getway-Interface"><a href="#什么是WSGI-Web-Server-Getway-Interface" class="headerlink" title="什么是WSGI(Web Server Getway Interface)"></a>什么是WSGI(Web Server Getway Interface)</h2><p><code>WSGI</code>翻译过来就是Web服务器网关接口。他只是一个规范，定义了 <code>Web</code>服务器如何与 <code>Python</code>应用程序进行交互，使得使用 <code>Python</code>写的 <code>Web</code>应用程序可以和Web服务器(nginx/apache)对接起来。</p>
+<p><code>WSGI</code>是 <code>Python</code>的Web开发的基石，有了它你就有了一切，它存在的目的有两个：</p>
+<ul>
+<li>描述 Web 服务器如何与 Web 应用程序交互（将客户端请求传给应用程序），</li>
+<li>描述 Web 应用程序如何处理请求和如何返回数据给服务器。</li>
+</ul>
+<p>由于 <code>Python</code>内置的标准库里有一个 <code>WSGI</code>库 <code>wsgiref</code>，我们基于他来写一个体现 <code>WSGI</code>目的的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> wsgiref.simple_server <span class="keyword">import</span> make_server</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">application</span><span class="params">(environ, start_response)</span>:</span></span><br><span class="line"></span><br><span class="line">    status = <span class="string">'200 OK'</span></span><br><span class="line"></span><br><span class="line">    response_headers = [(<span class="string">'Content-type'</span>, <span class="string">'text/html'</span>)]</span><br><span class="line"></span><br><span class="line">    start_response(status, response_headers)</span><br><span class="line"></span><br><span class="line">    body = <span class="string">'Hello, &#123;name&#125; !!!'</span>.format(name=environ[<span class="string">'PATH_INFO'</span>][<span class="number">1</span>:] <span class="keyword">or</span> <span class="string">'WSGI'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> [body.encode(<span class="string">'utf-8'</span>)]</span><br><span class="line"></span><br><span class="line">app = make_server(<span class="string">''</span>, <span class="number">8000</span>, application)</span><br><span class="line"></span><br><span class="line">app.serve_forever()</span><br></pre></td></tr></table></figure>
+<p>运行程序，如果没有报错，此时打开浏览器输入地址 <code>127.0.0.1:8000</code>和 <code>127.0.0.1:8000/GuTianle</code>，就可以看到程序返回的页面了</p>
+<p>我们可以看到一个请求，他的入口只需要一个 <code>WSGI</code>的处理函数。因为所有的请求信息都包含在 <code>environ</code>中，这样我们就可以根据这些信息去返回不同的数据。</p>
+<p>参数：</p>
+<ul>
+<li><p>environ：字典类型，存放了所有和客户端相关的信息。如果想知道他里面有哪些参数，可以更改上面的代码在 return 行上面加一个 <code>for k, v in environ.items()</code>的循环，打印出字典里的所有参数。</p>
+</li>
+<li><p>start_response：一个可调用对象，接收两个必选参数和一个可选参数:</p>
+<ul>
+<li><p>status: 一个字符串，表示 HTTP 响应状态字符串，如 200，404</p>
+</li>
+<li><p>response_headers: 一个列表，包含有如下形式的元组：(headername, headervalue)，用来表示 HTTP 响应的 headers ，如(‘Content-type’, ‘text/html’)</p>
+</li>
+<li><p>exc_info（可选）: 用于出错时，服务器需要返回给浏览器的信息</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>返回：一个可迭代对象, 服务器通过遍历这个可迭代对象可以获得body的全部内容，内容可以是 <code>html</code>也可以是 <code>json</code>。</p>
+<p>这里简单的介绍了 <code>WSGI</code>是什么，干什么。如果理解了 <code>WSGI</code>，那么写一个 <code>Python</code>的Web框架就很简单了。这也是为什么 <code>Python</code>有成百上千web框架的原因。</p>
+<h2 id="实现基于WSGI的框架"><a href="#实现基于WSGI的框架" class="headerlink" title="实现基于WSGI的框架"></a>实现基于WSGI的框架</h2><p>上面我们理解了 <code>WSGI</code>是干什么的，那么我们基于它实现一个简单的 <code>web</code>框架可以说轻而易举了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> wsgiref.simple_server <span class="keyword">import</span> make_server</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Application</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, environ, start_response)</span>:</span></span><br><span class="line"></span><br><span class="line">        self.start_response = start_response</span><br><span class="line"></span><br><span class="line">        self.path = environ[<span class="string">'PATH_INFO'</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.path == <span class="string">'/'</span>:</span><br><span class="line"></span><br><span class="line">            status = <span class="string">'200 OK'</span></span><br><span class="line"></span><br><span class="line">            response_headers = [(<span class="string">'Content-type'</span>, <span class="string">'text/html'</span>)]</span><br><span class="line"></span><br><span class="line">            self.start_response(status, esponse_headers)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">yield</span> <span class="string">'Hello,World!'</span>.encode(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">elif</span> self.path == <span class="string">'/wsgi'</span>:</span><br><span class="line"></span><br><span class="line">            status = <span class="string">'200 OK'</span></span><br><span class="line"></span><br><span class="line">            response_headers = [(<span class="string">'Content-type'</span>, <span class="string">'text/html'</span>)]</span><br><span class="line"></span><br><span class="line">            self.start_response(status, response_headers)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">yield</span> <span class="string">'Hello,WSGI!'</span>.encode(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">            status = <span class="string">'404 NOT FOUND'</span></span><br><span class="line"></span><br><span class="line">            response_headers = [(<span class="string">'Content-type'</span>, <span class="string">'text/html'</span>)]</span><br><span class="line"></span><br><span class="line">            self.start_response(status, response_headers)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">yield</span> <span class="string">'404 NOT FOUND'</span>.encode(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line"></span><br><span class="line">    app = make_server(<span class="string">'127.0.0.1'</span>, <span class="number">8000</span>, Application)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">'Serving HTTP on port 8000...'</span>)</span><br><span class="line"></span><br><span class="line">    app.serve_forever()</span><br></pre></td></tr></table></figure>
+<p>这个 <code>Application</code>类只不过是对 <code>WSGI</code>又做了一层简单的封装而已，由于上面说过 <code>WSGI</code>函数返回的是一个可以迭代对象，所以需要实现一个<strong>iter</strong>方法，里面控制了客户端的请求路由并且返回不同的输出。</p>
+<p>当然如果你想扩展成一个像样的框架还需要考虑很多，比如像 <code>flask</code>那样方便的路由系统，还有对于用户请求方式的处理等等。总之是个很需要折腾的过程，好比 <code>flask的0.1</code>版本去掉注释也就 200 多行，而如今最新版本。。。</p>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2018/04/28/从请求到响应-django-都做了哪些处理？/" title= 从请求到响应 django 都做了哪些处理？ >
+                    <div class="nextTitle">从请求到响应 django 都做了哪些处理？</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2018/04/15/Python中的-new-、-init-、-call-三个特殊方法/" title= Python中的__new__、__init__、__call__三个特殊方法 >
+                    <div class="prevTitle">Python中的__new__、__init__、__call__三个特殊方法</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!--PC版-->
+
+    <!--PC版-->
+
+
+    
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:747256153@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/newderezzed" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/wechat.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+        <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前端网页三剑客"><span class="toc-number">1.</span> <span class="toc-text">前端网页三剑客</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#客户端和服务端通信"><span class="toc-number">2.</span> <span class="toc-text">客户端和服务端通信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WSGI"><span class="toc-number">3.</span> <span class="toc-text">WSGI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是WSGI-Web-Server-Getway-Interface"><span class="toc-number">4.</span> <span class="toc-text">什么是WSGI(Web Server Getway Interface)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现基于WSGI的框架"><span class="toc-number">5.</span> <span class="toc-text">实现基于WSGI的框架</span></a></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 25 </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/从请求到响应-django-都做了哪些处理？/" >从请求到响应 django 都做了哪些处理？</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/Django-路由与视图/" >Django: 路由与视图</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/如何理解-Python-Web-开发？/" >如何理解 Python Web 开发？</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/python中-init-方法和-new-方法的区别/" >python中__init__()方法和__new__()方法的区别</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中-new-方法的使用和实例化/" >Python中__new__()方法的使用和实例化</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中的-new-、-init-、-call-三个特殊方法/" >Python中的__new__、__init__、__call__三个特殊方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/python面向对象之-staticmethod-classmethod/" >python面向对象之@staticmethod@classmethod</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/python面向对象三大特性之继承-抽象类/" >python面向对象三大特性之继承(抽象类)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/python面向对象三大特性之继承-接口类/" >python面向对象三大特性之继承(接口类)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/老生常谈session，cookie的区别，安全性1.0/" >老生常谈session，cookie的区别，安全性1.0</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/老生常谈session，cookie的区别，安全性2.0/" >老生常谈session，cookie的区别，安全性2.0</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/13</span><a class="archive-post-title" href= "/2018/04/13/Cookie与Session-v2-0/" >Cookie与Session v2.0</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python面向对象三大特性之继承/" >python面向对象三大特性之继承</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之匿名函数/" >python函数之匿名函数</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python之def函数进阶之迭代器-ITERATOR-和生成器-GENERATOR/" >python之def函数进阶之迭代器(ITERATOR)和生成器(GENERATOR)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/10</span><a class="archive-post-title" href= "/2018/04/10/python小数据池及Bytes类型相关/" >python小数据池及Bytes类型相关</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/10</span><a class="archive-post-title" href= "/2018/04/10/django-form表单/" >django form表单</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/09</span><a class="archive-post-title" href= "/2018/04/09/第一章-数据结构绪论/" >第一章 数据结构绪论</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/09</span><a class="archive-post-title" href= "/2018/04/09/Django中ORM介绍和字段及字段参数/" >Django中ORM介绍和字段及字段参数</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/06</span><a class="archive-post-title" href= "/2018/04/06/django中的session/" >django中的session</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/06</span><a class="archive-post-title" href= "/2018/04/06/django中的cookie/" >django中的cookie</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/05</span><a class="archive-post-title" href= "/2018/04/05/django框架介绍/" >django框架介绍</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/03</span><a class="archive-post-title" href= "/2018/04/03/hello-world/" >Hello World</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="django"><span class="iconfont-archer">&#xe606;</span>django</span>
+    
+        <span class="sidebar-tag-name" data-tags="cookie"><span class="iconfont-archer">&#xe606;</span>cookie</span>
+    
+        <span class="sidebar-tag-name" data-tags="session"><span class="iconfont-archer">&#xe606;</span>session</span>
+    
+        <span class="sidebar-tag-name" data-tags="wsgi"><span class="iconfont-archer">&#xe606;</span>wsgi</span>
+    
+        <span class="sidebar-tag-name" data-tags="框架"><span class="iconfont-archer">&#xe606;</span>框架</span>
+    
+        <span class="sidebar-tag-name" data-tags="ORM"><span class="iconfont-archer">&#xe606;</span>ORM</span>
+    
+        <span class="sidebar-tag-name" data-tags="python，面向对象"><span class="iconfont-archer">&#xe606;</span>python，面向对象</span>
+    
+        <span class="sidebar-tag-name" data-tags="__new__"><span class="iconfont-archer">&#xe606;</span>__new__</span>
+    
+        <span class="sidebar-tag-name" data-tags="__init__"><span class="iconfont-archer">&#xe606;</span>__init__</span>
+    
+        <span class="sidebar-tag-name" data-tags="python"><span class="iconfont-archer">&#xe606;</span>python</span>
+    
+        <span class="sidebar-tag-name" data-tags="面向对象"><span class="iconfont-archer">&#xe606;</span>面向对象</span>
+    
+        <span class="sidebar-tag-name" data-tags="__init__，__new__"><span class="iconfont-archer">&#xe606;</span>__init__，__new__</span>
+    
+        <span class="sidebar-tag-name" data-tags="__call__"><span class="iconfont-archer">&#xe606;</span>__call__</span>
+    
+        <span class="sidebar-tag-name" data-tags="闭包"><span class="iconfont-archer">&#xe606;</span>闭包</span>
+    
+        <span class="sidebar-tag-name" data-tags="迭代器"><span class="iconfont-archer">&#xe606;</span>迭代器</span>
+    
+        <span class="sidebar-tag-name" data-tags="生成器"><span class="iconfont-archer">&#xe606;</span>生成器</span>
+    
+        <span class="sidebar-tag-name" data-tags="匿名函数"><span class="iconfont-archer">&#xe606;</span>匿名函数</span>
+    
+        <span class="sidebar-tag-name" data-tags="命名空间"><span class="iconfont-archer">&#xe606;</span>命名空间</span>
+    
+        <span class="sidebar-tag-name" data-tags="小数据池"><span class="iconfont-archer">&#xe606;</span>小数据池</span>
+    
+        <span class="sidebar-tag-name" data-tags="接口类"><span class="iconfont-archer">&#xe606;</span>接口类</span>
+    
+        <span class="sidebar-tag-name" data-tags="抽象类"><span class="iconfont-archer">&#xe606;</span>抽象类</span>
+    
+        <span class="sidebar-tag-name" data-tags="中间件"><span class="iconfont-archer">&#xe606;</span>中间件</span>
+    
+        <span class="sidebar-tag-name" data-tags="client"><span class="iconfont-archer">&#xe606;</span>client</span>
+    
+        <span class="sidebar-tag-name" data-tags="server"><span class="iconfont-archer">&#xe606;</span>server</span>
+    
+        <span class="sidebar-tag-name" data-tags="classmethod"><span class="iconfont-archer">&#xe606;</span>classmethod</span>
+    
+        <span class="sidebar-tag-name" data-tags="staticmethod"><span class="iconfont-archer">&#xe606;</span>staticmethod</span>
+    
+        <span class="sidebar-tag-name" data-tags="数据结构"><span class="iconfont-archer">&#xe606;</span>数据结构</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="Django"><span class="iconfont-archer">&#xe60a;</span>Django</span>
+    
+        <span class="sidebar-category-name" data-categories="python"><span class="iconfont-archer">&#xe60a;</span>python</span>
+    
+        <span class="sidebar-category-name" data-categories="数据结构"><span class="iconfont-archer">&#xe60a;</span>数据结构</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: '/',
+        author: '陈乾煜'
+    }
+</script>
+    <!-- busuanzi  -->
+    
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+    
+    </body>
+</html>
+
+

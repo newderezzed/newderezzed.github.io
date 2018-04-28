@@ -300,6 +300,101 @@
     
     
         <article class="index-post">
+            <a class="abstract-title" href = "/2018/04/28/Django-路由与视图/" >
+                
+                    <span>Django: 路由与视图</span>
+            </a>
+            <div class="abstract-content">
+                简介
+​        Django框架是美国World Company（世界公司？NB）的工程师Adrian Holovaty和Simon Willison在开发其公司运行的新闻网站（LJWorld.com、Lawrence.com、KUsports.com ） 过程中，逐渐完善丰富而成，2005年开源，是迄今为止Python界名气最大的Web框架。
+​        Django这个词来自吉普赛语，D不发音，中文通常翻为姜戈，不过也有人相当搞笑的称为强哥。 官方发音点这里：
+​        Django框架取名于20世纪三十年代法国著名的爵士吉他手 Django Reinhardt...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/28</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "django">django</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "wsgi">wsgi</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2018/04/28/从请求到响应-django-都做了哪些处理？/" >
+                
+                    <span>从请求到响应 django 都做了哪些处理？</span>
+            </a>
+            <div class="abstract-content">
+                 request.user 里面的 user 是怎样得到的, 这个问题需要我们弄清楚
+但是要想回答为什么可以直接通过 request.user 得到请求的用户，应该先来看看请求被处理以及如何返回响应的流程。今天先总结一下 django 从请求到响应都进行了哪些过程。
+WSGI当客户端发送一次请求后，最先处理请求的实际上是 web 服务器就是我们经常说的 nginx、Apache 这类的 web 服务器，而 WSGI的作用就是把 web 服务器和 web 框架 (Django) 连接起来。WSGI 被分为了两个部分：服务端和应用端。为了处理一个 WSGI的响应，服务端执行应用程序并向应用端...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/28</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "django">django</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "wsgi">wsgi</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "中间件">中间件</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2018/04/28/如何理解-Python-Web-开发？/" >
+                
+                    <span>如何理解 Python Web 开发？</span>
+            </a>
+            <div class="abstract-content">
+                因为 python代码的优雅美观且易于维护这一特点，越来越多的人选择使用 Python做Web开发。而 Python的 Web框架百花齐放，目前比较流行的框架有大包大揽的 Django，小巧灵活的 Flask、 Bottle，还有性能高效的异步框架 Tornado、 sanic。这么多框架只要选择一个，阅读他的文档，就可以很轻松的搭建一个 web app，完全不需要去管他实现的原理。
+本篇文章意在对一个web开发做一个梳理。
+前端网页三剑客我们打开浏览器输入一个网址 yukunweb.com，然后就看到了浏览器给我们显示的页面，这个时候打开浏览器开发者工具，点击 Network，刷新页面...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/28</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "wsgi">wsgi</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "client">client</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "server">server</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
             <a class="abstract-title" href = "/2018/04/15/Python中的-new-、-init-、-call-三个特殊方法/" >
                 
                     <span>Python中的__new__、__init__、__call__三个特殊方法</span>
@@ -362,105 +457,6 @@ call ： 对象可call，注意不是类，是对象。
         <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "面向对象">面向对象</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/15/Python中-new-方法的使用和实例化/" >
-                
-                    <span>Python中__new__()方法的使用和实例化</span>
-            </a>
-            <div class="abstract-content">
-                
-new()是在新式类中新出现的方法，它作用在构造方法init()建造实例之前，可以这么理解，在Python 中存在于类里面的构造方法init()负责将类的实例化，而在init()调用之前，new()决定是否要使用该init()方法，因为new()可以调用其他类的构造方法或者直接返回别的对象来作为本类 的实例。
-如果将类比喻为工厂，那么init()方法则是该工厂的生产工人，init()方法接受的初始化参 数则是生产所需原料，init()方法会按照方法中的语句负责将原料加工成实例以供工厂出货。而 new()则是生产部经理，new()方法可以决定是否将原料提供给该生产部工人，同时它还决定着出...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/15</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "python，面向对象">python，面向对象</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "__new__">__new__</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "__init__">__init__</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/15/python面向对象之-staticmethod-classmethod/" >
-                
-                    <span>python面向对象之@staticmethod@classmethod</span>
-            </a>
-            <div class="abstract-content">
-                小栗子助理解1234567891011121314151617181920212223242526272829class Num:    #普通方法：能用Num调用而不能用实例化对象调用    def one():        print ('1')    #实例方法：能用实例化对象调用而不能用Num调用    def two(self):        print ('2')    #静态方法：能用Num和实例化对象调用    @staticmethod    def three():        print ('3')    #类方法：第一个参数cls长什么样不重要，都是指Num...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/15</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "面向对象">面向对象</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "classmethod">classmethod</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "staticmethod">staticmethod</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/15/python面向对象三大特性之继承-抽象类/" >
-                
-                    <span>python面向对象三大特性之继承(抽象类)</span>
-            </a>
-            <div class="abstract-content">
-                什么是抽象类
-与java一样，python也有抽象类的概念但是同样需要借助模块实现，抽象类是一个特殊的类，它的特殊之处在于只能被继承，不能被实例化
-
-为什么要有抽象类如果说类是从一堆对象中抽取相同的内容而来的，那么抽象类就是从一堆类中抽取相同的内容而来的，内容包括数据属性和函数属性。比如我们有香蕉的类，有苹果的类，有桃子的类，从这些类抽取相同的内容就是水果这个抽象的类，你吃水果时，要么是吃一个具体的香蕉，要么是吃一个具体的桃子。。。。。。你永远无法吃到一个叫做水果的东西。从设计角度去看，如果类是从现实对象抽象而来的，那么抽象类就是基于类抽象而来的。从实现角度来看，抽象类与普通类的不同之处...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/15</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "面向对象">面向对象</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "接口类">接口类</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "抽象类">抽象类</a>
     
 </div>
                 
@@ -844,7 +840,38 @@ new()是在新式类中新出现的方法，它作用在构造方法init()建造
     
     
     
-    <div class="total-archive"> Total : 22 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 25 </div>
     
     <div class="post-archive">
     
@@ -853,6 +880,21 @@ new()是在新式类中新出现的方法，它作用在构造方法init()建造
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/从请求到响应-django-都做了哪些处理？/" >从请求到响应 django 都做了哪些处理？</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/Django-路由与视图/" >Django: 路由与视图</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/如何理解-Python-Web-开发？/" >如何理解 Python Web 开发？</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -906,17 +948,17 @@ new()是在新式类中新出现的方法，它作用在构造方法init()建造
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之匿名函数/" >python函数之匿名函数</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之匿名函数/" >python函数之匿名函数</a>
         </li>
     
     
@@ -975,15 +1017,17 @@ new()是在新式类中新出现的方法，它作用在构造方法init()建造
     
         <span class="sidebar-tag-name" data-tags="session"><span class="iconfont-archer">&#xe606;</span>session</span>
     
+        <span class="sidebar-tag-name" data-tags="wsgi"><span class="iconfont-archer">&#xe606;</span>wsgi</span>
+    
+        <span class="sidebar-tag-name" data-tags="框架"><span class="iconfont-archer">&#xe606;</span>框架</span>
+    
+        <span class="sidebar-tag-name" data-tags="ORM"><span class="iconfont-archer">&#xe606;</span>ORM</span>
+    
         <span class="sidebar-tag-name" data-tags="python，面向对象"><span class="iconfont-archer">&#xe606;</span>python，面向对象</span>
     
         <span class="sidebar-tag-name" data-tags="__new__"><span class="iconfont-archer">&#xe606;</span>__new__</span>
     
         <span class="sidebar-tag-name" data-tags="__init__"><span class="iconfont-archer">&#xe606;</span>__init__</span>
-    
-        <span class="sidebar-tag-name" data-tags="框架"><span class="iconfont-archer">&#xe606;</span>框架</span>
-    
-        <span class="sidebar-tag-name" data-tags="ORM"><span class="iconfont-archer">&#xe606;</span>ORM</span>
     
         <span class="sidebar-tag-name" data-tags="python"><span class="iconfont-archer">&#xe606;</span>python</span>
     
@@ -993,13 +1037,13 @@ new()是在新式类中新出现的方法，它作用在构造方法init()建造
     
         <span class="sidebar-tag-name" data-tags="__call__"><span class="iconfont-archer">&#xe606;</span>__call__</span>
     
+        <span class="sidebar-tag-name" data-tags="闭包"><span class="iconfont-archer">&#xe606;</span>闭包</span>
+    
         <span class="sidebar-tag-name" data-tags="迭代器"><span class="iconfont-archer">&#xe606;</span>迭代器</span>
     
         <span class="sidebar-tag-name" data-tags="生成器"><span class="iconfont-archer">&#xe606;</span>生成器</span>
     
         <span class="sidebar-tag-name" data-tags="匿名函数"><span class="iconfont-archer">&#xe606;</span>匿名函数</span>
-    
-        <span class="sidebar-tag-name" data-tags="闭包"><span class="iconfont-archer">&#xe606;</span>闭包</span>
     
         <span class="sidebar-tag-name" data-tags="命名空间"><span class="iconfont-archer">&#xe606;</span>命名空间</span>
     
@@ -1008,6 +1052,12 @@ new()是在新式类中新出现的方法，它作用在构造方法init()建造
         <span class="sidebar-tag-name" data-tags="接口类"><span class="iconfont-archer">&#xe606;</span>接口类</span>
     
         <span class="sidebar-tag-name" data-tags="抽象类"><span class="iconfont-archer">&#xe606;</span>抽象类</span>
+    
+        <span class="sidebar-tag-name" data-tags="中间件"><span class="iconfont-archer">&#xe606;</span>中间件</span>
+    
+        <span class="sidebar-tag-name" data-tags="client"><span class="iconfont-archer">&#xe606;</span>client</span>
+    
+        <span class="sidebar-tag-name" data-tags="server"><span class="iconfont-archer">&#xe606;</span>server</span>
     
         <span class="sidebar-tag-name" data-tags="classmethod"><span class="iconfont-archer">&#xe606;</span>classmethod</span>
     
