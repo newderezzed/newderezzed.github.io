@@ -9,7 +9,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
-    <title>老生常谈session，cookie的区别，安全性1.0 · Derezzed&#39;s Studio</title>
+    <title>flask 源码解析：路由 · Derezzed&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -191,7 +191,7 @@
                 <a href="/" >Derezzed&#39;s Studio.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">老生常谈session，cookie的区别，安全性1.0</a>
+                <a href="#" class="post-name">flask 源码解析：路由</a>
             </div>
     </div>
     
@@ -223,7 +223,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            老生常谈session，cookie的区别，安全性1.0
+            flask 源码解析：路由
             <!-- 404 -->
             
         </h1>
@@ -241,15 +241,17 @@ height:50vh;
             
                 <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "cookie">cookie</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "session">session</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "flask">flask</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "源码">源码</a>
     
 </div>
             
             <div class="post-intro-meta">
                 <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                <span class="post-intro-time">2018/04/14</span>
+                <span class="post-intro-time">2018/06/13</span>
                 
                 <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                     <span class="iconfont-archer">&#xe602;</span>
@@ -355,90 +357,66 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h2 id="为什么session，cookie经常会有人提到"><a href="#为什么session，cookie经常会有人提到" class="headerlink" title="为什么session，cookie经常会有人提到"></a>为什么session，cookie经常会有人提到</h2><p>做web开发的人基本上都会用session和cookie，但是仅仅只是会用，并不知道session和cookie的真正的工作原理，都只是凭着感觉来猜测。web开发者只要利用它们来完成工作就行了，所以每个人的理解基本都会有大同小异，我想这就是session，cookie经常会被讨论的原因。本文也是根据个人经验，以及个人所学，对session,cookie的一些看法，纯属个人见解，希望得到大家的更正和建议。</p>
-<h2 id="什么时cookie"><a href="#什么时cookie" class="headerlink" title="什么时cookie"></a>什么时cookie</h2><p>cookie分为二种</p>
+        <h1 id="flask-源码解析：路由"><a href="#flask-源码解析：路由" class="headerlink" title="flask 源码解析：路由"></a>flask 源码解析：路由</h1><blockquote>
+<p>原文：<a href="http://cizixs.com/2017/01/12/flask-insight-routing" target="_blank" rel="noopener">http://cizixs.com/2017/01/12/flask-insight-routing</a></p>
+</blockquote>
+<h2 id="构建路由规则"><a href="#构建路由规则" class="headerlink" title="构建路由规则"></a>构建路由规则</h2><p>一个 web 应用不同的路径会有不同的处理函数，<strong>路由就是根据请求的 URL 找到对应处理函数的过程。</strong> </p>
+<p>在执行查找之前，需要有一个规则列表，它存储了 url 和处理函数的对应关系。最容易想到的解决方案就是定义一个字典，key 是 url，value 是对应的处理函数。如果 url 都是静态的（url 路径都是实现确定的，没有变量和正则匹配），那么路由的过程就是从字典中通过 url 这个 key ，找到并返回对应的 value；如果没有找到，就报 404 错误。而对于动态路由，还需要更复杂的匹配逻辑。flask 中的路由过程是这样的吗？这篇文章就来分析分析。 </p>
+<p>在分析路由匹配过程之前，我们先来看看 <code>flask</code> 中，<a href="http://flask.pocoo.org/docs/0.12/api/#url-route-registrations" target="_blank" rel="noopener">构建这个路由规则</a>的两种方法： </p>
+<ol>
+<li><p>通过 <code>app.route()</code>  装饰器，比如文章开头给出的 hello world 例子</p>
+</li>
+<li><p>通过 <code>app.add_url_rule</code>，这个方法的签名为 <code>add_url_rule(self, rule, endpoint=None, view_func=None, **options)</code>，参数的含义如下：</p>
 <ul>
-<li>以文件方式存在硬盘空间上的长期性的cookie</li>
-<li>停留在浏览器所占内存中的临时性的cookie</li>
+<li><code>rule</code>： url 规则字符串，可以是静态的 <code>/path</code>，也可以包含 <code>/</code></li>
+<li><code>endpoint</code>：要注册规则的 endpoint，默认是 <code>view_func</code> 的名字</li>
+<li><code>view_func</code>：对应 url 的处理函数，也被称为视图函数</li>
 </ul>
-<p>浏览网站时，你会经常发现网站登录的地方，会有提示，问你是不是要记住自己的登录状态，像这种情况，登录时填写的一些信息会被以文件的方式存放在客户端的硬盘上。</p>
-<p>当用户登录后，session会在cookie端产生一个session_id，这个session_id是存于浏览器所占用的内存当中。当你关闭浏览器后，session_id也要消失了。</p>
-<p>cookie采用的是在客户端保持状态的方案，它是客户端的会话状态的一种储存机制。它是服务器在本地机器上存储的小段文本或者是内存中的一段数据，并随每一个请求发送至同一个服务器。IETF RFC 2965 HTTP State Management Mechanism 是通用cookie规范。网络服务器用HTTP头信息向客户端发送cookies，在客户终端，浏览器解析这些cookies并将它们保存为一个本地文件，或者本地内存中数据，它会自动将同一服务器的任何请求缚上这些cookies，由于采用服务器端保持状态的方案在客户端也需要保存一个标识，所以session机制借助于cookie机制来达到保存标识的目的，这样就可以解决HTTP协议无状态的缺陷。</p>
-<h2 id="什么是session"><a href="#什么是session" class="headerlink" title="什么是session"></a>什么是session</h2><p>session是一种服务器端的信息管理机制，它把这些文件信息以文件的形势存放在服务器的硬盘空间上，这种情况是默认的，可以用memcache把这种数据放到内存里面。请参考<a href="http://blog.51yip.com/php/931.html" target="_blank" rel="noopener">web集群时利用memcache来同步session</a></p>
-<p>当客户端向服务器发出请求时，要求服务器端产生一个session时，服务器端会先检查一下，客户端的cookie里面有没有session_id，是否已经过期。如果有这样的session_id的话，服务器端会根据cookie里的session_id把服务器的session检索出来。如果没有这样的session_id的话，服务器端会重新建立一个。PHPSESSID是一串加了密的字符串，它的生成按照一定的规则来执行。同一客户端启动二次session_start的话，session_id是不一样的。</p>
-<table>
-<thead>
-<tr>
-<th>Host</th>
-<th><code>*****************.com</code></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>User-Agent</td>
-<td><code>Mozilla/5.0 (X11; U; Linux i686; zh-CN; rv:1.9.2.6) Gecko/20100625 Firefox/3.6.6</code></td>
-</tr>
-<tr>
-<td>Accept</td>
-<td><code>text/css,*/*;q=0.1</code></td>
-</tr>
-<tr>
-<td>Accept-Language</td>
-<td><code>zh-cn,zh;q=0.5</code></td>
-</tr>
-<tr>
-<td>Accept-Encoding</td>
-<td><code>gzip,deflate</code></td>
-</tr>
-<tr>
-<td>Accept-Charset</td>
-<td><code>UTF-8,*</code></td>
-</tr>
-<tr>
-<td>Keep-Alive</td>
-<td><code>115</code></td>
-</tr>
-<tr>
-<td>Connection</td>
-<td><code>keep-alive</code></td>
-</tr>
-<tr>
-<td>Referer</td>
-<td><code>http://***************.com/</code></td>
-</tr>
-<tr>
-<td>Cookie</td>
-<td><code>BX=7f34kbl5d3m3g&amp;b=3&amp;s=9t; AWSUSER_ID=awsuser_id1267685109158r8091; ***PHPSESSID=us1o22h4iveo4uni3iksabreh4***</code></td>
-</tr>
-<tr>
-<td>If-Modified-Since</td>
-<td><code>Tue, 29 Jun 2010 07:55:38 GMT</code></td>
-</tr>
-</tbody>
-</table>
-<p>上面是一次请求的头信息。</p>
-<p>session产生的session_id放在cookie里面，如果用户把cookie禁止掉，是不是session也不能用了呢？禁止掉cookie后，session当然可以用，不过通过其他的方式来获得这个sessionid，比如，可以根在url的后面，或者以表单的形势提交到服务器端。从而使服务器端了解客户端的状态。</p>
-<h2 id="session和cookie谁更安全"><a href="#session和cookie谁更安全" class="headerlink" title="session和cookie谁更安全"></a>session和cookie谁更安全</h2><p>就个人而言，我觉得session更安全一点，我以下几点看法。</p>
-<p>1，如果session和cookie一样安全的话，二者就没有并要同时存在了，只要cookie就好了，让客户端来分提服务器的负担，并且对于用户来说又是透明的。何乐而不为呢。</p>
-<p>2，session的sessionID是放在cookie里，要想功破session的话，第一要功破cookie。功破cookie后，你要得到 sessionID,sessionID是要有人登录，或者启动session_start才会有，你不知道什么时候会有人登录。第二，sessionID是加密的，第二次session_start的时候，前一次的sessionID就没有用了，session过期时sessionid也会失效，想在短时间内功破加了密的 sessionID很难。session是针对某一次通信而言，会话结束session也就随着消失了，而真正的cookie存在于客户端硬盘上的一个文本文件，谁安全很显然了。</p>
-<p>3，如果session这么容易被功破，这么不安全的话，我想现有的绝大部分网站都不安全了。</p>
+</li>
+</ol>
+<p>这两种方法是等价的，也就是说： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route('/')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"hello, world!"</span></span><br></pre></td></tr></table></figure>
+<p>也可以写成 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"hello, world!"</span></span><br><span class="line"></span><br><span class="line">app.add_url_rule(<span class="string">'/'</span>, <span class="string">'hello'</span>, hello)</span><br></pre></td></tr></table></figure>
+<p><strong>NOTE</strong>: 其实，还有一种方法来构建路由规则——直接操作 <code>app.url_map</code> 这个数据结构。不过这种方法并不是很常用，因此就不展开了。</p>
+<p>注册路由规则的时候，flask 内部做了哪些东西呢？我们来看看 <code>route</code> 方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">route</span><span class="params">(self, rule, **options)</span>:</span></span><br><span class="line">    <span class="string">"""A decorator that is used to register a view function for a</span></span><br><span class="line"><span class="string">    given URL rule.  This does the same thing as :meth:`add_url_rule`</span></span><br><span class="line"><span class="string">    but is intended for decorator usage.</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    一个装饰器，用于为给定的URL规则注册一个视图函数。</span></span><br><span class="line"><span class="string">    这和'meth：`add_url_rule`'是一样的，但是用于装饰器的使用。</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">decorator</span><span class="params">(f)</span>:</span></span><br><span class="line">        endpoint = options.pop(<span class="string">'endpoint'</span>, <span class="keyword">None</span>)</span><br><span class="line">        self.add_url_rule(rule, endpoint, f, **options)</span><br><span class="line">        <span class="keyword">return</span> f</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> decorator</span><br></pre></td></tr></table></figure>
+<p><code>route</code> 方法内部也是调用 <code>add_url_rule</code>，只不过在外面包了一层装饰器的逻辑，这也验证了上面两种方法等价的说法。 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_url_rule</span><span class="params">(self, rule, endpoint=None, view_func=None, **options)</span>:</span></span><br><span class="line">    <span class="string">"""Connects a URL rule.  Works exactly like the :meth:`route`</span></span><br><span class="line"><span class="string">    decorator.  If a view_func is provided it will be registered with the</span></span><br><span class="line"><span class="string">    endpoint.</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    连接URL规则。工作方式和meth：“路线”装饰器一样。如果提供了viewfunc，它将被注册到端点。</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    methods = options.pop(<span class="string">'methods'</span>, <span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">    rule = self.url_rule_class(rule, methods=methods, **options)</span><br><span class="line">    self.url_map.add(rule)</span><br><span class="line">    <span class="keyword">if</span> view_func <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">        old_func = self.view_functions.get(endpoint)</span><br><span class="line">        <span class="keyword">if</span> old_func <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span> <span class="keyword">and</span> old_func != view_func:</span><br><span class="line">            <span class="keyword">raise</span> AssertionError(<span class="string">'View function mapping is overwriting an '</span></span><br><span class="line">                                 <span class="string">'existing endpoint function: %s'</span> % endpoint)</span><br><span class="line">        self.view_functions[endpoint] = view_func</span><br></pre></td></tr></table></figure>
+<p>上面这段代码省略了处理 endpoint 和构建 methods 的部分逻辑，可以看到它<strong>主要做的事情就是更新 <code>self.url_map</code> 和 <code>self.view_functions</code> 两个变量。</strong>找到变量的定义，发现 <code>url_map</code> 是 <code>werkzeug.routeing:Map</code> 类的对象，<code>rule</code> 是 <code>werkzeug.routing:Rule</code> 类的对象，<code>view_functions</code> 就是一个字典。这和我们之前预想的并不一样，这里增加了 <code>Rule</code> 和 <code>Map</code> 的封装，还把 <code>url</code> 和 <code>view_func</code> 保存到了不同的地方。</p>
+<p>需要注意的是：每个视图函数的 endpoint 必须是不同的，否则会报 <code>AssertionError</code>。</p>
+<h2 id="werkzeug-路由逻辑"><a href="#werkzeug-路由逻辑" class="headerlink" title="werkzeug 路由逻辑"></a>werkzeug 路由逻辑</h2><p>事实上，flask 核心的路由逻辑是在 <code>werkzeug</code> 中实现的。所以在继续分析之前，我们先看一下 <code>werkzeug</code> 提供的<a href="http://werkzeug.pocoo.org/docs/0.11/routing/" target="_blank" rel="noopener">路由功能</a>。 </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span>&gt;&gt; m = Map([</span><br><span class="line">...     Rule('/', endpoint='index'),</span><br><span class="line">...     Rule('/downloads/', endpoint='downloads/index'),</span><br><span class="line">...     Rule('/downloads/&lt;int:id&gt;', endpoint='downloads/show')</span><br><span class="line">... ])</span><br><span class="line"><span class="meta">&gt;</span>&gt;&gt; urls = m.bind("example.com", "/")</span><br><span class="line"><span class="meta">&gt;</span>&gt;&gt; urls.match("/", "GET")</span><br><span class="line">('index', &#123;&#125;)</span><br><span class="line"><span class="meta">&gt;</span>&gt;&gt; urls.match("/downloads/42")</span><br><span class="line">('downloads/show', &#123;'id': 42&#125;)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span>&gt;&gt; urls.match("/downloads")</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  ...</span><br><span class="line">RequestRedirect: http://example.com/downloads/</span><br><span class="line"><span class="meta">&gt;</span>&gt;&gt; urls.match("/missing")</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  ...</span><br><span class="line">NotFound: 404 Not Found</span><br></pre></td></tr></table></figure>
+<p>上面的代码演示了 <code>werkzeug</code> 最核心的路由功能：添加路由规则（也可以使用 <code>m.add</code>），把路由表绑定到特定的环境（<code>m.bind</code>），匹配url（<code>urls.match</code>）。正常情况下返回对应的 endpoint 名字和参数字典，可能报重定向或者 404 异常。 </p>
+<p>可以发现，<a href="http://stackoverflow.com/a/19262349/1925083" target="_blank" rel="noopener"><code>endpoint</code> 在路由过程中非常重要</a>。<code>werkzeug</code> 的路由过程，其实是 url 到 endpoint 的转换：通过 url 找到处理该 url 的 endpoint。至于 endpoint 和 view function 之间的匹配关系，<code>werkzeug</code> 是不管的，而上面也看到 <code>flask</code> 是把这个存放到字典中的。 </p>
+<h2 id="flask-路由实现"><a href="#flask-路由实现" class="headerlink" title="flask 路由实现"></a>flask 路由实现</h2><p>好，有了这些基础知识，我们回头看 <code>dispatch_request</code>，继续探寻路由匹配的逻辑： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dispatch_request</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="string">"""Does the request dispatching.  Matches the URL and returns the</span></span><br><span class="line"><span class="string">    return value of the view or error handler.  This does not have to</span></span><br><span class="line"><span class="string">    be a response object.  In order to convert the return value to a</span></span><br><span class="line"><span class="string">    proper response object, call :func:`make_response`.</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    请求调度吗？ 匹配URL并返回视图或错误处理程序的返回值。 </span></span><br><span class="line"><span class="string">    这不一定是一个响应对象。 为了将返回值转换为适当的响应对象，请调用：func：`make_response`。</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    req = _request_ctx_stack.top.request</span><br><span class="line">    <span class="keyword">if</span> req.routing_exception <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">        self.raise_routing_exception(req)</span><br><span class="line">    rule = req.url_rule</span><br><span class="line"></span><br><span class="line">    <span class="comment"># dispatch to the handler for that endpoint</span></span><br><span class="line">    <span class="keyword">return</span> self.view_functions[rule.endpoint](**req.view_args)</span><br></pre></td></tr></table></figure>
+<p>这个方法做的事情就是找到请求对象 <code>request</code>，获取它的 <code>endpoint</code>，然后从 <code>view_functions</code> 找到对应 <code>endpoint</code> 的 <code>view_func</code> ，把请求参数传递过去，进行处理并返回。<code>view_functions</code> 中的内容，我们已经看到，是在构建路由规则的时候保存进去的；那请求中 <code>req.url_rule</code> 是什么保存进去的呢？它的格式又是什么？</p>
+<p>我们可以先这样理解：<code>_request_ctx_stack.top.request</code> 保存着当前请求的信息，在每次请求过来的时候，<code>flask</code> 会把当前请求的信息保存进去，这样我们就能在整个请求处理过程中使用它。至于怎么做到并发情况下信息不会相互干扰错乱，我们将在下一篇文章介绍。</p>
+<p><code>_request_ctx_stack</code> 中保存的是 <code>RequestContext</code> 对象，它出现在 <code>flask/ctx.py</code> 文件中，和路由相关的逻辑如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RequestContext</span><span class="params">(object)</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, app, environ, request=None)</span>:</span></span><br><span class="line">        self.app = app</span><br><span class="line">        self.request = request</span><br><span class="line">        self.url_adapter = app.create_url_adapter(self.request)</span><br><span class="line">        self.match_request()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">match_request</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""Can be overridden by a subclass to hook into the matching</span></span><br><span class="line"><span class="string">        of the request.</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        可以由子类重写以挂钩到请求的匹配。</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            url_rule, self.request.view_args = \</span><br><span class="line">                self.url_adapter.match(return_rule=<span class="keyword">True</span>)</span><br><span class="line">            self.request.url_rule = url_rule</span><br><span class="line">        <span class="keyword">except</span> HTTPException <span class="keyword">as</span> e:</span><br><span class="line">            self.request.routing_exception = e</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Flask</span><span class="params">(_PackageBoundObject)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">create_url_adapter</span><span class="params">(self, request)</span>:</span></span><br><span class="line">        <span class="string">"""Creates a URL adapter for the given request.  The URL adapter</span></span><br><span class="line"><span class="string">        is created at a point where the request context is not yet set up</span></span><br><span class="line"><span class="string">        so the request is passed explicitly.</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        为给定的请求创建一个URL适配器。 </span></span><br><span class="line"><span class="string">        URL适配器是在尚未设置请求上下文的位置创建的，以便明确传递请求。</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> request <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span> self.url_map.bind_to_environ(request.environ,</span><br><span class="line">                server_name=self.config[<span class="string">'SERVER_NAME'</span>])</span><br></pre></td></tr></table></figure>
+<p>在初始化的时候，会调用 <code>app.create_url_adapter</code> 方法，把 <code>app</code> 的 <code>url_map</code> 绑定到 WSGI environ 变量上（<code>bind_to_environ</code> 和之前的 <code>bind</code> 方法作用相同）。最后会调用 <code>match_request</code> 方法，这个方式调用了 <code>url_adapter.match</code> 方法，进行实际的匹配工作，返回匹配的 url rule。而我们之前使用的 <code>url_rule.endpoint</code> 就是匹配的 endpoint 值。</p>
+<p>整个 <code>flask</code> 的路由过程就结束了，总结一下大致的流程：</p>
+<ul>
+<li>通过 <a href="mailto:`@app.route" target="_blank" rel="noopener">`@app.route</a><code>或者</code>app.add_url_rule` 注册应用 url 对应的处理函数</li>
+<li>每次请求过来的时候，会事先调用路由匹配的逻辑，把路由结果保存起来</li>
+<li><code>dispatch_request</code> 根据保存的路由结果，调用对应的视图函数</li>
+</ul>
+<h2 id="match-实现"><a href="#match-实现" class="headerlink" title="match 实现"></a>match 实现</h2><p>虽然讲完了 <code>flask</code> 的路由流程，但是还没有讲到最核心的问题：<code>werkzeug</code> 中是怎么实现<code>match</code> 方法的。<code>Map</code> 保存了 <code>Rule</code> 列表，<code>match</code> 的时候会依次调用其中的 <code>rule.match</code> 方法，如果匹配就找到了 match。<code>Rule.match</code> 方法的代码如下： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">match</span><span class="params">(self, path)</span>:</span></span><br><span class="line">        <span class="string">"""Check if the rule matches a given path. Path is a string in the</span></span><br><span class="line"><span class="string">        form ``"subdomain|/path(method)"`` and is assembled by the map.  If</span></span><br><span class="line"><span class="string">        the map is doing host matching the subdomain part will be the host</span></span><br><span class="line"><span class="string">        instead.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        If the rule matches a dict with the converted values is returned,</span></span><br><span class="line"><span class="string">        otherwise the return value is `None`.</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        检查规则是否与给定的路径匹配。 路径是以“`”子域| /路径（方法）“``形式存在的字符串，由地图组装。 		如果地图正在做主机匹配，则子域部分将成为主机。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">		如果规则匹配转换后的值，则返回值为“无”。</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.build_only:</span><br><span class="line">            m = self._regex.search(path)</span><br><span class="line">            <span class="keyword">if</span> m <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">                groups = m.groupdict()</span><br><span class="line"></span><br><span class="line">                result = &#123;&#125;</span><br><span class="line">                <span class="keyword">for</span> name, value <span class="keyword">in</span> iteritems(groups):</span><br><span class="line">                    <span class="keyword">try</span>:</span><br><span class="line">                        value = self._converters[name].to_python(value)</span><br><span class="line">                    <span class="keyword">except</span> ValidationError:</span><br><span class="line">                        <span class="keyword">return</span></span><br><span class="line">                    result[str(name)] = value</span><br><span class="line">                <span class="keyword">if</span> self.defaults:</span><br><span class="line">                    result.update(self.defaults)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>它的逻辑是这样的：用实现 compile 的正则表达式去匹配给出的真实路径信息，把所有的匹配组件转换成对应的值，保存在字典中（这就是传递给视图函数的参数列表）并返回。 </p>
 
     </article>
     <!-- 前后页  -->
     <ul class="post-paginator">
         <li class="next">
             
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/2018/04/14/老生常谈session，cookie的区别，安全性2.0/" title= 老生常谈session，cookie的区别，安全性2.0 >
-                    <div class="nextTitle">老生常谈session，cookie的区别，安全性2.0</div>
-                </a>
-            
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2018/04/13/Cookie与Session-v2-0/" title= Cookie与Session v2.0 >
-                    <div class="prevTitle">Cookie与Session v2.0</div>
+                <a href= "/2018/06/13/flask-源码解析：应用启动流程/" title= flask 源码解析：应用启动流程 >
+                    <div class="prevTitle">flask 源码解析：应用启动流程</div>
                 </a>
             
         </li>
@@ -544,7 +522,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么session，cookie经常会有人提到"><span class="toc-number">1.</span> <span class="toc-text">为什么session，cookie经常会有人提到</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么时cookie"><span class="toc-number">2.</span> <span class="toc-text">什么时cookie</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是session"><span class="toc-number">3.</span> <span class="toc-text">什么是session</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#session和cookie谁更安全"><span class="toc-number">4.</span> <span class="toc-text">session和cookie谁更安全</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#flask-源码解析：路由"><span class="toc-number">1.</span> <span class="toc-text">flask 源码解析：路由</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#构建路由规则"><span class="toc-number">1.1.</span> <span class="toc-text">构建路由规则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#werkzeug-路由逻辑"><span class="toc-number">1.2.</span> <span class="toc-text">werkzeug 路由逻辑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flask-路由实现"><span class="toc-number">1.3.</span> <span class="toc-text">flask 路由实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#match-实现"><span class="toc-number">1.4.</span> <span class="toc-text">match 实现</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>

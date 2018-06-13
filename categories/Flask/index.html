@@ -300,6 +300,75 @@
     
     
         <article class="index-post">
+            <a class="abstract-title" href = "/2018/06/13/flask-源码解析：路由/" >
+                
+                    <span>flask 源码解析：路由</span>
+            </a>
+            <div class="abstract-content">
+                flask 源码解析：路由
+原文：http://cizixs.com/2017/01/12/flask-insight-routing
+
+构建路由规则一个 web 应用不同的路径会有不同的处理函数，路由就是根据请求的 URL 找到对应处理函数的过程。 
+在执行查找之前，需要有一个规则列表，它存储了 url 和处理函数的对应关系。最容易想到的解决方案就是定义一个字典，key 是 url，value 是对应的处理函数。如果 url 都是静态的（url 路径都是实现确定的，没有变量和正则匹配），那么路由的过程就是从字典中通过 url 这个 key ，找到并返回对应的 value；如果没有找到，...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/06/13</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "flask">flask</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "源码">源码</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2018/06/13/flask-源码解析：应用启动流程/" >
+                
+                    <span>flask 源码解析：应用启动流程</span>
+            </a>
+            <div class="abstract-content">
+                flask 源码解析：应用启动流程
+原文：http://cizixs.com/2017/01/11/flask-insight-start-process
+
+WSGI所有的 python web 框架都要遵循 WSGI 协议，如果对 WSGI 不清楚，可以查看我之前的介绍文章。
+在这里还是要简单回顾一下 WSGI 的核心概念。
+WSGI 中有一个非常重要的概念：每个 python web 应用都是一个可调用（callable）的对象。在 flask 中，这个对象就是 app = Flask(__name__) 创建出来的 app，就是下图中的绿色 Application 部分。要运行 w...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/06/13</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "flask">flask</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "源码">源码</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
             <a class="abstract-title" href = "/2018/06/13/flask-源码解析：简介/" >
                 
                     <span>flask 源码解析：简介</span>
@@ -801,7 +870,31 @@ python 语言 web 框架很多：Django、Tornado、webpy、bottle……，flask
     
     
     
-    <div class="total-archive"> Total : 28 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 30 </div>
     
     <div class="post-archive">
     
@@ -810,6 +903,16 @@ python 语言 web 框架很多：Django、Tornado、webpy、bottle……，flask
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/13</span><a class="archive-post-title" href= "/2018/06/13/flask-源码解析：路由/" >flask 源码解析：路由</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/13</span><a class="archive-post-title" href= "/2018/06/13/flask-源码解析：应用启动流程/" >flask 源码解析：应用启动流程</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -848,12 +951,12 @@ python 语言 web 框架很多：Django、Tornado、webpy、bottle……，flask
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中的-new-、-init-、-call-三个特殊方法/" >Python中的__new__、__init__、__call__三个特殊方法</a>
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中-new-方法的使用和实例化/" >Python中__new__()方法的使用和实例化</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中-new-方法的使用和实例化/" >Python中__new__()方法的使用和实例化</a>
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中的-new-、-init-、-call-三个特殊方法/" >Python中的__new__、__init__、__call__三个特殊方法</a>
         </li>
     
     
@@ -873,12 +976,12 @@ python 语言 web 框架很多：Django、Tornado、webpy、bottle……，flask
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/老生常谈session，cookie的区别，安全性1.0/" >老生常谈session，cookie的区别，安全性1.0</a>
+            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/老生常谈session，cookie的区别，安全性2.0/" >老生常谈session，cookie的区别，安全性2.0</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/老生常谈session，cookie的区别，安全性2.0/" >老生常谈session，cookie的区别，安全性2.0</a>
+            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/老生常谈session，cookie的区别，安全性1.0/" >老生常谈session，cookie的区别，安全性1.0</a>
         </li>
     
     
@@ -898,12 +1001,12 @@ python 语言 web 框架很多：Django、Tornado、webpy、bottle……，flask
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
         </li>
     
     

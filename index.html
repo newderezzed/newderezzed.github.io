@@ -315,6 +315,75 @@ height:50vh;
     
     
         <article class="index-post">
+            <a class="abstract-title" href = "/2018/06/13/flask-源码解析：路由/" >
+                
+                    <span>flask 源码解析：路由</span>
+            </a>
+            <div class="abstract-content">
+                flask 源码解析：路由
+原文：http://cizixs.com/2017/01/12/flask-insight-routing
+
+构建路由规则一个 web 应用不同的路径会有不同的处理函数，路由就是根据请求的 URL 找到对应处理函数的过程。 
+在执行查找之前，需要有一个规则列表，它存储了 url 和处理函数的对应关系。最容易想到的解决方案就是定义一个字典，key 是 url，value 是对应的处理函数。如果 url 都是静态的（url 路径都是实现确定的，没有变量和正则匹配），那么路由的过程就是从字典中通过 url 这个 key ，找到并返回对应的 value；如果没有找到，...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/06/13</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "flask">flask</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "源码">源码</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2018/06/13/flask-源码解析：应用启动流程/" >
+                
+                    <span>flask 源码解析：应用启动流程</span>
+            </a>
+            <div class="abstract-content">
+                flask 源码解析：应用启动流程
+原文：http://cizixs.com/2017/01/11/flask-insight-start-process
+
+WSGI所有的 python web 框架都要遵循 WSGI 协议，如果对 WSGI 不清楚，可以查看我之前的介绍文章。
+在这里还是要简单回顾一下 WSGI 的核心概念。
+WSGI 中有一个非常重要的概念：每个 python web 应用都是一个可调用（callable）的对象。在 flask 中，这个对象就是 app = Flask(__name__) 创建出来的 app，就是下图中的绿色 Application 部分。要运行 w...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/06/13</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "flask">flask</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "源码">源码</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
             <a class="abstract-title" href = "/2018/06/13/flask-源码解析：简介/" >
                 
                     <span>flask 源码解析：简介</span>
@@ -407,69 +476,6 @@ mapping）模型。这个ORM模型的设计比较简单，学起来不会特别�
         <a class="post-tag" href="javascript:void(0);" data-tags = "django">django</a>
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "orm">orm</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/28/Django-路由与视图/" >
-                
-                    <span>Django: 路由与视图</span>
-            </a>
-            <div class="abstract-content">
-                简介
-​        Django框架是美国World Company（世界公司？NB）的工程师Adrian Holovaty和Simon Willison在开发其公司运行的新闻网站（LJWorld.com、Lawrence.com、KUsports.com ） 过程中，逐渐完善丰富而成，2005年开源，是迄今为止Python界名气最大的Web框架。
-​        Django这个词来自吉普赛语，D不发音，中文通常翻为姜戈，不过也有人相当搞笑的称为强哥。 官方发音点这里：
-​        Django框架取名于20世纪三十年代法国著名的爵士吉他手 Django Reinhardt...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/28</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "django">django</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "wsgi">wsgi</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/28/从请求到响应-django-都做了哪些处理？/" >
-                
-                    <span>从请求到响应 django 都做了哪些处理？</span>
-            </a>
-            <div class="abstract-content">
-                 request.user 里面的 user 是怎样得到的, 这个问题需要我们弄清楚
-但是要想回答为什么可以直接通过 request.user 得到请求的用户，应该先来看看请求被处理以及如何返回响应的流程。今天先总结一下 django 从请求到响应都进行了哪些过程。
-WSGI当客户端发送一次请求后，最先处理请求的实际上是 web 服务器就是我们经常说的 nginx、Apache 这类的 web 服务器，而 WSGI的作用就是把 web 服务器和 web 框架 (Django) 连接起来。WSGI 被分为了两个部分：服务端和应用端。为了处理一个 WSGI的响应，服务端执行应用程序并向应用端...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/28</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "django">django</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "wsgi">wsgi</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "中间件">中间件</a>
     
 </div>
                 
@@ -1034,7 +1040,31 @@ WSGI当客户端发送一次请求后，最先处理请求的实际上是 web �
     
     
     
-    <div class="total-archive"> Total : 28 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 30 </div>
     
     <div class="post-archive">
     
@@ -1043,6 +1073,16 @@ WSGI当客户端发送一次请求后，最先处理请求的实际上是 web �
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/13</span><a class="archive-post-title" href= "/2018/06/13/flask-源码解析：路由/" >flask 源码解析：路由</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/13</span><a class="archive-post-title" href= "/2018/06/13/flask-源码解析：应用启动流程/" >flask 源码解析：应用启动流程</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1081,12 +1121,12 @@ WSGI当客户端发送一次请求后，最先处理请求的实际上是 web �
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中的-new-、-init-、-call-三个特殊方法/" >Python中的__new__、__init__、__call__三个特殊方法</a>
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中-new-方法的使用和实例化/" >Python中__new__()方法的使用和实例化</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中-new-方法的使用和实例化/" >Python中__new__()方法的使用和实例化</a>
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中的-new-、-init-、-call-三个特殊方法/" >Python中的__new__、__init__、__call__三个特殊方法</a>
         </li>
     
     
@@ -1106,12 +1146,12 @@ WSGI当客户端发送一次请求后，最先处理请求的实际上是 web �
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/老生常谈session，cookie的区别，安全性1.0/" >老生常谈session，cookie的区别，安全性1.0</a>
+            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/老生常谈session，cookie的区别，安全性2.0/" >老生常谈session，cookie的区别，安全性2.0</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/老生常谈session，cookie的区别，安全性2.0/" >老生常谈session，cookie的区别，安全性2.0</a>
+            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/老生常谈session，cookie的区别，安全性1.0/" >老生常谈session，cookie的区别，安全性1.0</a>
         </li>
     
     
@@ -1131,12 +1171,12 @@ WSGI当客户端发送一次请求后，最先处理请求的实际上是 web �
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
         </li>
     
     
