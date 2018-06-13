@@ -315,6 +315,109 @@ height:50vh;
     
     
         <article class="index-post">
+            <a class="abstract-title" href = "/2018/04/28/如何理解-Python-Web-开发？/" >
+                
+                    <span>如何理解 Python Web 开发？</span>
+            </a>
+            <div class="abstract-content">
+                因为 python代码的优雅美观且易于维护这一特点，越来越多的人选择使用 Python做Web开发。而 Python的 Web框架百花齐放，目前比较流行的框架有大包大揽的 Django，小巧灵活的 Flask、 Bottle，还有性能高效的异步框架 Tornado、 sanic。这么多框架只要选择一个，阅读他的文档，就可以很轻松的搭建一个 web app，完全不需要去管他实现的原理。
+本篇文章意在对一个web开发做一个梳理。
+前端网页三剑客我们打开浏览器输入一个网址 yukunweb.com，然后就看到了浏览器给我们显示的页面，这个时候打开浏览器开发者工具，点击 Network，刷新页面...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/28</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "wsgi">wsgi</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "client">client</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "server">server</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2018/04/15/Python中的-new-、-init-、-call-三个特殊方法/" >
+                
+                    <span>Python中的__new__、__init__、__call__三个特殊方法</span>
+            </a>
+            <div class="abstract-content">
+                new： 对象的创建，是一个静态方法，第一个参数是cls。(想想也是，不可能是self，对象还没创建，哪来的self) 
+init ： 对象的初始化， 是一个实例方法，第一个参数是self。 
+call ： 对象可call，注意不是类，是对象。 
+先有创建，才有初始化。即先new，而后init。 
+直接看代码：
+12345678class Bar(object):  passclass Foo(object):  def __new__(cls, *args, **kwargs):    return Bar()print (Foo())
+通俗一点就是，当你实例化一个对象的时候，就会执行...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/15</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "面向对象">面向对象</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "__init__，__new__">__init__，__new__</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "__call__">__call__</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2018/04/15/python中-init-方法和-new-方法的区别/" >
+                
+                    <span>python中__init__()方法和__new__()方法的区别</span>
+            </a>
+            <div class="abstract-content">
+                下面先通过一段代码看看这两个方法的调用顺序：
+1234567891011121314class A(object):    def __init__(self,*args,**kwargs):        print ("init &amp;&amp;&amp;&amp;  %s" % self.__class__)    def __new__(cls,*args,**kwargs):        print ("new &amp;&amp;&amp;&amp;  %s" % cls)        return object.__new__(cls,*args,**kwargs)...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/15</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "__new__">__new__</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "__init__">__init__</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "面向对象">面向对象</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
             <a class="abstract-title" href = "/2018/04/15/Python中-new-方法的使用和实例化/" >
                 
                     <span>Python中__new__()方法的使用和实例化</span>
@@ -376,110 +479,10 @@ new()是在新式类中新出现的方法，它作用在构造方法init()建造
             </div>
         </article>
     
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/15/python面向对象三大特性之继承-抽象类/" >
-                
-                    <span>python面向对象三大特性之继承(抽象类)</span>
-            </a>
-            <div class="abstract-content">
-                什么是抽象类
-与java一样，python也有抽象类的概念但是同样需要借助模块实现，抽象类是一个特殊的类，它的特殊之处在于只能被继承，不能被实例化
-
-为什么要有抽象类如果说类是从一堆对象中抽取相同的内容而来的，那么抽象类就是从一堆类中抽取相同的内容而来的，内容包括数据属性和函数属性。比如我们有香蕉的类，有苹果的类，有桃子的类，从这些类抽取相同的内容就是水果这个抽象的类，你吃水果时，要么是吃一个具体的香蕉，要么是吃一个具体的桃子。。。。。。你永远无法吃到一个叫做水果的东西。从设计角度去看，如果类是从现实对象抽象而来的，那么抽象类就是基于类抽象而来的。从实现角度来看，抽象类与普通类的不同之处...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/15</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "面向对象">面向对象</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "接口类">接口类</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "抽象类">抽象类</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/15/python面向对象三大特性之继承-接口类/" >
-                
-                    <span>python面向对象三大特性之继承(接口类)</span>
-            </a>
-            <div class="abstract-content">
-                继承有两种用途：
-1.继承基类的方法，并且做出自己的改变或者扩展（代码重用）
-2.声明某个子类兼容于某基类，定义一个接口类Interface，接口类中定义了一些接口名（就是函数名）且并未实现接口的功能，子类继承接口类，并且实现接口中的功能
-12345678910111213141516171819202122232425# class Alipay:#     '''#     支付宝支付#     '''#     def pay(self,money):#         print('支付宝支付了%s元'%money)## class Applepay:#     '''#    ...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/15</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "面向对象">面向对象</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/14/老生常谈session，cookie的区别，安全性2.0/" >
-                
-                    <span>老生常谈session，cookie的区别，安全性2.0</span>
-            </a>
-            <div class="abstract-content">
-                Cookie和Session是为了在无状态的HTTP协议之上维护会话状态，使得服务器可以知道当前是和哪个客户在打交道。本文来详细讨论Cookie和Session的实现机制，以及其中涉及的安全问题。
-因为HTTP协议是无状态的，即每次用户请求到达服务器时，HTTP服务器并不知道这个用户是谁、是否登录过等。现在的服务器之所以知道我们是否已经登录，是因为服务器在登录时设置了浏览器的Cookie！Session则是借由Cookie而实现的更高层的服务器与浏览器之间的会话。
-
-Cookie是由网景公司的前雇员Lou Montulli在1993年发明的，现今Cookie已经广泛使用了。
-
-
-cook...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/14</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "cookie">cookie</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "session">session</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/">&#60; PREV</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">NEXT &#62;</a>
+        <a class="extend prev" rel="prev" href="/">&#60; PREV</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">NEXT &#62;</a>
     </nav>
     
 </main>
@@ -971,7 +974,52 @@ cook...
     
     
     
-    <div class="total-archive"> Total : 25 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 28 </div>
     
     <div class="post-archive">
     
@@ -980,6 +1028,21 @@ cook...
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/13</span><a class="archive-post-title" href= "/2018/06/13/flask-源码解析：简介/" >flask 源码解析：简介</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/17</span><a class="archive-post-title" href= "/2018/05/17/Django-Rest-Framework-序列化关系模型/" >Django Rest Framework 序列化关系模型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/02</span><a class="archive-post-title" href= "/2018/05/02/Django-ORM模型：初识/" >Django ORM模型：初识</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1028,12 +1091,12 @@ cook...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/老生常谈session，cookie的区别，安全性1.0/" >老生常谈session，cookie的区别，安全性1.0</a>
+            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/老生常谈session，cookie的区别，安全性2.0/" >老生常谈session，cookie的区别，安全性2.0</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/老生常谈session，cookie的区别，安全性2.0/" >老生常谈session，cookie的区别，安全性2.0</a>
+            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/老生常谈session，cookie的区别，安全性1.0/" >老生常谈session，cookie的区别，安全性1.0</a>
         </li>
     
     
@@ -1053,12 +1116,12 @@ cook...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
         </li>
     
     
@@ -1119,6 +1182,10 @@ cook...
     
         <span class="sidebar-tag-name" data-tags="wsgi"><span class="iconfont-archer">&#xe606;</span>wsgi</span>
     
+        <span class="sidebar-tag-name" data-tags="orm"><span class="iconfont-archer">&#xe606;</span>orm</span>
+    
+        <span class="sidebar-tag-name" data-tags="RestFramework"><span class="iconfont-archer">&#xe606;</span>RestFramework</span>
+    
         <span class="sidebar-tag-name" data-tags="框架"><span class="iconfont-archer">&#xe606;</span>框架</span>
     
         <span class="sidebar-tag-name" data-tags="ORM"><span class="iconfont-archer">&#xe606;</span>ORM</span>
@@ -1137,31 +1204,35 @@ cook...
     
         <span class="sidebar-tag-name" data-tags="__call__"><span class="iconfont-archer">&#xe606;</span>__call__</span>
     
-        <span class="sidebar-tag-name" data-tags="闭包"><span class="iconfont-archer">&#xe606;</span>闭包</span>
+        <span class="sidebar-tag-name" data-tags="flask"><span class="iconfont-archer">&#xe606;</span>flask</span>
+    
+        <span class="sidebar-tag-name" data-tags="源码"><span class="iconfont-archer">&#xe606;</span>源码</span>
+    
+        <span class="sidebar-tag-name" data-tags="匿名函数"><span class="iconfont-archer">&#xe606;</span>匿名函数</span>
     
         <span class="sidebar-tag-name" data-tags="迭代器"><span class="iconfont-archer">&#xe606;</span>迭代器</span>
     
         <span class="sidebar-tag-name" data-tags="生成器"><span class="iconfont-archer">&#xe606;</span>生成器</span>
     
-        <span class="sidebar-tag-name" data-tags="匿名函数"><span class="iconfont-archer">&#xe606;</span>匿名函数</span>
+        <span class="sidebar-tag-name" data-tags="闭包"><span class="iconfont-archer">&#xe606;</span>闭包</span>
     
         <span class="sidebar-tag-name" data-tags="命名空间"><span class="iconfont-archer">&#xe606;</span>命名空间</span>
-    
-        <span class="sidebar-tag-name" data-tags="小数据池"><span class="iconfont-archer">&#xe606;</span>小数据池</span>
     
         <span class="sidebar-tag-name" data-tags="接口类"><span class="iconfont-archer">&#xe606;</span>接口类</span>
     
         <span class="sidebar-tag-name" data-tags="抽象类"><span class="iconfont-archer">&#xe606;</span>抽象类</span>
+    
+        <span class="sidebar-tag-name" data-tags="小数据池"><span class="iconfont-archer">&#xe606;</span>小数据池</span>
+    
+        <span class="sidebar-tag-name" data-tags="classmethod"><span class="iconfont-archer">&#xe606;</span>classmethod</span>
+    
+        <span class="sidebar-tag-name" data-tags="staticmethod"><span class="iconfont-archer">&#xe606;</span>staticmethod</span>
     
         <span class="sidebar-tag-name" data-tags="中间件"><span class="iconfont-archer">&#xe606;</span>中间件</span>
     
         <span class="sidebar-tag-name" data-tags="client"><span class="iconfont-archer">&#xe606;</span>client</span>
     
         <span class="sidebar-tag-name" data-tags="server"><span class="iconfont-archer">&#xe606;</span>server</span>
-    
-        <span class="sidebar-tag-name" data-tags="classmethod"><span class="iconfont-archer">&#xe606;</span>classmethod</span>
-    
-        <span class="sidebar-tag-name" data-tags="staticmethod"><span class="iconfont-archer">&#xe606;</span>staticmethod</span>
     
         <span class="sidebar-tag-name" data-tags="数据结构"><span class="iconfont-archer">&#xe606;</span>数据结构</span>
     
@@ -1201,6 +1272,8 @@ jsonContent:
         <span class="sidebar-category-name" data-categories="Django"><span class="iconfont-archer">&#xe60a;</span>Django</span>
     
         <span class="sidebar-category-name" data-categories="python"><span class="iconfont-archer">&#xe60a;</span>python</span>
+    
+        <span class="sidebar-category-name" data-categories="Flask"><span class="iconfont-archer">&#xe60a;</span>Flask</span>
     
         <span class="sidebar-category-name" data-categories="数据结构"><span class="iconfont-archer">&#xe60a;</span>数据结构</span>
     
