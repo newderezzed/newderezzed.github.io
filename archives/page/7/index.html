@@ -300,147 +300,32 @@
     
     
         <article class="index-post">
-            <a class="abstract-title" href = "/2018/06/19/flask-源码解析：上下文/" >
+            <a class="abstract-title" href = "/2018/04/03/hello-world/" >
                 
-                    <span>flask 源码解析：上下文</span>
+                    <span>Hello World</span>
             </a>
             <div class="abstract-content">
-                flask 源码解析：上下文
-原文：http://cizixs.com/2017/01/13/flask-insight-context
-
-上下文（application context 和 request context）上下文一直是计算机中难理解的概念，在知乎的一个问题下面有个很通俗易懂的回答： 
-
-每一段程序都有很多外部变量。只有像Add这种简单的函数才是没有外部变量的。一旦你的一段程序有了外部变量，这段程序就不完整，不能独立运行。你为了使他们运行，就要给所有的外部变量一个一个写一些值进去。这些值的集合就叫上下文。 – vzch 
-
-比如，在 flask 中，视图函数需要知道它执行...
+                Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
+Quick StartCreate a new post1$ hexo new "My New Post"
+More info: Writing
+Run server1$ hexo server
+More...
             </div>
             <div class="abstract-post-meta">
                 <!-- date  -->
                 <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/06/19</span>
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/03</span>
                 </div>
                 <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "flask">flask</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码">源码</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/06/13/flask-源码解析：路由/" >
-                
-                    <span>flask 源码解析：路由</span>
-            </a>
-            <div class="abstract-content">
-                flask 源码解析：路由
-原文：http://cizixs.com/2017/01/12/flask-insight-routing
-
-构建路由规则一个 web 应用不同的路径会有不同的处理函数，路由就是根据请求的 URL 找到对应处理函数的过程。 
-在执行查找之前，需要有一个规则列表，它存储了 url 和处理函数的对应关系。最容易想到的解决方案就是定义一个字典，key 是 url，value 是对应的处理函数。如果 url 都是静态的（url 路径都是实现确定的，没有变量和正则匹配），那么路由的过程就是从字典中通过 url 这个 key ，找到并返回对应的 value；如果没有找到，...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/06/13</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "flask">flask</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码">源码</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/06/13/flask-源码解析：应用启动流程/" >
-                
-                    <span>flask 源码解析：应用启动流程</span>
-            </a>
-            <div class="abstract-content">
-                flask 源码解析：应用启动流程
-原文：http://cizixs.com/2017/01/11/flask-insight-start-process
-
-WSGI所有的 python web 框架都要遵循 WSGI 协议，如果对 WSGI 不清楚，可以查看我之前的介绍文章。
-在这里还是要简单回顾一下 WSGI 的核心概念。
-WSGI 中有一个非常重要的概念：每个 python web 应用都是一个可调用（callable）的对象。在 flask 中，这个对象就是 app = Flask(__name__) 创建出来的 app，就是下图中的绿色 Application 部分。要运行 w...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/06/13</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "flask">flask</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码">源码</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/06/13/flask-源码解析：简介/" >
-                
-                    <span>flask 源码解析：简介</span>
-            </a>
-            <div class="abstract-content">
-                flask 源码解析：简介
-原文：http://cizixs.com/2017/01/10/flask-insight-introduction
-
-flask简介Flask 官网上对它的定位是一个“微” python web 开发框架。 
-
-Flask is a micro web development framework for Python. 
-
-python 语言 web 框架很多：Django、Tornado、webpy、bottle……，flask 的特点是简单可扩展。简单有几个方面，比如它只实现 web 框架最核心的功能，保持功能的简洁；还有一个就是代码量少，核心代码 ap...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/06/13</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "flask">flask</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "源码">源码</a>
-    
-</div>
                 
             </div>
         </article>
     
     <!-- paginator  -->
+    
+    <nav class="page-nav">
+        <a class="extend prev" rel="prev" href="/archives/page/6/">&#60; PREV</a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/5/">5</a><a class="page-number" href="/archives/page/6/">6</a><span class="page-number current">7</span>
+    </nav>
     
 </main>
             <!-- profile -->

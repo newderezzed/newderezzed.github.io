@@ -300,6 +300,43 @@
     
     
         <article class="index-post">
+            <a class="abstract-title" href = "/2018/06/19/flask-源码解析：上下文/" >
+                
+                    <span>flask 源码解析：上下文</span>
+            </a>
+            <div class="abstract-content">
+                flask 源码解析：上下文
+原文：http://cizixs.com/2017/01/13/flask-insight-context
+
+上下文（application context 和 request context）上下文一直是计算机中难理解的概念，在知乎的一个问题下面有个很通俗易懂的回答： 
+
+每一段程序都有很多外部变量。只有像Add这种简单的函数才是没有外部变量的。一旦你的一段程序有了外部变量，这段程序就不完整，不能独立运行。你为了使他们运行，就要给所有的外部变量一个一个写一些值进去。这些值的集合就叫上下文。 – vzch 
+
+比如，在 flask 中，视图函数需要知道它执行...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/06/19</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "flask">flask</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "源码">源码</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
             <a class="abstract-title" href = "/2018/06/13/flask-源码解析：路由/" >
                 
                     <span>flask 源码解析：路由</span>
@@ -434,43 +471,10 @@ python 语言 web 框架很多：Django、Tornado、webpy、bottle……，flask
             </div>
         </article>
     
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/05/02/Django-ORM模型：初识/" >
-                
-                    <span>Django ORM模型：初识</span>
-            </a>
-            <div class="abstract-content">
-                
-使用Python的Django模型的话，一般都会用它自带的ORM（Object-relational
-mapping）模型。这个ORM模型的设计比较简单，学起来不会特别花时间。不过，Django的ORM模型有自己的一套语法，有时候会觉得别扭。这里聊一下我自己的体会。
-
-模型设计这一部分算处理得比较好的部分。Django的数据模型的建立过程很简单，就是继承django.db.models中的Model类，然后给它增加属性。每一个属性可以对应关系数据库中的一个字段。比如在一个叫myapp的Django App下，创建models.py文件：
-1234from django.db impor...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/05/02</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "django">django</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "orm">orm</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <span class="page-number current">1</span><a class="page-number" href="/archives/2018/page/2/">2</a><a class="page-number" href="/archives/2018/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/archives/2018/page/6/">6</a><a class="extend next" rel="next" href="/archives/2018/page/2/">NEXT &#62;</a>
+        <span class="page-number current">1</span><a class="page-number" href="/archives/2018/page/2/">2</a><a class="page-number" href="/archives/2018/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/archives/2018/page/7/">7</a><a class="extend next" rel="next" href="/archives/2018/page/2/">NEXT &#62;</a>
     </nav>
     
 </main>
@@ -962,7 +966,16 @@ mapping）模型。这个ORM模型的设计比较简单，学起来不会特别�
     
     
     
-    <div class="total-archive"> Total : 30 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 31 </div>
     
     <div class="post-archive">
     
@@ -971,6 +984,11 @@ mapping）模型。这个ORM模型的设计比较简单，学起来不会特别�
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/19</span><a class="archive-post-title" href= "/2018/06/19/flask-源码解析：上下文/" >flask 源码解析：上下文</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -999,17 +1017,22 @@ mapping）模型。这个ORM模型的设计比较简单，学起来不会特别�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/从请求到响应-django-都做了哪些处理？/" >从请求到响应 django 都做了哪些处理？</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/Django-路由与视图/" >Django: 路由与视图</a>
         </li>
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/从请求到响应-django-都做了哪些处理？/" >从请求到响应 django 都做了哪些处理？</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/如何理解-Python-Web-开发？/" >如何理解 Python Web 开发？</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中的-new-、-init-、-call-三个特殊方法/" >Python中的__new__、__init__、__call__三个特殊方法</a>
         </li>
     
     
@@ -1020,11 +1043,6 @@ mapping）模型。这个ORM模型的设计比较简单，学起来不会特别�
     
         <li class="archive-post-item">
             <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中-new-方法的使用和实例化/" >Python中__new__()方法的使用和实例化</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中的-new-、-init-、-call-三个特殊方法/" >Python中的__new__、__init__、__call__三个特殊方法</a>
         </li>
     
     
@@ -1069,12 +1087,12 @@ mapping）模型。这个ORM模型的设计比较简单，学起来不会特别�
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
         </li>
     
     

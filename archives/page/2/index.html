@@ -300,6 +300,39 @@
     
     
         <article class="index-post">
+            <a class="abstract-title" href = "/2018/05/02/Django-ORM模型：初识/" >
+                
+                    <span>Django ORM模型：初识</span>
+            </a>
+            <div class="abstract-content">
+                
+使用Python的Django模型的话，一般都会用它自带的ORM（Object-relational
+mapping）模型。这个ORM模型的设计比较简单，学起来不会特别花时间。不过，Django的ORM模型有自己的一套语法，有时候会觉得别扭。这里聊一下我自己的体会。
+
+模型设计这一部分算处理得比较好的部分。Django的数据模型的建立过程很简单，就是继承django.db.models中的Model类，然后给它增加属性。每一个属性可以对应关系数据库中的一个字段。比如在一个叫myapp的Django App下，创建models.py文件：
+1234from django.db impor...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/05/02</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "django">django</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "orm">orm</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
             <a class="abstract-title" href = "/2018/04/28/Django-路由与视图/" >
                 
                     <span>Django: 路由与视图</span>
@@ -430,43 +463,10 @@ call ： 对象可call，注意不是类，是对象。
             </div>
         </article>
     
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/15/python中-init-方法和-new-方法的区别/" >
-                
-                    <span>python中__init__()方法和__new__()方法的区别</span>
-            </a>
-            <div class="abstract-content">
-                下面先通过一段代码看看这两个方法的调用顺序：
-1234567891011121314class A(object):    def __init__(self,*args,**kwargs):        print ("init &amp;&amp;&amp;&amp;  %s" % self.__class__)    def __new__(cls,*args,**kwargs):        print ("new &amp;&amp;&amp;&amp;  %s" % cls)        return object.__new__(cls,*args,**kwargs)...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/15</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "__new__">__new__</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "__init__">__init__</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "面向对象">面向对象</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/archives/">&#60; PREV</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/page/3/">3</a><a class="page-number" href="/archives/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/6/">6</a><a class="extend next" rel="next" href="/archives/page/3/">NEXT &#62;</a>
+        <a class="extend prev" rel="prev" href="/archives/">&#60; PREV</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/page/3/">3</a><a class="page-number" href="/archives/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/7/">7</a><a class="extend next" rel="next" href="/archives/page/3/">NEXT &#62;</a>
     </nav>
     
 </main>
@@ -958,7 +958,16 @@ call ： 对象可call，注意不是类，是对象。
     
     
     
-    <div class="total-archive"> Total : 30 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 31 </div>
     
     <div class="post-archive">
     
@@ -967,6 +976,11 @@ call ： 对象可call，注意不是类，是对象。
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/19</span><a class="archive-post-title" href= "/2018/06/19/flask-源码解析：上下文/" >flask 源码解析：上下文</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -995,17 +1009,22 @@ call ： 对象可call，注意不是类，是对象。
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/从请求到响应-django-都做了哪些处理？/" >从请求到响应 django 都做了哪些处理？</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/Django-路由与视图/" >Django: 路由与视图</a>
         </li>
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/从请求到响应-django-都做了哪些处理？/" >从请求到响应 django 都做了哪些处理？</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/如何理解-Python-Web-开发？/" >如何理解 Python Web 开发？</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中的-new-、-init-、-call-三个特殊方法/" >Python中的__new__、__init__、__call__三个特殊方法</a>
         </li>
     
     
@@ -1016,11 +1035,6 @@ call ： 对象可call，注意不是类，是对象。
     
         <li class="archive-post-item">
             <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中-new-方法的使用和实例化/" >Python中__new__()方法的使用和实例化</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中的-new-、-init-、-call-三个特殊方法/" >Python中的__new__、__init__、__call__三个特殊方法</a>
         </li>
     
     
@@ -1065,12 +1079,12 @@ call ： 对象可call，注意不是类，是对象。
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
         </li>
     
     
