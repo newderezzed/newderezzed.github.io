@@ -315,6 +315,72 @@ height:50vh;
     
     
         <article class="index-post">
+            <a class="abstract-title" href = "/2018/04/15/python面向对象三大特性之继承-抽象类/" >
+                
+                    <span>python面向对象三大特性之继承(抽象类)</span>
+            </a>
+            <div class="abstract-content">
+                什么是抽象类
+与java一样，python也有抽象类的概念但是同样需要借助模块实现，抽象类是一个特殊的类，它的特殊之处在于只能被继承，不能被实例化
+
+为什么要有抽象类如果说类是从一堆对象中抽取相同的内容而来的，那么抽象类就是从一堆类中抽取相同的内容而来的，内容包括数据属性和函数属性。比如我们有香蕉的类，有苹果的类，有桃子的类，从这些类抽取相同的内容就是水果这个抽象的类，你吃水果时，要么是吃一个具体的香蕉，要么是吃一个具体的桃子。。。。。。你永远无法吃到一个叫做水果的东西。从设计角度去看，如果类是从现实对象抽象而来的，那么抽象类就是基于类抽象而来的。从实现角度来看，抽象类与普通类的不同之处...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/15</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "面向对象">面向对象</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "接口类">接口类</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "抽象类">抽象类</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2018/04/15/python面向对象三大特性之继承-接口类/" >
+                
+                    <span>python面向对象三大特性之继承(接口类)</span>
+            </a>
+            <div class="abstract-content">
+                继承有两种用途：
+1.继承基类的方法，并且做出自己的改变或者扩展（代码重用）
+2.声明某个子类兼容于某基类，定义一个接口类Interface，接口类中定义了一些接口名（就是函数名）且并未实现接口的功能，子类继承接口类，并且实现接口中的功能
+12345678910111213141516171819202122232425# class Alipay:#     '''#     支付宝支付#     '''#     def pay(self,money):#         print('支付宝支付了%s元'%money)## class Applepay:#     '''#    ...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/15</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "面向对象">面向对象</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
             <a class="abstract-title" href = "/2018/04/14/老生常谈session，cookie的区别，安全性2.0/" >
                 
                     <span>老生常谈session，cookie的区别，安全性2.0</span>
@@ -406,74 +472,6 @@ cookie虽然在一定程度上解决了“保持状态”的需求，但是由�
         <a class="post-tag" href="javascript:void(0);" data-tags = "cookie">cookie</a>
     
         <a class="post-tag" href="javascript:void(0);" data-tags = "session">session</a>
-    
-</div>
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/11/python面向对象三大特性之继承/" >
-                
-                    <span>python面向对象三大特性之继承</span>
-            </a>
-            <div class="abstract-content">
-                继承
-什么是继承
-继承是一种创建新类的方式，在python中，新建的类可以继承一个或多个父类，父类又可称为基类或超类，新建的类称为派生类或子类
-python中类的继承分为：单继承和多继承
-
-python中类的继承分为：单继承和多继承1234567891011class ParentClass1: #定义父类    passclass ParentClass2: #定义父类    passclass SubClass1(ParentClass1): #单继承，基类是ParentClass1，派生类是SubClass    passclass SubClass2(ParentClass1,P...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/11</span>
-                </div>
-                <!-- tags  -->
-                
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="abstract-title" href = "/2018/04/11/python函数之匿名函数/" >
-                
-                    <span>python函数之匿名函数</span>
-            </a>
-            <div class="abstract-content">
-                
-匿名函数：为了解决那些功能很简单的需求而设计的一句话函数
-
-比如这段代码
-123def calc(n):    return n**nprint(calc(10))
-换成匿名函数
-12calc = lambda n:n**nprint(calc(10))
-上面是我们对calc这个匿名函数的分析，下面给出了一个关于匿名函数格式的说明
-函数名 = lambda 参数 ：返回值
-
-参数可以有多个，用逗号隔开
-匿名函数不管逻辑多复杂，只能写一行，且逻辑执行结束后的内容就是返回值
-返回值和正常的函数一样可以是任意数据类型
-
-我们可以看出，匿名函数并不是真的不能有名字。
-匿名函数的调用和正常的调用...
-            </div>
-            <div class="abstract-post-meta">
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/11</span>
-                </div>
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "python">python</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "匿名函数">匿名函数</a>
     
 </div>
                 
@@ -1071,7 +1069,37 @@ python中类的继承分为：单继承和多继承1234567891011class ParentClas
     
     
     
-    <div class="total-archive"> Total : 31 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 33 </div>
     
     <div class="post-archive">
     
@@ -1080,6 +1108,16 @@ python中类的继承分为：单继承和多继承1234567891011class ParentClas
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/20</span><a class="archive-post-title" href= "/2018/06/20/Flask-SQLAlchemy/" >Flask-SQLAlchemy</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/20</span><a class="archive-post-title" href= "/2018/06/20/flask-源码解析：请求/" >flask 源码解析：请求</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1128,17 +1166,17 @@ python中类的继承分为：单继承和多继承1234567891011class ParentClas
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中的-new-、-init-、-call-三个特殊方法/" >Python中的__new__、__init__、__call__三个特殊方法</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/python中-init-方法和-new-方法的区别/" >python中__init__()方法和__new__()方法的区别</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中-new-方法的使用和实例化/" >Python中__new__()方法的使用和实例化</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中的-new-、-init-、-call-三个特殊方法/" >Python中的__new__、__init__、__call__三个特殊方法</a>
         </li>
     
     
@@ -1178,7 +1216,7 @@ python中类的继承分为：单继承和多继承1234567891011class ParentClas
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之匿名函数/" >python函数之匿名函数</a>
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
         </li>
     
     
@@ -1188,7 +1226,7 @@ python中类的继承分为：单继承和多继承1234567891011class ParentClas
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之匿名函数/" >python函数之匿名函数</a>
         </li>
     
     
@@ -1243,11 +1281,11 @@ python中类的继承分为：单继承和多继承1234567891011class ParentClas
     
         <span class="sidebar-tag-name" data-tags="django"><span class="iconfont-archer">&#xe606;</span>django</span>
     
+        <span class="sidebar-tag-name" data-tags="orm"><span class="iconfont-archer">&#xe606;</span>orm</span>
+    
         <span class="sidebar-tag-name" data-tags="cookie"><span class="iconfont-archer">&#xe606;</span>cookie</span>
     
         <span class="sidebar-tag-name" data-tags="session"><span class="iconfont-archer">&#xe606;</span>session</span>
-    
-        <span class="sidebar-tag-name" data-tags="orm"><span class="iconfont-archer">&#xe606;</span>orm</span>
     
         <span class="sidebar-tag-name" data-tags="RestFramework"><span class="iconfont-archer">&#xe606;</span>RestFramework</span>
     
@@ -1256,6 +1294,8 @@ python中类的继承分为：单继承和多继承1234567891011class ParentClas
         <span class="sidebar-tag-name" data-tags="框架"><span class="iconfont-archer">&#xe606;</span>框架</span>
     
         <span class="sidebar-tag-name" data-tags="ORM"><span class="iconfont-archer">&#xe606;</span>ORM</span>
+    
+        <span class="sidebar-tag-name" data-tags="flask"><span class="iconfont-archer">&#xe606;</span>flask</span>
     
         <span class="sidebar-tag-name" data-tags="python，面向对象"><span class="iconfont-archer">&#xe606;</span>python，面向对象</span>
     
@@ -1270,8 +1310,6 @@ python中类的继承分为：单继承和多继承1234567891011class ParentClas
         <span class="sidebar-tag-name" data-tags="__init__，__new__"><span class="iconfont-archer">&#xe606;</span>__init__，__new__</span>
     
         <span class="sidebar-tag-name" data-tags="__call__"><span class="iconfont-archer">&#xe606;</span>__call__</span>
-    
-        <span class="sidebar-tag-name" data-tags="flask"><span class="iconfont-archer">&#xe606;</span>flask</span>
     
         <span class="sidebar-tag-name" data-tags="源码"><span class="iconfont-archer">&#xe606;</span>源码</span>
     
@@ -1338,9 +1376,9 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="Django"><span class="iconfont-archer">&#xe60a;</span>Django</span>
     
-        <span class="sidebar-category-name" data-categories="python"><span class="iconfont-archer">&#xe60a;</span>python</span>
-    
         <span class="sidebar-category-name" data-categories="Flask"><span class="iconfont-archer">&#xe60a;</span>Flask</span>
+    
+        <span class="sidebar-category-name" data-categories="python"><span class="iconfont-archer">&#xe60a;</span>python</span>
     
         <span class="sidebar-category-name" data-categories="数据结构"><span class="iconfont-archer">&#xe60a;</span>数据结构</span>
     

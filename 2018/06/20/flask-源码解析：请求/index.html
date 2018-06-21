@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html>
+    <!-- title -->
+
+
+
+
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <title>flask 源码解析：请求 · Derezzed&#39;s Studio</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+        box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.7);
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s 1;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= /css/style.css?v=20180317 as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" type="text/css" href= /css/mobile.css?v=20180317 media="(max-width: 980px)"/>
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        
+    <link rel="icon" href= /assets/emoji.png>
+    <script>
+        (function (w) {
+            "use strict";
+            // rel=preload support test
+            if (!w.loadCSS) {
+                w.loadCSS = function () { };
+            }
+            // define on the loadCSS obj
+            var rp = loadCSS.relpreload = {};
+            // rel=preload feature support test
+            // runs once and returns a function for compat purposes
+            rp.support = (function () {
+                var ret;
+                try {
+                    ret = w.document.createElement("link").relList.supports("preload");
+                } catch (e) {
+                    ret = false;
+                }
+                return function () {
+                    return ret;
+                };
+            })();
+
+            // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+            // then change that media back to its intended value on load
+            rp.bindMediaToggle = function (link) {
+                // remember existing media attr for ultimate state, or default to 'all'
+                var finalMedia = link.media || "all";
+
+                function enableStylesheet() {
+                    link.media = finalMedia;
+                }
+
+                // bind load handlers to enable media
+                if (link.addEventListener) {
+                    link.addEventListener("load", enableStylesheet);
+                } else if (link.attachEvent) {
+                    link.attachEvent("onload", enableStylesheet);
+                }
+
+                // Set rel and non-applicable media type to start an async request
+                // note: timeout allows this to happen async to let rendering continue in IE
+                setTimeout(function () {
+                    link.rel = "stylesheet";
+                    link.media = "only x";
+                });
+                // also enable media after 3 seconds,
+                // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+                setTimeout(enableStylesheet, 3000);
+            };
+
+            // loop through link elements in DOM
+            rp.poly = function () {
+                // double check this to prevent external calls from running
+                if (rp.support()) {
+                    return;
+                }
+                var links = w.document.getElementsByTagName("link");
+                for (var i = 0; i < links.length; i++) {
+                    var link = links[i];
+                    // qualify links to those with rel=preload and as=style attrs
+                    if (link.rel === "preload" && link.getAttribute("as") === "style" && !link.getAttribute("data-loadcss")) {
+                        // prevent rerunning on link
+                        link.setAttribute("data-loadcss", true);
+                        // bind listeners to toggle media back
+                        rp.bindMediaToggle(link);
+                    }
+                }
+            };
+
+            // if unsupported, run the polyfill
+            if (!rp.support()) {
+                // run once at least
+                rp.poly();
+
+                // rerun poly on an interval until onload
+                var run = w.setInterval(rp.poly, 500);
+                if (w.addEventListener) {
+                    w.addEventListener("load", function () {
+                        rp.poly();
+                        w.clearInterval(run);
+                    });
+                } else if (w.attachEvent) {
+                    w.attachEvent("onload", function () {
+                        rp.poly();
+                        w.clearInterval(run);
+                    });
+                }
+            }
+            // commonjs
+            if (typeof exports !== "undefined") {
+                exports.loadCSS = loadCSS;
+            }
+            else {
+                w.loadCSS = loadCSS;
+            }
+        }(typeof global !== "undefined" ? global : this));
+    </script>
+    <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+    <script src="/scripts/main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Derezzed&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">flask 源码解析：请求</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>Derezzed's Studio.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style=
+
+
+
+
+
+
+
+
+height:50vh;
+
+>
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            flask 源码解析：请求
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "框架">框架</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "flask">flask</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "源码">源码</a>
+    
+</div>
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2018/06/20</span>
+                
+                <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                    <span class="iconfont-archer">&#xe602;</span>
+                    <span id="busuanzi_value_page_pv"></span>
+                </span>
+                
+                <span class="shareWrapper">
+                    <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                    <span class="shareText">Share</span>
+                    <ul class="shareList">
+                        <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                            <div class="share-qrcode"></div>
+                        </li>
+                        <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                        <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                        <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                        <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                    </ul>
+                </span>
+            </div>
+        
+    </div>
+</div>
+        <script>
+  // load webfont-loader async, and add callback function
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+  
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntroTags = document.getElementsByClassName('post-intro-tags')[0],
+        postIntroMeat = document.getElementsByClassName('post-intro-meta')[0];
+      if (postIntroTags) {
+        postIntroTags.classList.add('post-fade-in');
+      }
+      if (postIntroMeat) {
+        postIntroMeat.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  async("https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", asyncCb)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="flask-源码解析：请求"><a href="#flask-源码解析：请求" class="headerlink" title="flask 源码解析：请求"></a>flask 源码解析：请求</h1><blockquote>
+<p>原文:<a href="http://cizixs.com/2017/01/18/flask-insight-request" target="_blank" rel="noopener">http://cizixs.com/2017/01/18/flask-insight-request</a></p>
+</blockquote>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><strong>对于物理链路来说，请求只是不同电压信号，它根本不知道也不需要知道请求格式和内容到底是怎样的； 对于 TCP 层来说，请求就是传输的数据（二进制的数据流），它只要发送给对应的应用程序就行了； 对于 HTTP 层的服务器来说，请求必须是符合 HTTP 协议的内容； 对于 WSGI server 来说，请求又变成了文件流，它要读取其中的内容，把 HTTP 请求包含的各种信息保存到一个字典中，调用 WSGI app； 对于 flask app 来说，请求就是一个对象，当需要某些信息的时候，只需要读取该对象的属性或者方法就行了。</strong></p>
+<p>可以看到，虽然是同样的请求数据，在不同的阶段和不同组件看来，是完全不同的形式。因为每个组件都有它本身的目的和功能，这和生活中的事情一个道理：对于同样的事情，不同的人或者同一个人不同人生阶段的理解是不一样的。</p>
+<p><strong>这篇文章呢，我们只考虑最后一个内容，flask 怎么看待请求。</strong></p>
+<h2 id="请求"><a href="#请求" class="headerlink" title="请求"></a>请求</h2><p>我们知道要访问 flask 的请求对象非常简单，只需要 <code>from flask import request</code>： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> request</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> app.request_context(environ):</span><br><span class="line">    <span class="keyword">assert</span> request.method == <span class="string">'POST'</span></span><br></pre></td></tr></table></figure>
+<p>前面<a href="http://cizixs.com/2017/01/13/flask-insight-context" target="_blank" rel="noopener">一篇文章</a> 已经介绍了这个神奇的变量是怎么工作的，它最后对应了 <code>flask.wrappers:Request</code> 类的对象。 这个类内部的实现虽然我们还不清楚，但是我们知道它接受 WSGI server 传递过来的 <code>environ</code> 字典变量，并提供了很多常用的属性和方法可以使用，比如请求的 method、path、args 等。 请求还有一个不那么明显的特性——它不能被应用修改，应用只能读取请求的数据。 </p>
+<p>这个类的定义很简单，它继承了 <code>werkzeug.wrappers:Request</code>，然后添加了一些属性，这些属性和 flask 的逻辑有关，比如 view_args、blueprint、json 处理等。它的代码如下： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> werkzeug.wrappers <span class="keyword">import</span> Request <span class="keyword">as</span> RequestBase</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Request</span><span class="params">(RequestBase)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    The request object is a :class:`~werkzeug.wrappers.Request` subclass and</span></span><br><span class="line"><span class="string">    provides all of the attributes Werkzeug defines plus a few Flask</span></span><br><span class="line"><span class="string">    specific ones.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#: The internal URL rule that matched the request.  This can be</span></span><br><span class="line">    <span class="comment">#: useful to inspect which methods are allowed for the URL from</span></span><br><span class="line">    <span class="comment">#: a before/after handler (``request.url_rule.methods``) etc.</span></span><br><span class="line">    url_rule = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#: A dict of view arguments that matched the request.  If an exception</span></span><br><span class="line">    <span class="comment">#: happened when matching, this will be ``None``.</span></span><br><span class="line">    view_args = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">max_content_length</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""Read-only view of the ``MAX_CONTENT_LENGTH`` config key."""</span></span><br><span class="line">        ctx = _request_ctx_stack.top</span><br><span class="line">        <span class="keyword">if</span> ctx <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span> ctx.app.config[<span class="string">'MAX_CONTENT_LENGTH'</span>]</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">endpoint</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""The endpoint that matched the request.  This in combination with</span></span><br><span class="line"><span class="string">        :attr:`view_args` can be used to reconstruct the same or a</span></span><br><span class="line"><span class="string">        modified URL.  If an exception happened when matching, this will</span></span><br><span class="line"><span class="string">        be ``None``.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> self.url_rule <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span> self.url_rule.endpoint</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">blueprint</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""The name of the current blueprint"""</span></span><br><span class="line">        <span class="keyword">if</span> self.url_rule <span class="keyword">and</span> <span class="string">'.'</span> <span class="keyword">in</span> self.url_rule.endpoint:</span><br><span class="line">            <span class="keyword">return</span> self.url_rule.endpoint.rsplit(<span class="string">'.'</span>, <span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_json</span><span class="params">(self)</span>:</span></span><br><span class="line">        mt = self.mimetype</span><br><span class="line">        <span class="keyword">if</span> mt == <span class="string">'application/json'</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line">        <span class="keyword">if</span> mt.startswith(<span class="string">'application/'</span>) <span class="keyword">and</span> mt.endswith(<span class="string">'+json'</span>):</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">False</span></span><br></pre></td></tr></table></figure>
+<p>这段代码没有什难理解的地方，唯一需要说明的就是 <code>@property</code> 装饰符能够把类的方法变成属性，这是 python 中经常见到的用法。</p>
+<p>接着我们就要看 <code>werkzeug.wrappers:Request</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Request</span><span class="params">(BaseRequest, AcceptMixin, ETagRequestMixin,</span></span></span><br><span class="line"><span class="class"><span class="params">              UserAgentMixin, AuthorizationMixin,</span></span></span><br><span class="line"><span class="class"><span class="params">              CommonRequestDescriptorsMixin)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="string">"""Full featured request object implementing the following mixins:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    - :class:`AcceptMixin` for accept header parsing</span></span><br><span class="line"><span class="string">    - :class:`ETagRequestMixin` for etag and cache control handling</span></span><br><span class="line"><span class="string">    - :class:`UserAgentMixin` for user agent introspection</span></span><br><span class="line"><span class="string">    - :class:`AuthorizationMixin` for http auth handling</span></span><br><span class="line"><span class="string">    - :class:`CommonRequestDescriptorsMixin` for common headers</span></span><br><span class="line"><span class="string">    """</span></span><br></pre></td></tr></table></figure>
+<p>这个方法有一点比较特殊，它没有任何的 body。但是有多个基类，第一个是 <code>BaseRequest</code>，其他的都是各种 <code>Mixin</code>。 这里要讲一下 Mixin 机制，这是 python 多继承的一种方式，如果你希望某个类可以自行组合它的特性（比如这里的情况），或者希望某个特性用在多个类中，就可以使用 Mixin。 如果我们只需要能处理各种 <code>Accept</code> 头部的请求，可以这样做： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Request</span><span class="params">(BaseRequest, AcceptMixin)</span></span></span><br><span class="line"><span class="class">    <span class="title">pass</span></span></span><br></pre></td></tr></table></figure>
+<p>但是不要滥用 Mixin，在大多数情况下子类继承了父类，然后实现需要的逻辑就能满足需求。</p>
+<p>我们先来看看 <code>BaseRequest</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseRequest</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, environ, populate_request=True, shallow=False)</span>:</span></span><br><span class="line">        self.environ = environ</span><br><span class="line">        <span class="keyword">if</span> populate_request <span class="keyword">and</span> <span class="keyword">not</span> shallow:</span><br><span class="line">            self.environ[<span class="string">'werkzeug.request'</span>] = self</span><br><span class="line">        self.shallow = shallow</span><br></pre></td></tr></table></figure>
+<p>能看到实例化需要的唯一变量是 <code>environ</code>，它只是简单地把变量保存下来，并没有做进一步的处理。<code>Request</code> 的内容很多，其中相当一部分是被 <code>@cached_property</code> 装饰的方法，比如下面这种： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@cached_property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">args</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""The parsed URL parameters."""</span></span><br><span class="line">        <span class="keyword">return</span> url_decode(wsgi_get_bytes(self.environ.get(<span class="string">'QUERY_STRING'</span>, <span class="string">''</span>)),</span><br><span class="line">                          self.url_charset, errors=self.encoding_errors,</span><br><span class="line">                          cls=self.parameter_storage_class)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @cached_property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">stream</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""The stream to read incoming data from.  Unlike :attr:`input_stream`</span></span><br><span class="line"><span class="string">        this stream is properly guarded that you can't accidentally read past</span></span><br><span class="line"><span class="string">        the length of the input.  Werkzeug will internally always refer to</span></span><br><span class="line"><span class="string">        this stream to read data which makes it possible to wrap this</span></span><br><span class="line"><span class="string">        object with a stream that does filtering.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        _assert_not_shallow(self)</span><br><span class="line">        <span class="keyword">return</span> get_input_stream(self.environ)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @cached_property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">form</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""The form parameters."""</span></span><br><span class="line">        self._load_form_data()</span><br><span class="line">        <span class="keyword">return</span> self.form</span><br><span class="line"></span><br><span class="line"><span class="meta">    @cached_property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cookies</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""Read only access to the retrieved cookie values as dictionary."""</span></span><br><span class="line">        <span class="keyword">return</span> parse_cookie(self.environ, self.charset,</span><br><span class="line">                            self.encoding_errors,</span><br><span class="line">                            cls=self.dict_storage_class)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @cached_property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">headers</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""The headers from the WSGI environ as immutable</span></span><br><span class="line"><span class="string">        :class:`~werkzeug.datastructures.EnvironHeaders`.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">return</span> EnvironHeaders(self.environ)</span><br></pre></td></tr></table></figure>
+<p><code>@cached_property</code> 从名字就能看出来，它是 <code>@property</code> 的升级版，添加了缓存功能。我们知道 <code>@property</code> 能把某个方法转换成属性，每次访问属性的时候，它都会执行底层的方法作为结果返回。 <code>@cached_property</code> 也一样，区别是只有第一次访问的时候才会调用底层的方法，后续的方法会直接使用之前返回的值。 那么它是如何实现的呢？我们能在 <code>werkzeug.utils</code> 找到它的定义： </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">cached_property</span><span class="params">(property)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="string">"""A decorator that converts a function into a lazy property.  The</span></span><br><span class="line"><span class="string">    function wrapped is called the first time to retrieve the result</span></span><br><span class="line"><span class="string">    and then that calculated result is used the next time you access</span></span><br><span class="line"><span class="string">    the value.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    The class has to have a `__dict__` in order for this property to</span></span><br><span class="line"><span class="string">    work.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># implementation detail: A subclass of python's builtin property</span></span><br><span class="line">    <span class="comment"># decorator, we override __get__ to check for a cached value. If one</span></span><br><span class="line">    <span class="comment"># choses to invoke __get__ by hand the property will still work as</span></span><br><span class="line">    <span class="comment"># expected because the lookup logic is replicated in __get__ for</span></span><br><span class="line">    <span class="comment"># manual invocation.</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, func, name=None, doc=None)</span>:</span></span><br><span class="line">        self.__name__ = name <span class="keyword">or</span> func.__name__</span><br><span class="line">        self.__module__ = func.__module__</span><br><span class="line">        self.__doc__ = doc <span class="keyword">or</span> func.__doc__</span><br><span class="line">        self.func = func</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, obj, value)</span>:</span></span><br><span class="line">        obj.__dict__[self.__name__] = value</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, obj, type=None)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> obj <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span> self</span><br><span class="line">        value = obj.__dict__.get(self.__name__, _missing)</span><br><span class="line">        <span class="keyword">if</span> value <span class="keyword">is</span> _missing:</span><br><span class="line">            value = self.func(obj)</span><br><span class="line">            obj.__dict__[self.__name__] = value</span><br><span class="line">        <span class="keyword">return</span> value</span><br></pre></td></tr></table></figure>
+<p>这个装饰器同时也是实现了 <code>__set__</code> 和 <code>__get__</code> 方法的<a href="http://cizixs.com/2015/12/31/python-descriptor-introduction" target="_blank" rel="noopener">描述器</a>。 访问它装饰的属性，就会调用 <code>__get__</code> 方法，这个方法先在 <code>obj.__dict__</code> 中寻找是否已经存在对应的值。如果存在，就直接返回；如果不存在，调用底层的函数 <code>self.func</code>，并把得到的值保存起来，再返回。这也是它能实现缓存的原因：因为它会把函数的值作为属性保存到对象中。</p>
+<p>关于 <code>Request</code> 内部各种属性的实现，就不分析了，因为它们每个具体的实现都不太一样，也不复杂，无外乎对 <code>environ</code> 字典中某些字段做一些处理和计算。 接下来回过头来看看 Mixin，这里只用 <code>AcceptMixin</code> 作为例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AcceptMixin</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @cached_property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">accept_mimetypes</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> parse_accept_header(self.environ.get(<span class="string">'HTTP_ACCEPT'</span>), MIMEAccept)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @cached_property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">accept_charsets</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> parse_accept_header(self.environ.get(<span class="string">'HTTP_ACCEPT_CHARSET'</span>),</span><br><span class="line">                                   CharsetAccept)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @cached_property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">accept_encodings</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> parse_accept_header(self.environ.get(<span class="string">'HTTP_ACCEPT_ENCODING'</span>))</span><br><span class="line"></span><br><span class="line"><span class="meta">    @cached_property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">accept_languages</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> parse_accept_header(self.environ.get(<span class="string">'HTTP_ACCEPT_LANGUAGE'</span>),</span><br><span class="line">                                   LanguageAccept)</span><br></pre></td></tr></table></figure>
+<p><code>AcceptMixin</code> 实现了请求内容协商的部分，比如请求接受的语言、编码格式、相应内容等。 它也是定义了很多 <code>@cached_property</code> 方法，虽然自己没有 <code>__init__</code> 方法，但是也直接使用了 <code>self.environ</code>，因此它并不能直接使用，只能和 <code>BaseRequest</code> 一起出现。 </p>
+
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2018/06/20/Flask-SQLAlchemy/" title= Flask-SQLAlchemy >
+                    <div class="nextTitle">Flask-SQLAlchemy</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2018/06/19/flask-源码解析：上下文/" title= flask 源码解析：上下文 >
+                    <div class="prevTitle">flask 源码解析：上下文</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!--PC版-->
+
+    <!--PC版-->
+
+
+    
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:747256153@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/newderezzed" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/wechat.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+        <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span>
+        </span>
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#flask-源码解析：请求"><span class="toc-number">1.</span> <span class="toc-text">flask 源码解析：请求</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">1.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#请求"><span class="toc-number">1.2.</span> <span class="toc-text">请求</span></a></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 33 </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/20</span><a class="archive-post-title" href= "/2018/06/20/Flask-SQLAlchemy/" >Flask-SQLAlchemy</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/20</span><a class="archive-post-title" href= "/2018/06/20/flask-源码解析：请求/" >flask 源码解析：请求</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/19</span><a class="archive-post-title" href= "/2018/06/19/flask-源码解析：上下文/" >flask 源码解析：上下文</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/13</span><a class="archive-post-title" href= "/2018/06/13/flask-源码解析：路由/" >flask 源码解析：路由</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/13</span><a class="archive-post-title" href= "/2018/06/13/flask-源码解析：应用启动流程/" >flask 源码解析：应用启动流程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/13</span><a class="archive-post-title" href= "/2018/06/13/flask-源码解析：简介/" >flask 源码解析：简介</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/17</span><a class="archive-post-title" href= "/2018/05/17/Django-Rest-Framework-序列化关系模型/" >Django Rest Framework 序列化关系模型</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/02</span><a class="archive-post-title" href= "/2018/05/02/Django-ORM模型：初识/" >Django ORM模型：初识</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/Django-路由与视图/" >Django: 路由与视图</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/从请求到响应-django-都做了哪些处理？/" >从请求到响应 django 都做了哪些处理？</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/如何理解-Python-Web-开发？/" >如何理解 Python Web 开发？</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/python中-init-方法和-new-方法的区别/" >python中__init__()方法和__new__()方法的区别</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中-new-方法的使用和实例化/" >Python中__new__()方法的使用和实例化</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中的-new-、-init-、-call-三个特殊方法/" >Python中的__new__、__init__、__call__三个特殊方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/python面向对象之-staticmethod-classmethod/" >python面向对象之@staticmethod@classmethod</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/python面向对象三大特性之继承-抽象类/" >python面向对象三大特性之继承(抽象类)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/python面向对象三大特性之继承-接口类/" >python面向对象三大特性之继承(接口类)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/老生常谈session，cookie的区别，安全性2.0/" >老生常谈session，cookie的区别，安全性2.0</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/老生常谈session，cookie的区别，安全性1.0/" >老生常谈session，cookie的区别，安全性1.0</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/13</span><a class="archive-post-title" href= "/2018/04/13/Cookie与Session-v2-0/" >Cookie与Session v2.0</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python面向对象三大特性之继承/" >python面向对象三大特性之继承</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之匿名函数/" >python函数之匿名函数</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python之def函数进阶之迭代器-ITERATOR-和生成器-GENERATOR/" >python之def函数进阶之迭代器(ITERATOR)和生成器(GENERATOR)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/10</span><a class="archive-post-title" href= "/2018/04/10/python小数据池及Bytes类型相关/" >python小数据池及Bytes类型相关</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/10</span><a class="archive-post-title" href= "/2018/04/10/django-form表单/" >django form表单</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/09</span><a class="archive-post-title" href= "/2018/04/09/第一章-数据结构绪论/" >第一章 数据结构绪论</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/09</span><a class="archive-post-title" href= "/2018/04/09/Django中ORM介绍和字段及字段参数/" >Django中ORM介绍和字段及字段参数</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/06</span><a class="archive-post-title" href= "/2018/04/06/django中的session/" >django中的session</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/06</span><a class="archive-post-title" href= "/2018/04/06/django中的cookie/" >django中的cookie</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/05</span><a class="archive-post-title" href= "/2018/04/05/django框架介绍/" >django框架介绍</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/03</span><a class="archive-post-title" href= "/2018/04/03/hello-world/" >Hello World</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="django"><span class="iconfont-archer">&#xe606;</span>django</span>
+    
+        <span class="sidebar-tag-name" data-tags="orm"><span class="iconfont-archer">&#xe606;</span>orm</span>
+    
+        <span class="sidebar-tag-name" data-tags="cookie"><span class="iconfont-archer">&#xe606;</span>cookie</span>
+    
+        <span class="sidebar-tag-name" data-tags="session"><span class="iconfont-archer">&#xe606;</span>session</span>
+    
+        <span class="sidebar-tag-name" data-tags="RestFramework"><span class="iconfont-archer">&#xe606;</span>RestFramework</span>
+    
+        <span class="sidebar-tag-name" data-tags="wsgi"><span class="iconfont-archer">&#xe606;</span>wsgi</span>
+    
+        <span class="sidebar-tag-name" data-tags="框架"><span class="iconfont-archer">&#xe606;</span>框架</span>
+    
+        <span class="sidebar-tag-name" data-tags="ORM"><span class="iconfont-archer">&#xe606;</span>ORM</span>
+    
+        <span class="sidebar-tag-name" data-tags="flask"><span class="iconfont-archer">&#xe606;</span>flask</span>
+    
+        <span class="sidebar-tag-name" data-tags="python，面向对象"><span class="iconfont-archer">&#xe606;</span>python，面向对象</span>
+    
+        <span class="sidebar-tag-name" data-tags="__new__"><span class="iconfont-archer">&#xe606;</span>__new__</span>
+    
+        <span class="sidebar-tag-name" data-tags="__init__"><span class="iconfont-archer">&#xe606;</span>__init__</span>
+    
+        <span class="sidebar-tag-name" data-tags="python"><span class="iconfont-archer">&#xe606;</span>python</span>
+    
+        <span class="sidebar-tag-name" data-tags="面向对象"><span class="iconfont-archer">&#xe606;</span>面向对象</span>
+    
+        <span class="sidebar-tag-name" data-tags="__init__，__new__"><span class="iconfont-archer">&#xe606;</span>__init__，__new__</span>
+    
+        <span class="sidebar-tag-name" data-tags="__call__"><span class="iconfont-archer">&#xe606;</span>__call__</span>
+    
+        <span class="sidebar-tag-name" data-tags="源码"><span class="iconfont-archer">&#xe606;</span>源码</span>
+    
+        <span class="sidebar-tag-name" data-tags="迭代器"><span class="iconfont-archer">&#xe606;</span>迭代器</span>
+    
+        <span class="sidebar-tag-name" data-tags="生成器"><span class="iconfont-archer">&#xe606;</span>生成器</span>
+    
+        <span class="sidebar-tag-name" data-tags="匿名函数"><span class="iconfont-archer">&#xe606;</span>匿名函数</span>
+    
+        <span class="sidebar-tag-name" data-tags="闭包"><span class="iconfont-archer">&#xe606;</span>闭包</span>
+    
+        <span class="sidebar-tag-name" data-tags="命名空间"><span class="iconfont-archer">&#xe606;</span>命名空间</span>
+    
+        <span class="sidebar-tag-name" data-tags="小数据池"><span class="iconfont-archer">&#xe606;</span>小数据池</span>
+    
+        <span class="sidebar-tag-name" data-tags="接口类"><span class="iconfont-archer">&#xe606;</span>接口类</span>
+    
+        <span class="sidebar-tag-name" data-tags="抽象类"><span class="iconfont-archer">&#xe606;</span>抽象类</span>
+    
+        <span class="sidebar-tag-name" data-tags="classmethod"><span class="iconfont-archer">&#xe606;</span>classmethod</span>
+    
+        <span class="sidebar-tag-name" data-tags="staticmethod"><span class="iconfont-archer">&#xe606;</span>staticmethod</span>
+    
+        <span class="sidebar-tag-name" data-tags="中间件"><span class="iconfont-archer">&#xe606;</span>中间件</span>
+    
+        <span class="sidebar-tag-name" data-tags="client"><span class="iconfont-archer">&#xe606;</span>client</span>
+    
+        <span class="sidebar-tag-name" data-tags="server"><span class="iconfont-archer">&#xe606;</span>server</span>
+    
+        <span class="sidebar-tag-name" data-tags="数据结构"><span class="iconfont-archer">&#xe606;</span>数据结构</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="Django"><span class="iconfont-archer">&#xe60a;</span>Django</span>
+    
+        <span class="sidebar-category-name" data-categories="Flask"><span class="iconfont-archer">&#xe60a;</span>Flask</span>
+    
+        <span class="sidebar-category-name" data-categories="python"><span class="iconfont-archer">&#xe60a;</span>python</span>
+    
+        <span class="sidebar-category-name" data-categories="数据结构"><span class="iconfont-archer">&#xe60a;</span>数据结构</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: '/',
+        author: '陈乾煜'
+    }
+</script>
+    <!-- busuanzi  -->
+    
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+    
+    </body>
+</html>
+
+
