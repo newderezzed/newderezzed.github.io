@@ -386,7 +386,7 @@ height:50vh;
 <p>上面这段代码省略了处理 endpoint 和构建 methods 的部分逻辑，可以看到它<strong>主要做的事情就是更新 <code>self.url_map</code> 和 <code>self.view_functions</code> 两个变量。</strong>找到变量的定义，发现 <code>url_map</code> 是 <code>werkzeug.routeing:Map</code> 类的对象，<code>rule</code> 是 <code>werkzeug.routing:Rule</code> 类的对象，<code>view_functions</code> 就是一个字典。这和我们之前预想的并不一样，这里增加了 <code>Rule</code> 和 <code>Map</code> 的封装，还把 <code>url</code> 和 <code>view_func</code> 保存到了不同的地方。</p>
 <p>需要注意的是：每个视图函数的 endpoint 必须是不同的，否则会报 <code>AssertionError</code>。</p>
 <h2 id="werkzeug-路由逻辑"><a href="#werkzeug-路由逻辑" class="headerlink" title="werkzeug 路由逻辑"></a>werkzeug 路由逻辑</h2><p>事实上，flask 核心的路由逻辑是在 <code>werkzeug</code> 中实现的。所以在继续分析之前，我们先看一下 <code>werkzeug</code> 提供的<a href="http://werkzeug.pocoo.org/docs/0.11/routing/" target="_blank" rel="noopener">路由功能</a>。 </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span>&gt;&gt; m = Map([</span><br><span class="line">...     Rule('/', endpoint='index'),</span><br><span class="line">...     Rule('/downloads/', endpoint='downloads/index'),</span><br><span class="line">...     Rule('/downloads/&lt;int:id&gt;', endpoint='downloads/show')</span><br><span class="line">... ])</span><br><span class="line"><span class="meta">&gt;</span>&gt;&gt; urls = m.bind("example.com", "/")</span><br><span class="line"><span class="meta">&gt;</span>&gt;&gt; urls.match("/", "GET")</span><br><span class="line">('index', &#123;&#125;)</span><br><span class="line"><span class="meta">&gt;</span>&gt;&gt; urls.match("/downloads/42")</span><br><span class="line">('downloads/show', &#123;'id': 42&#125;)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span>&gt;&gt; urls.match("/downloads")</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  ...</span><br><span class="line">RequestRedirect: http://example.com/downloads/</span><br><span class="line"><span class="meta">&gt;</span>&gt;&gt; urls.match("/missing")</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  ...</span><br><span class="line">NotFound: 404 Not Found</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; m = Map([</span></span><br><span class="line">...     Rule('/', endpoint='index'),</span><br><span class="line">...     Rule('/downloads/', endpoint='downloads/index'),</span><br><span class="line">...     Rule('/downloads/&lt;int:id&gt;', endpoint='downloads/show')</span><br><span class="line">... ])</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; urls = m.bind(<span class="string">"example.com"</span>, <span class="string">"/"</span>)</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; urls.match(<span class="string">"/"</span>, <span class="string">"GET"</span>)</span></span><br><span class="line">('index', &#123;&#125;)</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; urls.match(<span class="string">"/downloads/42"</span>)</span></span><br><span class="line">('downloads/show', &#123;'id': 42&#125;)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; urls.match(<span class="string">"/downloads"</span>)</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  ...</span><br><span class="line">RequestRedirect: http://example.com/downloads/</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; urls.match(<span class="string">"/missing"</span>)</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  ...</span><br><span class="line">NotFound: 404 Not Found</span><br></pre></td></tr></table></figure>
 <p>上面的代码演示了 <code>werkzeug</code> 最核心的路由功能：添加路由规则（也可以使用 <code>m.add</code>），把路由表绑定到特定的环境（<code>m.bind</code>），匹配url（<code>urls.match</code>）。正常情况下返回对应的 endpoint 名字和参数字典，可能报重定向或者 404 异常。 </p>
 <p>可以发现，<a href="http://stackoverflow.com/a/19262349/1925083" target="_blank" rel="noopener"><code>endpoint</code> 在路由过程中非常重要</a>。<code>werkzeug</code> 的路由过程，其实是 url 到 endpoint 的转换：通过 url 找到处理该 url 的 endpoint。至于 endpoint 和 view function 之间的匹配关系，<code>werkzeug</code> 是不管的，而上面也看到 <code>flask</code> 是把这个存放到字典中的。 </p>
 <h2 id="flask-路由实现"><a href="#flask-路由实现" class="headerlink" title="flask 路由实现"></a>flask 路由实现</h2><p>好，有了这些基础知识，我们回头看 <code>dispatch_request</code>，继续探寻路由匹配的逻辑： </p>
@@ -980,12 +980,7 @@ top:50vh;
     
     
     
-    
-    
-    
-    
-    
-    <div class="total-archive"> Total : 33 </div>
+    <div class="total-archive"> Total : 34 </div>
     
     <div class="post-archive">
     
@@ -994,6 +989,11 @@ top:50vh;
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/25</span><a class="archive-post-title" href= "/2018/06/25/Python-Requests库简明使用教程/" >Python Requests库简明使用教程</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1037,22 +1037,17 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/Django-路由与视图/" >Django: 路由与视图</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/从请求到响应-django-都做了哪些处理？/" >从请求到响应 django 都做了哪些处理？</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/如何理解-Python-Web-开发？/" >如何理解 Python Web 开发？</a>
+            <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/Django-路由与视图/" >Django: 路由与视图</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/python中-init-方法和-new-方法的区别/" >python中__init__()方法和__new__()方法的区别</a>
+            <span class="archive-post-date">04/28</span><a class="archive-post-title" href= "/2018/04/28/如何理解-Python-Web-开发？/" >如何理解 Python Web 开发？</a>
         </li>
     
     
@@ -1063,6 +1058,11 @@ top:50vh;
     
         <li class="archive-post-item">
             <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/Python中的-new-、-init-、-call-三个特殊方法/" >Python中的__new__、__init__、__call__三个特殊方法</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/15</span><a class="archive-post-title" href= "/2018/04/15/python中-init-方法和-new-方法的区别/" >python中__init__()方法和__new__()方法的区别</a>
         </li>
     
     
@@ -1102,17 +1102,17 @@ top:50vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之匿名函数/" >python函数之匿名函数</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python命名空间/" >python命名空间</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之闭包/" >python函数之闭包</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/11</span><a class="archive-post-title" href= "/2018/04/11/python函数之匿名函数/" >python函数之匿名函数</a>
         </li>
     
     
@@ -1167,11 +1167,11 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="django"><span class="iconfont-archer">&#xe606;</span>django</span>
     
-        <span class="sidebar-tag-name" data-tags="orm"><span class="iconfont-archer">&#xe606;</span>orm</span>
-    
         <span class="sidebar-tag-name" data-tags="cookie"><span class="iconfont-archer">&#xe606;</span>cookie</span>
     
         <span class="sidebar-tag-name" data-tags="session"><span class="iconfont-archer">&#xe606;</span>session</span>
+    
+        <span class="sidebar-tag-name" data-tags="orm"><span class="iconfont-archer">&#xe606;</span>orm</span>
     
         <span class="sidebar-tag-name" data-tags="RestFramework"><span class="iconfont-archer">&#xe606;</span>RestFramework</span>
     
@@ -1181,7 +1181,9 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="ORM"><span class="iconfont-archer">&#xe606;</span>ORM</span>
     
-        <span class="sidebar-tag-name" data-tags="flask"><span class="iconfont-archer">&#xe606;</span>flask</span>
+        <span class="sidebar-tag-name" data-tags="python"><span class="iconfont-archer">&#xe606;</span>python</span>
+    
+        <span class="sidebar-tag-name" data-tags="requests"><span class="iconfont-archer">&#xe606;</span>requests</span>
     
         <span class="sidebar-tag-name" data-tags="python，面向对象"><span class="iconfont-archer">&#xe606;</span>python，面向对象</span>
     
@@ -1189,7 +1191,7 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="__init__"><span class="iconfont-archer">&#xe606;</span>__init__</span>
     
-        <span class="sidebar-tag-name" data-tags="python"><span class="iconfont-archer">&#xe606;</span>python</span>
+        <span class="sidebar-tag-name" data-tags="flask"><span class="iconfont-archer">&#xe606;</span>flask</span>
     
         <span class="sidebar-tag-name" data-tags="面向对象"><span class="iconfont-archer">&#xe606;</span>面向对象</span>
     
@@ -1199,11 +1201,11 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="源码"><span class="iconfont-archer">&#xe606;</span>源码</span>
     
+        <span class="sidebar-tag-name" data-tags="匿名函数"><span class="iconfont-archer">&#xe606;</span>匿名函数</span>
+    
         <span class="sidebar-tag-name" data-tags="迭代器"><span class="iconfont-archer">&#xe606;</span>迭代器</span>
     
         <span class="sidebar-tag-name" data-tags="生成器"><span class="iconfont-archer">&#xe606;</span>生成器</span>
-    
-        <span class="sidebar-tag-name" data-tags="匿名函数"><span class="iconfont-archer">&#xe606;</span>匿名函数</span>
     
         <span class="sidebar-tag-name" data-tags="闭包"><span class="iconfont-archer">&#xe606;</span>闭包</span>
     
@@ -1262,9 +1264,9 @@ jsonContent:
     
         <span class="sidebar-category-name" data-categories="Django"><span class="iconfont-archer">&#xe60a;</span>Django</span>
     
-        <span class="sidebar-category-name" data-categories="Flask"><span class="iconfont-archer">&#xe60a;</span>Flask</span>
-    
         <span class="sidebar-category-name" data-categories="python"><span class="iconfont-archer">&#xe60a;</span>python</span>
+    
+        <span class="sidebar-category-name" data-categories="Flask"><span class="iconfont-archer">&#xe60a;</span>Flask</span>
     
         <span class="sidebar-category-name" data-categories="数据结构"><span class="iconfont-archer">&#xe60a;</span>数据结构</span>
     
